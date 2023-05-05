@@ -1,0 +1,38 @@
+Package: appeears
+Title: Interface to 'AppEARS' NASA Web Services
+Version: 1.0
+Authors@R: c(person(
+               family = "Hufkens",
+               given = "Koen",
+               email = "koen.hufkens@gmail.com",
+               role = c("aut", "cre"),
+               comment = c(ORCID = "0000-0002-5070-8109")),
+            person(given = "BlueGreen Labs",
+              role = c("cph", "fnd"))
+           )
+Description: Programmatic interface to the NASA AppEEARS services.
+URL: https://github.com/bluegreen-labs/appeears
+BugReports: https://github.com/bluegreen-labs/appeears/issues
+Depends:
+    R (>= 4.0)
+Imports:
+    httr,
+    keyring,
+    memoise,
+    getPass,
+    curl,
+    R6,
+    uuid
+License: AGPL-3
+ByteCompile: true
+RoxygenNote: 7.2.1
+Suggests:
+    rmarkdown,
+    covr,
+    testthat,
+    terra,
+    ncdf4,
+    knitr,
+    rlang,
+    jsonlite
+VignetteBuilder: knitr
