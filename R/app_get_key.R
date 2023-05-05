@@ -5,9 +5,9 @@
 #' @param user user (email address) used to sign up
 #' @return the password set using \code{\link[appeears]{app_set_key}} saved
 #' in the keychain
-#' @seealso \code{\link[ecmwfr]{app_set_key}}
+#' @seealso \code{\link[appeears]{app_set_key}}
 #' @export
-#' @author Koen Kufkens
+#' @author Koen Hufkens
 #' @examples
 #'
 #' \dontrun{
@@ -27,7 +27,7 @@ app_get_key <- function(user) {
   # only the "env" option does not require this
   if (keyring::default_backend()$name != "env") {
     if (keyring::default_backend()$name == "file") {
-      if ("ecmwfr" %in% keyring::keyring_list()$keyring) {
+      if ("appeears" %in% keyring::keyring_list()$keyring) {
         if(keyring::keyring_is_locked(keyring = "appeears")){
           message("Your keyring is locked please
               unlock with your keyring password!")
@@ -49,13 +49,16 @@ app_get_key <- function(user) {
   # throw warnings which gives issues for unit tests
   if(keyring::default_backend()$name == "file"){
     keyring::key_get(
-      service = make_key_service(service),
+      service = service,
       username = user,
-      keyring = "appeears")
+      keyring = "appeears"
+      )
   } else {
     keyring::key_get(
-      service = make_key_service(service),
-      username = user)
+      service = service,
+      username = user,
+      keyring = "appeears"
+      )
   }
 
 }

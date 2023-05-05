@@ -21,18 +21,6 @@ wf_check_request <- memoise::memoise(function(
   # Stop if not a list
   stopifnot(inherits(request, "list"))
 
-  # check MARS requirements
-  if(request$dataset == "mars"){
-    if(grepl("^netcdf$", tolower(request$format))) {
-      if(!"grid" %in% names(request)){
-        stop("'mars' requests: 'grid' required if 'format = \"netcdf\"'")
-      }
-    }
-    if(!"target" %in% names(request)){
-      stop("'mars' requests: require a 'target' variable in the request.")
-    }
-  }
-
   service <- do.call("rbind",
                      lapply(c("webapi","cds","ads"),
                                      function(service){
@@ -43,23 +31,6 @@ wf_check_request <- memoise::memoise(function(
     if(inherits(dataset,"try-error")){
       return(NULL)
     }
-
-    if (service == "webapi"){
-      # sadly had to split this up between services
-      # due to changes in dataset naming conventions
-      # i.e. no consistent dataset variable can be used
-      # see note below
-
-      if(!"dataset" %in% names(request)){
-        stop("Request specification has to contain a \"dataset\" identifier.")
-      }
-
-      if(request$dataset %in% dataset$name ||
-         (request$dataset == "mars" && service == "webapi")){
-        return(service)
-      }
-
-    } else {
 
       # on CDS / ADS use the short name variable to avoid conflicts
       # for certain data products (which reuse the dataset parameter)
@@ -72,7 +43,6 @@ wf_check_request <- memoise::memoise(function(
       if(request$dataset_short_name %in% dataset$name){
         return(service)
       }
-    }
   }))
 
   if(is.null(service)){

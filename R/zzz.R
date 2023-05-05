@@ -14,35 +14,16 @@
 # \code{type == "cds"}).
 #
 # @author Koen Kufkens
-wf_server <- function(id, service = "webapi") {
-
-  # match arguments, if not stop
-  service <- match.arg(service, c("webapi", "cds", "ads"))
+app_server <- function(id) {
 
   # set base urls
-  webapi_url <- "https://api.ecmwf.int/v1"
-  cds_url <- "https://cds.climate.copernicus.eu/api/v2"
-  ads_url <- "https://ads.atmosphere.copernicus.eu/api/v2"
+  appeears_url <- "https://appeears.earthdatacloud.nasa.gov/api"
 
   # return url depending on service or id
-  if (service == "webapi") {
-    if (missing(id)) {
-      return(webapi_url)
-    } else {
-      return(file.path(webapi_url, "services/mars/requests", id))
-    }
-  } else if (service == "ads") {
-    if (missing(id)) {
-      return(ads_url)
-    } else {
-      return(file.path(ads_url, "tasks", id))
-    }
+  if (missing(id)) {
+    return(appeears_url)
   } else {
-    if (missing(id)) {
-      return(cds_url)
-    } else {
-      return(file.path(cds_url, "tasks", id))
-    }
+    return(file.path(appeears_url, "tasks", id))
   }
 }
 
@@ -55,7 +36,7 @@ wf_server <- function(id, service = "webapi") {
 # @details Shows a spinner while waiting for a request to be processed.
 # If \code{id} (character) is set, the request id will be shown in addition.
 #
-# @author Koen Kufkens, Reto Stauffer
+# @author Koen Kufkens
 spinner <- function(seconds) {
   # set start time, counter
   start_time <- Sys.time()
@@ -77,24 +58,20 @@ spinner <- function(seconds) {
 
 # Show message if user exits the function (interrupts execution)
 # or as soon as an error will be thrown.
-exit_message <- function(url, service, path, file) {
-  job_list <- switch(service,
-    "webapi"= " Visit https://apps.ecmwf.int/webmars/joblist/",
-    "cds" = " Visit https://cds.climate.copernicus.eu/cdsapp#!/yourrequests",
-    "ads" = " Visit https://ads.atmosphere.copernicus.eu/cdsapp#!/yourrequests"
-  )
+exit_message <- function(url, path, file) {
+  job_list <-  "check the task status (app_status()) or other functions,"
 
   intro <- paste(
     "Even after exiting your request is still beeing processed!",
     job_list,
     "  to manage (download, retry, delete) your requests",
-    "  or to get ID's from previous requests.\n\n",
+    "  or to get ID's from other requests.\n\n",
     sep = "\n"
   )
 
   options <- paste(
     "- Retry downloading as soon as as completed:\n",
-    "  wf_transfer(url = '",
+    "  app_transfer(url = '",
     url,
     "\n",
     "<user>,\n ",
@@ -102,11 +79,9 @@ exit_message <- function(url, service, path, file) {
     path,
     "',\n filename = '",
     file,
-    "',\n service = \'",
-    service,
     "')\n\n",
     "- Delete the job upon completion using:\n",
-    "  wf_delete(<user>,\n url ='",
+    "  app_delete(<user>,\n url ='",
     url,
     "')\n\n",
     sep = ""
@@ -116,24 +91,24 @@ exit_message <- function(url, service, path, file) {
   exit_msg <- paste(intro, options, sep = "")
   message(sprintf(
     "- Your request has been submitted as a %s request.\n\n  %s",
-    toupper(service),
     exit_msg
   ))
 }
 
 # Startup message when attaching the package.
 .onAttach <-
-  function(libname = find.package("ecmwfr"),
-           pkgname = "ecmwfr") {
+  function(
+    libname = find.package("appeears"),
+    pkgname = "appeears"
+    ) {
 
     # startup messages
-    vers <- as.character(utils::packageVersion("ecmwfr"))
+    vers <- as.character(utils::packageVersion("appeears"))
     txt <- paste(
-      "\n     This is 'ecmwfr' version ",
+      "\n     This is 'appeears' version ",
       vers,
       ". Please respect the terms of use:\n",
-      "     - https://cds.climate.copernicus.eu/disclaimer-privacy\n",
-      "     - https://www.ecmwf.int/en/terms-use\n"
+      "     - https://appeears.earthdatacloud.nasa.gov/\n"
     )
     if (interactive())
       packageStartupMessage(txt)
@@ -143,8 +118,8 @@ exit_message <- function(url, service, path, file) {
   }
 
 # check if server is reachable
-# returns bolean TRUE if so
-ecmwf_running <- function(url) {
+# returns Boolean TRUE if so
+appeears_running <- function(url) {
   ct <- try(httr::GET(url))
 
   # trap time-out, httr should exit clean but doesn't
@@ -166,82 +141,19 @@ make_key_service <- function(service = "") {
   paste("ecmwfr", service, sep = "_")
 }
 
-# gets url where to get API key
-wf_key_page <- function(service) {
-  switch(service,
-         webapi = "https://api.ecmwf.int/v1/key/",
-         cds = "https://cds.climate.copernicus.eu/user/login?destination=user",
-         ads = "https://ads.atmosphere.copernicus.eu/user/login?destination=user")
-}
-
 # checks credentials
-wf_check_login <- function(user, key, service) {
+app_check_login <- function(
+    user,
+    password
+    ) {
 
-  # WEBAPI (old)
-  if (service == "webapi") {
-    info <- httr::GET(
-      paste0(wf_server(),
-             "/who-am-i"),
-      httr::add_headers(
-        "Accept" = "application/json",
-        "Content-Type" = "application/json",
-        "From" = user,
-        "X-ECMWF-KEY" = key
-      ),
-      encode = "json"
-    )
-    return(!httr::http_error(info) &&
-           (any(user %in% unclass(httr::content(info)[c("uid", "email")]))))
+  ct <- httr::POST(
+    file.path(app_server(),"login"),
+    httr::authenticate(user, password, type = "basic"),
+    config(verbose = FALSE)
+  )
 
-  }
-
-  # CDS service
-  if (service == "cds") {
-    url <- paste0(wf_server(service = "cds"), "/tasks/")
-    ct <- httr::GET(url, httr::authenticate(user, key))
-    return(httr::status_code(ct) < 400)
-  }
-
-  # ADS service
-  if (service == "ads") {
-    url <- paste0(wf_server(service = "ads"), "/tasks/")
-    ct <- httr::GET(url, httr::authenticate(user, key))
-    return(httr::status_code(ct) < 400)
-  }
-}
-
-# build an archetype from arguments and body (either list or expression)
-new_archetype <- function(args, body) {
-  if (is.list(body)) {
-    body_exp <- rlang::expr(list())
-    body_exp[names(body)] <- body
-    body <- body_exp
-  }
-  f <- rlang::new_function(args, body)
-  class(f) <- c("ecmwfr_archetype", class(f))
-  f
-}
-
-# Creates a script to then run as a job
-make_script <- function(call, name) {
-  script <- tempfile()
-
-  call$job_name <- NULL
-
-  lines <-
-    writeLines(paste0(
-      "library(ecmwfr)\n",
-      name,
-      " <- ",
-      paste0(deparse(call), collapse = "")
-    ), script)
-  return(script)
-}
-
-# generate a unique id to use in workflow
-# download queue
-wf_unique_id <- function() {
-  uuid::UUIDgenerate(output = "string")
+  return(httr::status_code(ct) < 400)
 }
 
 # Downlaods only the header information
@@ -265,60 +177,4 @@ warn_or_error <- function(..., error = FALSE) {
   } else {
     warning(...)
   }
-}
-
-# Guesses the username and service from request
-guess_service <- function(request, user = NULL) {
-  is_workflow <- !is.null(request[["workflow_name"]])
-
-  # Workflow only works in CDS (maybe?)
-  if (is_workflow) {
-    if (missing(user) || is.null(user)) {
-      user <- keyring::key_list(service = make_key_service("cds"))[["username"]][1]
-    }
-
-    service <- "cds_workflow"
-    url <- wf_server(service = "cds")
-
-    return(list(user = user,
-                service = service,
-                url = url))
-  }
-
-  if (missing(user) || is.null(user)) {
-    user <-
-      rbind(
-        keyring::key_list(service = make_key_service(c("webapi"))),
-        keyring::key_list(service = make_key_service(c("cds"))),
-        keyring::key_list(service = make_key_service(c("ads")))
-      )
-    serv <- make_key_service()
-    user <-
-      user[substr(user$service, 1,  nchar(serv)) == serv, ][["username"]]
-  }
-
-  # checks user login, the request layout and
-  # returns the service to use if successful
-  wf_check <-
-    lapply(user, function(u)
-      try(wf_check_request(u, request), silent = TRUE))
-  correct <- which(!vapply(wf_check, inherits, TRUE, "try-error"))
-
-  if (length(correct) == 0) {
-    stop(
-      sprintf(
-        "Data identifier %s is not found in Web API, CDS or ADS datasets.
-                 Or your login credentials do not match your request.",
-        request$dataset_short_name
-      ),
-      call. = FALSE
-    )
-  }
-
-  wf_check <- wf_check[[correct]]
-  user <- user[correct]
-
-  return(list(user = user,
-              service = wf_check$service,
-              url = wf_check$url))
 }

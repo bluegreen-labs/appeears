@@ -9,7 +9,8 @@
 #' This mostly pertains to headless Linux systems. The keychain files
 #' can be found in ~/.config/r-keyring.
 #'
-#' @param user user (email address) used to sign up for the AppEEARS data service
+#' @param user user used to sign up for the AppEEARS data service (this is
+#'  not the email address, but the true user name!)
 #' @param password used to sign up for AppEEARS
 #'
 #' @return It invisibly returns the user.
@@ -20,10 +21,10 @@
 #'
 #' \dontrun{
 #' # set key
-#' app_set_key(user = "test@mail.com", password = "123")
+#' app_set_key(user = "test", password = "123")
 #'
 #' # get key
-#' app_get_key(user = "test@mail.com")
+#' app_get_key(user = "test")
 #'
 #' # leave user and key empty to open a browser window to the service's website
 #' # and type the key interactively
@@ -34,7 +35,7 @@
 app_set_key <- function(user, password) {
 
   # set static service
-  service = "appeears"
+  service <- "appeears"
 
   if (keyring::default_backend()$name != "env") {
     if (keyring::default_backend()$name == "file") {
@@ -54,57 +55,64 @@ app_set_key <- function(user, password) {
     }
   }
 
-  if (missing(user) | missing(key)) {
+  if (missing(user) | missing(password)) {
     if (!interactive()) {
       stop("wf_set_key needs to be run interactivelly if `user` or `password` are
            not provided.")
     }
-    browseURL(wf_key_page(service))
-    message("Login or register to get a key")
+    browseURL("https://appeears.earthdatacloud.nasa.gov/")
+    message("Register to get a password")
     user <- readline("User ID / email: ")
-    key <- getPass::getPass(msg = "Password: ")
-    if (is.null(key))
+    password <- getPass::getPass(msg = "Password: ")
+    if (is.null(password))
       stop("No password supplied.")
   }
 
   # check login
-  login_ok <- wf_check_login(user = user,
-                             key = key,
-                             service = service)
+  login_ok <- app_check_login(
+    user = user,
+    password = password
+  )
 
   if (!login_ok) {
     stop("Could not validate login information.")
   } else {
 
-    # if ecmwfr keyring is not created do so
+    # if appeears keyring is not created do so
     if(keyring::default_backend()$name == "file"){
-      if(!("ecmwfr" %in% keyring::keyring_list()$keyring)){
-        keyring::keyring_create("ecmwfr")
+      if(!("appeears" %in% keyring::keyring_list()$keyring)){
+        keyring::keyring_create("appeears")
       }
 
       # set keyring
       keyring::key_set_with_value(
-        service = make_key_service(service),
+        service = service,
         username = user,
-        password = key,
-        keyring = "ecmwfr"
+        password = password,
+        keyring = "appeears"
       )
 
-      message("User ", user, " for ", service,
-              " service added successfully in keychain file")
+      message(
+        "User ",
+        user,
+        " added successfully to keychain file"
+      )
 
     } else {
       keyring::key_set_with_value(
-        service = make_key_service(service),
+        service = service,
         username = user,
-        password = key
+        password = password,
+        keyring = "appeears"
       )
 
-      message("User ", user, " for ", service,
-              " service added successfully in keychain")
+      message(
+        "User ",
+        user,
+        " added successfully to keychain file"
+      )
     }
 
     return(invisible(user))
   }
-
 }

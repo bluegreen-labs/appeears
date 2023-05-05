@@ -148,13 +148,8 @@ wf_request <- function(
   url <- service_info$url
 
   # Select the appropriate service
-  service <- switch(
-    service,
-    webapi = webapi_service,
-    cds = cds_service,
-    cds_workflow = cds_workflow,
-    ads = ads_service
-    )
+  # on appeears there is only one service
+  service <- app_service
 
   # Create request and submit to service
   request <- service$new(
