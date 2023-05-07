@@ -65,7 +65,6 @@ cds_service <- R6::R6Class("ecmwfr_cds",
       }
 
       key <- wf_get_key(user = private$user, service = private$service)
-
       retry_in <- as.numeric(private$next_retry) - as.numeric(Sys.time())
 
       if (retry_in > 0) {

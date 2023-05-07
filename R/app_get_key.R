@@ -2,7 +2,7 @@
 #'
 #' Returns you token set by \code{\link[appeears]{app_set_key}}
 #'
-#' @param user user (email address) used to sign up
+#' @param user username used to sign up
 #' @return the password set using \code{\link[appeears]{app_set_key}} saved
 #' in the keychain
 #' @seealso \code{\link[appeears]{app_set_key}}

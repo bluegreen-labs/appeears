@@ -136,24 +136,39 @@ appeears_running <- function(url) {
   }
 }
 
-# builds keychain service name from service
-make_key_service <- function(service = "") {
-  paste("ecmwfr", service, sep = "_")
-}
-
 # checks credentials
 app_check_login <- function(
     user,
-    password
+    password,
+    token = FALSE
     ) {
+
+  # retrieve password from key-chain
+  if(missing(password)) {
+    password <- app_get_key(user = user)
+  }
 
   ct <- httr::POST(
     file.path(app_server(),"login"),
     httr::authenticate(user, password, type = "basic"),
-    config(verbose = FALSE)
+    body = "grant_type=client_credentials",
+    httr::config(verbose = FALSE)
   )
 
-  return(httr::status_code(ct) < 400)
+  if(token) {
+    token <- jsonlite::prettify(
+      jsonlite::toJSON(
+        httr::content(ct),
+        auto_unbox = TRUE)
+      )
+
+    # grab only the token
+    token <- jsonlite::fromJSON(token)$token
+
+    return(token)
+  } else {
+    return(httr::status_code(ct) < 400)
+  }
 }
 
 # Downlaods only the header information

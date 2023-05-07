@@ -1,6 +1,6 @@
 #' AppEEARS dataset list
 #'
-#' Returns a data frame of available products
+#' Returns a data frame of available data products
 #'
 #' @return returns a data frame with the AppEEARS datasets
 #' @seealso \code{\link[appeears]{app_set_key}}
@@ -22,7 +22,7 @@ app_products <- function(){
   # and convert to data frame which is returned
   ct <- httr::GET(file.path(app_server(),"product"))
   ct <- jsonlite::prettify(
-    jsonlite::toJSON(content(ct), auto_unbox = TRUE)
+    jsonlite::toJSON(httr::content(ct), auto_unbox = TRUE)
   )
   ct <- jsonlite::fromJSON(ct)
 
