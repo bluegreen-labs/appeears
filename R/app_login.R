@@ -47,7 +47,7 @@ app_logout <- function(
   ct <- httr::POST(
     file.path(app_server(),"logout"),
     httr::add_headers(
-      Authorization = token,
+      Authorization = paste("Bearer", token),
       "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"),
     body = "grant_type=client_credentials"
   )
