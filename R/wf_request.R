@@ -132,30 +132,15 @@ wf_request <- function(
     stop("Missing user credentials, please provide a valid user/ID!")
   }
 
-  # Guessing credentials/service
-  service_info <- guess_service(request, user)
-
-  if (verbose)
-  {
-    message("Requesting data to the ",
-            service_info$service,
-            " service with username ",
-            service_info$user)
-  }
-
   # split out data
-  service <- service_info$service
-  url <- service_info$url
-
-  # Select the appropriate service
-  # on appeears there is only one service
-  service <- app_service
+  service <- "appeears"
+  url <- app_server()
 
   # Create request and submit to service
   request <- service$new(
     request = request,
-    user = service_info$user,
-    url = service_info$url,
+    user = user,
+    url = url,
     path = path
     )
 

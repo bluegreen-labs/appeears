@@ -90,10 +90,10 @@ cds_service <- R6::R6Class("ecmwfr_cds",
       ct <- httr::content(response)
       private$status <- ct$state
 
-      if (private$status != "completed" || is.null(private$status)) {
+      if (private$status != "done" || is.null(private$status)) {
         private$code <- 202
-        private$file_url <- NA # just ot be on the safe side
-      } else if (private$status == "completed") {
+        private$file_url <- NA # just to be on the safe side
+      } else if (private$status == "done") {
         private$code <- 302
         private$file_url <- private$get_location(ct)
       } else if (private$status == "failed") {
