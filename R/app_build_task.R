@@ -56,7 +56,7 @@ app_build_task <- function(
 
     # combine coordinates
     coordinates <- data.frame(
-        id = 1:nrow(df),
+        id = as.character(1:nrow(df)),
         longitude = df$lon,
         latitude = df$lat,
         category = df$subtask
@@ -77,18 +77,5 @@ app_build_task <- function(
 
     task_json <- jsonlite::toJSON(task,auto_unbox = TRUE)
 
-    print(task_json)
+    return(task_json)
 }
-
-df <- data.frame(
-    task = c("grand canyon", "grand canyon"),
-    subtask = c("test1", "test2"),
-    lat = c(36.206228, 37.289327),
-    lon = c(-112.127134, -112.973760),
-    start = c("2018-01-01","2018-01-01"),
-    end = c("2018-12-31","2018-12-31"),
-    product = c("MOD11A2.061","MOD11A2.061"),
-    layer = c("LST_Day_1km","LST_Night_1km")
-)
-
-app_build_task(df = df)
