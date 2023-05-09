@@ -6,19 +6,17 @@ cds_service <- R6::R6Class("ecmwfr_cds",
         return(self)
       }
 
-      # get key
-      key <- wf_get_key(user = private$user, service = private$service)
+      # get (current) token
+      token <- app_login(user)
 
       #  get the response for the query provided
-      response <- httr::VERB(private$http_verb,
-        private$request_url(),
-        httr::authenticate(private$user, key),
-        httr::add_headers(
-          "Accept" = "application/json",
-          "Content-Type" = "application/json"
-        ),
+      response <- httr::POST(
+        file.path(app_server(),"task"),
         body = private$request,
-        encode = "json"
+        encode = "json",
+        httr::add_headers(
+          Authorization = paste("Bearer", token),
+          "Content-Type" = "application/json")
       )
 
       # trap general http error
@@ -30,21 +28,20 @@ cds_service <- R6::R6Class("ecmwfr_cds",
 
       # grab content, to look at the status
       ct <- httr::content(response)
-
       ct$code <- 202
 
       # some verbose feedback
       if (private$verbose) {
-        message("- staging data transfer at url endpoint or request id:")
-        message("  ", ct$request_id, "\n")
+        message("- staging data transfer at url endpoint or task id:")
+        message("  ", ct$task_id, "\n")
       }
 
       private$status <- "submitted"
       private$code <- ct$code
-      private$name <- ct$request_id
+      private$name <- ct$task_id
       private$retry <- 5
       private$next_retry <- Sys.time() + private$retry
-      private$url <- wf_server(id = ct$request_id, service = "cds")
+      private$url <- file.path(app_server(), "task","task_id",ct$task_id)
       return(self)
     },
     update_status = function(fail_is_error = TRUE,
@@ -64,7 +61,10 @@ cds_service <- R6::R6Class("ecmwfr_cds",
         return(self)
       }
 
-      key <- wf_get_key(user = private$user, service = private$service)
+      # get (current) token
+      token <- app_login(user)
+
+      # retries
       retry_in <- as.numeric(private$next_retry) - as.numeric(Sys.time())
 
       if (retry_in > 0) {
@@ -77,18 +77,19 @@ cds_service <- R6::R6Class("ecmwfr_cds",
         }
       }
 
+      # GET data on the task process (based on task ID)
       response <- httr::GET(
         private$url,
-        httr::authenticate(private$user, key),
+        encode = "json",
         httr::add_headers(
-          "Accept" = "application/json",
-          "Content-Type" = "application/json"
-        ),
-        encode = "json"
+          Authorization = paste("Bearer", token),
+          "Content-Type" = "application/json")
       )
 
+      # split out response and status
+      # if done, hand over data for download
       ct <- httr::content(response)
-      private$status <- ct$state
+      private$status <- ct$status
 
       if (private$status != "done" || is.null(private$status)) {
         private$code <- 202
@@ -130,6 +131,8 @@ cds_service <- R6::R6Class("ecmwfr_cds",
       temp_file <- tempfile(pattern = "ecmwfr_", tmpdir = private$path)
       key <- wf_get_key(user = private$user, service = private$service)
 
+      # NOTE THIS MIGHT HAVE TO BE A LOOP, AS NOT A SINGLE FILE
+      # IS RETURNED BUT MULTIPLES / BUNDLES
       response <- httr::GET(
         private$file_url,
         httr::write_disk(temp_file, overwrite = TRUE),
