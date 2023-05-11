@@ -1,14 +1,8 @@
 # Example workflows / scratchpad
-library(jsonlite)
-library(httr)
+library(apprs)
 
 user <- "khufkens"
 options(keyring_backend = "file")
-
-files <- list.files("R","*.R",full.names = TRUE)
-lapply(files, function(file){source(file, echo = FALSE)})
-
-token <- apprs_login(user)
 
 df <- data.frame(
   task = "grand canyon",

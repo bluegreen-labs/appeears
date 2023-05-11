@@ -7,8 +7,7 @@ apprs_service <- R6::R6Class("apprs_service",
         return(self)
       }
 
-      # get (current) token
-      #token <- apprs_login(user)
+      if (private$verbose) message("\nSubmitting request")
 
       #  get the response for the query provided
       response <- httr::POST(
@@ -42,7 +41,6 @@ apprs_service <- R6::R6Class("apprs_service",
       private$name <- ct$task_id
       private$retry <- 5
       private$next_retry <- Sys.time() + private$retry
-      private$url <- file.path(apprs_server(), "task","task_id", ct$task_id)
       return(self)
     },
 
@@ -66,9 +64,6 @@ apprs_service <- R6::R6Class("apprs_service",
         warn_or_error("Request has failed", call. = FALSE, error = fail_is_error)
         return(self)
       }
-
-      # get (current) token
-      #token <- apprs_login(user)
 
       # retries
       retry_in <- as.numeric(private$next_retry) - as.numeric(Sys.time())
@@ -98,10 +93,8 @@ apprs_service <- R6::R6Class("apprs_service",
 
       if (private$status != "done" || is.null(private$status)) {
         private$code <- 202
-        private$file_url <- NA # just to be on the safe side
       } else if (private$status == "done") {
         private$code <- 302
-        private$file_url <- private$get_location(ct)
       } else if (private$status == "failed") {
         private$code <- 404
         permanent <- if (ct$crashed) "permanent "
@@ -120,8 +113,9 @@ apprs_service <- R6::R6Class("apprs_service",
       fail_is_error = TRUE,
       verbose = NULL
       ) {
+
       # Check if download is actually needed
-      if (private$downloaded == TRUE & file.exists(private$file) & !force_redownload) {
+      if (private$downloaded == TRUE) {
         if (private$verbose) message("File already downloaded")
         return(self)
       }
@@ -136,10 +130,6 @@ apprs_service <- R6::R6Class("apprs_service",
 
       # If it's completed, begin download
       if (private$verbose) message("\nDownloading file")
-      # token <- apprs_login(user)
-
-      # list the full bundle of files associated with this
-      # task_id
 
       # get bundle
       response <- httr::GET(
@@ -171,10 +161,9 @@ apprs_service <- R6::R6Class("apprs_service",
         final_file <- file.path(private$path, file$file_name)
 
         # write the file to disk using the destination directory and file name
-        response <- GET(
+        response <- httr::GET(
           file.path(apprs_server(), "bundle/", private$name, file$file_id),
           write_disk(temp_file, overwrite = TRUE),
-          progress(),
           httr::add_headers(
             Authorization = paste("Bearer", private$token)
           )
@@ -207,7 +196,7 @@ apprs_service <- R6::R6Class("apprs_service",
       })
 
       # trap (http) errors on download, return a general error statement
-      if (all(downloaded)) {
+      if (all(unlist(downloaded))) {
         if (fail_is_error) {
           stop("Some downloads failed - consider redownloading")
         } else {
@@ -217,8 +206,7 @@ apprs_service <- R6::R6Class("apprs_service",
       }
 
       # set the all green
-      private$downloaded <- all(downloaded)
-
+      private$downloaded <- all(unlist(downloaded))
       return(self)
     },
 
@@ -253,13 +241,6 @@ apprs_service <- R6::R6Class("apprs_service",
   private = list(
     service = "appears",
     http_verb = "POST",
-    request_url = function() {
-      sprintf(
-        "%s/resources/%s",
-        private$url,
-        private$request$dataset_short_name
-      )
-    },
     get_location = function(content) {
       content$location
     }

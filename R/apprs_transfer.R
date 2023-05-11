@@ -82,7 +82,7 @@ apprs_transfer <- function(
     final_file <- file.path(path, file$file_name)
 
     # write the file to disk using the destination directory and file name
-    response <- GET(
+    response <- httr::GET(
       file.path(apprs_server(), "bundle/", task, file$file_id),
       write_disk(temp_file, overwrite = TRUE),
       httr::add_headers(

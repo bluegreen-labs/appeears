@@ -1,19 +1,20 @@
-# checks credentials
+#' Checks AppEEARS login
+#'
+#' Returns a valid token for a session if
+#' successful otherwise fails with an error (stop())
+#'
+#' @param user AppEEARS username
+#'
+#' @return
+#' @export
+
 apprs_login <- function(
     user
 ) {
 
   # retrieve password from key-chain
   password <- apprs_get_key(user = user)
-
-  # ct <- httr::POST(
-  #   file.path(apprs_server(),"login"),
-  #   httr::authenticate(user, password, type = "basic"),
-  #   body = "grant_type=client_credentials",
-  #   httr::config(verbose = FALSE)
-  # )
-
-  secret <- base64_enc(paste(user, password, sep = ":"))
+  secret <- jsonlite::base64_enc(paste(user, password, sep = ":"))
 
   ct <- httr::POST(
     file.path(apprs_server(),"login"),
@@ -39,7 +40,16 @@ apprs_login <- function(
   }
 }
 
-# checks credentials
+#' Invalidates an AppEEARS bearer token
+#'
+#' Given a token it will log out / delete this
+#' token, invalidating it.
+#'
+#' @param token a Bearer token as returned by apprs_login()
+#'
+#' @return
+#' @export
+
 apprs_logout <- function(
     token
 ) {

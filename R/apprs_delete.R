@@ -39,14 +39,14 @@ apprs_delete <- function(
   }
 
   # retrieve token to list tasks
-  token <- apprs_login(user)
+  token <- apprs::apprs_login(user)
 
   # if purge is set to TRUE, list
   # all task_ids which are done or are crashed
   # keep running processes untouched
   if (purge) {
     task_list <- apprs_list_task(user = user)
-    task_id <- task_list[task_list$status == "done" || task_list$crashed,]$task_id
+    task_id <- task_list[task_list$status == "done" | task_list$crashed,]$task_id
   }
 
   lapply(task_id, function(id){

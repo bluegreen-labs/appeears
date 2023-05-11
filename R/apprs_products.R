@@ -16,7 +16,7 @@
 #' apprs_products()
 #'}
 
-apprs_products <- function(){
+apprs_products <- memoise::memoise(function(){
 
   # grab the content on a product query
   # and convert to data frame which is returned
@@ -28,4 +28,4 @@ apprs_products <- function(){
 
   # return content
   return(ct)
-}
+})
