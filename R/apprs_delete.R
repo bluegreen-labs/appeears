@@ -13,10 +13,17 @@
 #' @examples
 #'
 #' \dontrun{
-#' # delete a task
+#' # delete a single task
 #' apprs_delete(
-#' user = "your_user_name",
-#' task_id = "a_task_id"
+#'   user = "your_user_name",
+#'   task_id = "a_task_id"
+#' )
+#'
+#' # delete all finished or crashed
+#' # jobs (if not deleted previously)
+#' apprs_delete(
+#'   user = "your_user_name",
+#'   purge = TRUE
 #' )
 #'}
 
