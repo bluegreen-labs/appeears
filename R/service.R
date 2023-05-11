@@ -6,12 +6,10 @@ service <- R6::R6Class("apprs_service", cloneable = FALSE,
                           path = tempdir(),
                           verbose = TRUE) {
       private$user <- user
+      private$token <- apprs_login(user)
       private$request <- request
       private$path <- path
-      private$file <- file.path(path, request$target)
       private$verbose <- verbose
-      private$url <- url
-      self$request_id <- basename(url) # Compatibility with old code
       private$status <- "unsubmitted"
       private$next_retry <- Sys.time()
 
@@ -23,7 +21,7 @@ service <- R6::R6Class("apprs_service", cloneable = FALSE,
       cat("Download request \n")
       cat("  Service: ", private$service, "\n")
       cat("  Status:  ", private$status, "\n")
-      cat("  Location:", if (private$downloaded) private$file else "NA", "\n")
+      cat("  Location:", if (private$downloaded) private$path else "NA", "\n")
       cat("  Request:", request, sep = "\n     ")
 
       invisible(self)
@@ -89,16 +87,17 @@ service <- R6::R6Class("apprs_service", cloneable = FALSE,
       }
     },
 
+    # rename private$name to private$task_id
+    get_task_id = function() {
+      private$name
+    },
+
     get_status = function() {
       private$status
     },
 
     get_request = function() {
       private$request
-    },
-
-    get_url = function() {
-      private$url
     },
 
     is_failed = function() {
@@ -110,8 +109,7 @@ service <- R6::R6Class("apprs_service", cloneable = FALSE,
     },
 
     is_running = function() {
-      private$status == "running"
-      # !(self$code == 302)
+      private$status != "done"
     },
 
     is_pending = function() {
@@ -125,9 +123,9 @@ service <- R6::R6Class("apprs_service", cloneable = FALSE,
     request = NA,
 
     user = NA,
+    token = NA,
 
     path = NA,
-    file = NA,
     time_out = NA,
 
     status = NA,
@@ -136,12 +134,9 @@ service <- R6::R6Class("apprs_service", cloneable = FALSE,
     name = NA,
     retry = NA,
     next_retry = NA,
-    url = NA,
-    file_url = NA,
 
     verbose = TRUE,
     downloaded = FALSE
-
   )
 )
 

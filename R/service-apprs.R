@@ -7,7 +7,7 @@ apprs_service <- R6::R6Class("apprs_service",
       }
 
       # get (current) token
-      token <- apprs_login(user)
+      #token <- apprs_login(user)
 
       #  get the response for the query provided
       response <- httr::POST(
@@ -15,7 +15,7 @@ apprs_service <- R6::R6Class("apprs_service",
         body = private$request,
         encode = "json",
         httr::add_headers(
-          Authorization = paste("Bearer", token),
+          Authorization = paste("Bearer", private$token),
           "Content-Type" = "application/json")
       )
 
@@ -41,7 +41,7 @@ apprs_service <- R6::R6Class("apprs_service",
       private$name <- ct$task_id
       private$retry <- 5
       private$next_retry <- Sys.time() + private$retry
-      private$url <- file.path(apprs_server(), "task","task_id",ct$task_id)
+      private$url <- file.path(apprs_server(), "task","task_id", ct$task_id)
       return(self)
     },
     update_status = function(fail_is_error = TRUE,
@@ -52,7 +52,11 @@ apprs_service <- R6::R6Class("apprs_service",
       }
 
       if (private$status == "deleted") {
-        warn_or_error("Request was previously deleted from queue", call. = FALSE, error = fail_is_error)
+        warn_or_error(
+          "Request was previously deleted from queue",
+          call. = FALSE,
+          error = fail_is_error
+        )
         return(self)
       }
 
@@ -62,7 +66,7 @@ apprs_service <- R6::R6Class("apprs_service",
       }
 
       # get (current) token
-      token <- apprs_login(user)
+      #token <- apprs_login(user)
 
       # retries
       retry_in <- as.numeric(private$next_retry) - as.numeric(Sys.time())
@@ -79,10 +83,9 @@ apprs_service <- R6::R6Class("apprs_service",
 
       # GET data on the task process (based on task ID)
       response <- httr::GET(
-        private$url,
-        encode = "json",
+        file.path(apprs_server(),"task", private$name),
         httr::add_headers(
-          Authorization = paste("Bearer", token),
+          Authorization = paste("Bearer", private$token),
           "Content-Type" = "application/json")
       )
 
@@ -99,11 +102,10 @@ apprs_service <- R6::R6Class("apprs_service",
         private$file_url <- private$get_location(ct)
       } else if (private$status == "failed") {
         private$code <- 404
-        permanent <- if (ct$error$permanent) "permanent "
+        permanent <- if (ct$crashed) "permanent "
         error_msg <- paste0(
-          "Data transfer failed with ", permanent, ct$error$who, " error: ",
-          ct$error$message, ".\nReason given: ", ct$error$reason, ".\n",
-          "More information at ", ct$error$url
+          "Data request crashed for ", ct$task_id, " after ",
+          ct$attempts, " attempts!"
         )
         warn_or_error(error_msg, error = fail_is_error)
       }
@@ -111,7 +113,11 @@ apprs_service <- R6::R6Class("apprs_service",
       return(self)
     },
 
-    download = function(force_redownload = FALSE, fail_is_error = TRUE, verbose = NULL) {
+    download = function(
+      force_redownload = FALSE,
+      fail_is_error = TRUE,
+      verbose = NULL
+      ) {
       # Check if download is actually needed
       if (private$downloaded == TRUE & file.exists(private$file) & !force_redownload) {
         if (private$verbose) message("File already downloaded")
@@ -121,57 +127,100 @@ apprs_service <- R6::R6Class("apprs_service",
       # Check status
       self$update_status()
 
-      if (private$status != "completed") {
+      if (private$status != "done") {
         # if (private$verbose) message("\nRequest not completed")
         return(self)
       }
 
       # If it's completed, begin download
       if (private$verbose) message("\nDownloading file")
-      temp_file <- tempfile(pattern = "ecmwfr_", tmpdir = private$path)
-      key <- wf_get_key(user = private$user, service = private$service)
+      # token <- apprs_login(user)
 
-      # NOTE THIS MIGHT HAVE TO BE A LOOP, AS NOT A SINGLE FILE
-      # IS RETURNED BUT MULTIPLES / BUNDLES
+      # list the full bundle of files associated with this
+      # task_id
+
+      # get bundle
       response <- httr::GET(
-        private$file_url,
-        httr::write_disk(temp_file, overwrite = TRUE),
-        httr::progress()
+        file.path(apprs_server(),"bundle", private$name),
+        httr::add_headers(
+          Authorization = paste("Bearer", private$token)
+        )
       )
 
-      # trap (http) errors on download, return a general error statement
+      # trap general http error
       if (httr::http_error(response)) {
-        if (fail_is_error) {
-          stop("Download failed with error ", response$status_code)
+        stop("Your requested download is unavailable as the session expired (download > 48h old).",
+             call. = FALSE
+        )
+      }
+
+      # split out the content from the returned
+      # API data, and clean up the JSON formatting
+      ct <- httr::content(response)
+
+      # try downloading whole bundle, log downloaded
+      # state
+      downloaded <- lapply(ct$files, function(file){
+
+        # set temp file name
+        temp_file <- file.path(tempdir(), file$file_name)
+
+        # set final file name
+        final_file <- file.path(private$path, file$file_name)
+
+        # write the file to disk using the destination directory and file name
+        response <- GET(
+          file.path(apprs_server(), "bundle/", private$name, file$file_id),
+          write_disk(temp_file, overwrite = TRUE),
+          progress(),
+          httr::add_headers(
+            Authorization = paste("Bearer", private$token)
+          )
+        )
+
+        # log if the file was successfully downloaded
+        if (httr::http_error(response)) {
+          return(FALSE)
         } else {
-          warning("Download failed with error ", response$status_code)
+
+          # This juggling of files is due to some error when writing to
+          # network drives in particular. Data is therefore first locally
+          # buffered and then transferred to any other drive (networked / local)
+
+          if(temp_file != final_file) {
+            file.copy(
+              temp_file,
+              final_file,
+              overwrite = TRUE
+              )
+            file.remove(temp_file)
+
+            if (private$verbose) {
+              message(sprintf("- moved temporary files to -> %s", final_file))
+            }
+          }
+
+          return(TRUE)
+        }
+      })
+
+      # trap (http) errors on download, return a general error statement
+      if (all(downloaded)) {
+        if (fail_is_error) {
+          stop("Some downloads failed - consider redownloading")
+        } else {
+          warning("Some downloads failed - consider redownloading")
           return(self)
         }
       }
 
-      private$downloaded <- TRUE
-      # Copy data from temporary file to final location
-      move <- suppressWarnings(file.rename(temp_file, private$file))
-
-      # check if the move was successful
-      # fails for separate disks/partitions
-      # then copy and remove
-      if (!move) {
-        file.copy(temp_file, private$file, overwrite = TRUE)
-        file.remove(temp_file)
-      }
-
-      if (private$verbose) {
-        message(sprintf("- moved temporary file to -> %s", private$file))
-      }
+      # set the all green
+      private$downloaded <- all(downloaded)
 
       return(self)
     },
 
     delete = function() {
-
-      # get key
-      key <- wf_get_key(user = private$user, service = private$service)
 
       #  get the response for the query provided
       response <- httr::DELETE(
@@ -199,16 +248,10 @@ apprs_service <- R6::R6Class("apprs_service",
       private$status <- "deleted"
       private$code <- 204
       return(self)
-    },
-
-    browse_request = function() {
-      url <- "https://cds.climate.copernicus.eu/user/login?destination=%2Fcdsapp%23!%2Fyourrequests"
-      utils::browseURL(url)
-      return(invisible(self))
     }
   ),
   private = list(
-    service = "cds",
+    service = "appears",
     http_verb = "POST",
     request_url = function() {
       sprintf(

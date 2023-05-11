@@ -96,14 +96,6 @@ apprs_request <- function(
     return(invisible(job))
   }
 
-  if (!is.list(request) | is.character(request)) {
-    stop(
-      "`request` must be a named list. \n",
-      "If you are passing the user as first argument, notice that argument ",
-      "order was changed in version 1.1.1."
-    )
-  }
-
   # check the login credentials
   if (missing(request)) {
     stop("Please provide ECMWF or CDS login credentials and data request!")
