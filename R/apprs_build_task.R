@@ -8,9 +8,6 @@
 #'
 #' @return a valid AppEEARS JSON formatted task
 #' @export
-#'
-#' @examples
-#'
 
 apprs_build_task <- function(
     df,

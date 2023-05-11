@@ -95,9 +95,9 @@ exit_message <- function(url, path, file) {
     ) {
 
     # startup messages
-    vers <- as.character(utils::packageVersion("appeears"))
+    vers <- as.character(utils::packageVersion("apprs"))
     txt <- paste(
-      "\n     This is 'appeears' version ",
+      "\n     This is 'apprs' version ",
       vers,
       ". Please respect the terms of use:\n",
       "     - https://appeears.earthdatacloud.nasa.gov/\n"
@@ -111,7 +111,7 @@ exit_message <- function(url, path, file) {
 
 # check if server is reachable
 # returns Boolean TRUE if so
-appeears_running <- function(url) {
+apprs_running <- function(url) {
   ct <- try(httr::GET(url))
 
   # trap time-out, httr should exit clean but doesn't
