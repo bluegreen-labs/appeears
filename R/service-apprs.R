@@ -163,7 +163,7 @@ apprs_service <- R6::R6Class("apprs_service",
         # write the file to disk using the destination directory and file name
         response <- httr::GET(
           file.path(apprs_server(), "bundle/", private$name, file$file_id),
-          write_disk(temp_file, overwrite = TRUE),
+          httr::write_disk(temp_file, overwrite = TRUE),
           httr::add_headers(
             Authorization = paste("Bearer", private$token)
           )
