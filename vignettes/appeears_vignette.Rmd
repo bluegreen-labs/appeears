@@ -21,5 +21,70 @@ library(terra)
 library(maps)
 
 # load demo data
+```
 
+## Login setup
+
+Setup your login credentials, this will store both the user name and password, which will be needed to generate the API tokens needed in data requests and retrieval. Don't forget to set the system option as `options(keyring_backend = "file")` on linux (headless) systems.
+
+```{r eval = FALSE}
+# load the package
+library("apprs")
+
+# set the keyring to be a file on
+# linux or headless systems
+# options(keyring_backend = "file")
+
+# store your credentials in a safe
+# keyring (either encrypted file or dedicated keyring)
+apprs_set_key(
+  user = "your_earth_data_username",
+  password = "your_earth_data_password"
+  )
+
+# request a token (valid for 48h)
+token <- app_login(user)
+```
+
+## Listing available data
+
+You can list all available products on the AppEEARS API using the `apprs_products()` function. Similarly, you can list all available layers for a given product using `apprs_layers()`. Note that when queryign the layers for a product you will need to use the field `ProductAndVersion` field, as some products are listed under various versions.
+
+```{r}
+# list all product information
+products <- apprs_products()
+
+# print the start of all products with their versions
+head(products$ProductAndVersion)
+
+# list all layers for a particular
+# product
+layers <- apprs_layers(
+  product = "MCD12Q2.006"
+)
+
+head(layers)
+```
+
+## Formatting data requests
+
+requests for data are generated from structured data frames, listing the following parameters. This allows for batch requests.
+
+```{r eval = FALSE}
+df <- data.frame(
+  task = c("grand canyon", "grand canyon"),
+  subtask = c("test1", "test2"),
+  lat = c(36.206228, 37.289327),
+  lon = c(-112.127134, -112.973760),
+  start = c("2018-01-01","2018-01-01"),
+  end = c("2018-12-31","2018-12-31"),
+  product = c("MOD11A2.061","MOD11A2.061"),
+  layer = c("LST_Day_1km","LST_Night_1km")
+)
+```
+
+The `apprs_build_task()` function converts this data frame to a correctly structured JSON which will be used in the API call.
+
+```{r eval = FALSE}
+task <- app_build_task(df = df)
 ```

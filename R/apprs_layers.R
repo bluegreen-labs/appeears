@@ -24,7 +24,7 @@ apprs_layers <- function(
   # and convert to data frame which is returned
   ct <- httr::GET(file.path(apprs_server(),"product", product))
   ct <- jsonlite::prettify(
-    jsonlite::toJSON(content(ct), auto_unbox = TRUE)
+    jsonlite::toJSON(httr::content(ct), auto_unbox = TRUE)
   )
   ct <- jsonlite::fromJSON(ct)
 
