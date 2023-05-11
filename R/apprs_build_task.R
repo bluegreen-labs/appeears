@@ -12,7 +12,7 @@
 #' @examples
 #'
 
-app_build_task <- function(
+apprs_build_task <- function(
     df,
     roi
     ) {

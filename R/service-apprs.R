@@ -1,4 +1,4 @@
-cds_service <- R6::R6Class("ecmwfr_cds",
+apprs_service <- R6::R6Class("apprs_service",
   inherit = service,
   public = list(
     submit = function() {
@@ -7,11 +7,11 @@ cds_service <- R6::R6Class("ecmwfr_cds",
       }
 
       # get (current) token
-      token <- app_login(user)
+      token <- apprs_login(user)
 
       #  get the response for the query provided
       response <- httr::POST(
-        file.path(app_server(),"task"),
+        file.path(apprs_server(),"task"),
         body = private$request,
         encode = "json",
         httr::add_headers(
@@ -41,7 +41,7 @@ cds_service <- R6::R6Class("ecmwfr_cds",
       private$name <- ct$task_id
       private$retry <- 5
       private$next_retry <- Sys.time() + private$retry
-      private$url <- file.path(app_server(), "task","task_id",ct$task_id)
+      private$url <- file.path(apprs_server(), "task","task_id",ct$task_id)
       return(self)
     },
     update_status = function(fail_is_error = TRUE,
@@ -62,7 +62,7 @@ cds_service <- R6::R6Class("ecmwfr_cds",
       }
 
       # get (current) token
-      token <- app_login(user)
+      token <- apprs_login(user)
 
       # retries
       retry_in <- as.numeric(private$next_retry) - as.numeric(Sys.time())

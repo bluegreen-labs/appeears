@@ -1,20 +1,12 @@
 # Returns server URL
 #
 # Returns the url of the data servers for downloading
-# public ECMWF data sets or data sets for the Copernicus CDS.
+# public AppEEARS.
 #
 # @param id string, id of the request.
-# @details The handling of CDS requests is slightly different from
-# the one of ECMWF public data sets. To be able to get the status
-# of a request for CDS data sets we do have to check the status
-# by calling the 'task' urls. If an \code{id} is given the
-# corresponding 'task' url will be returned. Used in
-# \code{\link[ecmwfr]{cds_request} and \code{\link[ecmwfr]{cds_transfer}}
-# (to be more explicit: in \code{\link[ecmwfr]{wf_transfer} if
-# \code{type == "cds"}).
 #
 # @author Koen Kufkens
-app_server <- function(id) {
+apprs_server <- function(id) {
 
   # set base urls
   appeears_url <- "https://appeears.earthdatacloud.nasa.gov/api"
@@ -59,7 +51,7 @@ spinner <- function(seconds) {
 # Show message if user exits the function (interrupts execution)
 # or as soon as an error will be thrown.
 exit_message <- function(url, path, file) {
-  job_list <-  "check the task status (app_status()) or other functions,"
+  job_list <-  "check the task status (apprs_status()) or other functions,"
 
   intro <- paste(
     "Even after exiting your request is still beeing processed!",
@@ -71,7 +63,7 @@ exit_message <- function(url, path, file) {
 
   options <- paste(
     "- Retry downloading as soon as as completed:\n",
-    "  app_transfer(url = '",
+    "  apprs_transfer(url = '",
     url,
     "\n",
     "<user>,\n ",
@@ -81,7 +73,7 @@ exit_message <- function(url, path, file) {
     file,
     "')\n\n",
     "- Delete the job upon completion using:\n",
-    "  app_delete(<user>,\n url ='",
+    "  apprs_delete(<user>,\n url ='",
     url,
     "')\n\n",
     sep = ""
@@ -137,7 +129,7 @@ appeears_running <- function(url) {
 }
 
 # checks credentials
-app_check_login <- function(
+apprs_check_login <- function(
     user,
     password,
     token = FALSE
@@ -145,11 +137,11 @@ app_check_login <- function(
 
   # retrieve password from key-chain
   if(missing(password)) {
-    password <- app_get_key(user = user)
+    password <- apprs_get_key(user = user)
   }
 
   ct <- httr::POST(
-    file.path(app_server(),"login"),
+    file.path(apprs_server(),"login"),
     httr::authenticate(user, password, type = "basic"),
     body = "grant_type=client_credentials",
     httr::config(verbose = FALSE)

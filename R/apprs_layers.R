@@ -5,7 +5,7 @@
 #'
 #' @param product product for which to list the layers
 #' @return returns a data frame with the AppEEARS datasets
-#' @seealso \code{\link[appeears]{app_products}}
+#' @seealso \code{\link[apprs]{apprs_products}}
 #'
 #' @export
 #' @author Koen Hufkens
@@ -13,16 +13,16 @@
 #'
 #' \dontrun{
 #' # get a list of datasets
-#' app_layers()
+#' apprs_layers()
 #'}
 
-app_layers <- function(
+apprs_layers <- function(
     product
     ){
 
   # grab the content on a product query
   # and convert to data frame which is returned
-  ct <- httr::GET(file.path(app_server(),"product", product))
+  ct <- httr::GET(file.path(apprs_server(),"product", product))
   ct <- jsonlite::prettify(
     jsonlite::toJSON(content(ct), auto_unbox = TRUE)
   )

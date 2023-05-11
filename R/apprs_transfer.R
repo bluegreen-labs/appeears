@@ -1,11 +1,11 @@
-#' ECMWF data transfer function
+#' AppEEARS data transfer function
 #'
 #' Returns the contents of the requested url as a NetCDF file downloaded
 #' to disk or the current status of the requested transfer.
 #'
 #' @param user user (email address) used to sign up for the ECMWF data service,
 #' used to retrieve the token set by \code{\link[ecmwfr]{wf_set_key}}.
-#' @param url R6 \code{\link[ecmwfr]{wf_request}}) query output
+#' @param url R6 \code{\link[apprs]{apprs_request}}) query output
 #' @param service which service to use, one of \code{webapi}, \code{cds}
 #' or \code{ads} (default = webapi)
 #' @param path path were to store the downloaded data
@@ -21,40 +21,31 @@
 #'
 #' \dontrun{
 #' # set key
-#' wf_set_key(user = "test@mail.com", key = "123")
+#' apprs_set_key(user = "test@mail.com", key = "123")
 #'
 #' # request data and grab url and try a transfer
-#' r <- wf_request(request, "test@email.com", transfer = FALSE)
+#' r <- apprs_request(request, "test@email.com", transfer = FALSE)
 #'
 #' # check transfer, will download if available
-#' wf_transfer(r$get_url(), "test@email.com")
+#' apprs_transfer(r$get_url(), "test@email.com")
 #'}
 
-wf_transfer <- function(
+apprs_transfer <- function(
     url,
     user,
-    service = "webapi",
     path = tempdir(),
     filename = tempfile("ecmwfr_", tmpdir = ""),
     verbose = TRUE
     ) {
 
-  if (inherits(url, "ecmwfr_service")) {
+  if (inherits(url, "apprs_service")) {
     url$transfer()
     return(url)
   }
 
-  # match arguments, if not stop
-  service <- match.arg(service, c("webapi", "cds", "ads"))
-
   # check the login credentials
   if (missing(user) || missing(url)) {
     stop("Please provide ECMWF login email / url!")
-  }
-
-  # If the URL is not an URL but an ID: generate URL
-  if (service == "cds" | service == "ads") {
-    url <- wf_server(id = basename(url), service = service)
   }
 
   # get key
@@ -134,26 +125,6 @@ wf_transfer <- function(
   # will fail on large (binary) files
   ct <- httr::content(response)
 
-  # write raw data to file from memory
-  # if not returned url + passing code
-  if (inherits(ct, "raw") && service == "webapi") {
-    if (verbose) {
-      message("- polling server for a data transfer")
-      message(sprintf("- writing data to disk (\"%s\")", tmp_file))
-    }
-
-    # write binary file
-    f <- file(tmp_file, "wb")
-    writeBin(ct, f)
-    close(f)
-
-    # return data
-    return(invisible(list(code = 302,
-                          href = url)))
-  }
-
-  if (service == "cds" | service == "ads") {
-
     # if the transfer failed, return error and stop()
     if (ct$state == "failed") {
       message("Data transfer failed!")
@@ -167,14 +138,15 @@ wf_transfer <- function(
     # if completed / should not happen but still there
     if ("completed" == ct$state) {
       # download file
-      httr::GET(ct$location,
-                httr::write_disk(tmp_file, overwrite = TRUE),
-                httr::progress())
+      httr::GET(
+        ct$location,
+        httr::write_disk(tmp_file, overwrite = TRUE),
+        httr::progress()
+        )
 
       # return exit statement
       ct$code <- 302
     }
-  }
 
   # return state variable
   return(invisible(ct))

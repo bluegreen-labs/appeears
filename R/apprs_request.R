@@ -1,29 +1,11 @@
-#' ECMWF data request and download
+#' AppEEARS data request and download
 #'
 #' Stage a data request, and optionally download the data to disk. Alternatively
 #' you can only stage requests, logging the request URLs to submit download
-#' queries later on using \code{\link[ecmwfr]{wf_transfer}}.
-#' Note that the function will do some basic checks on the \code{request} input
-#' to identify possible problems.
-#'
-#' Two sorts of requests are accepted, a simple data request based upon the
-#' available data in the (raw) CDS repository, and a workflow request which
-#' forwards an anonymous python function to the CDS servers and returns its
-#' results.
-#'
-#' The latter advanced use case is non-trivial, as both python and R code is
-#' required. However, it allows you to offload costly data operations /
-#' aggregation to the ECMWF servers, therefore limiting the amount of data
-#' that needs to be transferred.
-#'
-#' A detailed summary of the use of the python API underpinning the CDS Toolbox
-#' (Editor) these operations is beyond the scope of this package. We refer to
-#' the [CDS Toolbox manual](https://cds.climate.copernicus.eu/toolbox/doc/api.html),
-#' and the small example included in the
-#' [vignettes](https://bluegreen-labs.github.io/ecmwfr/articles/cds_workflow_vignette.html).
+#' queries later on using \code{\link[apprs]{apprs_transfer}}.
 #'
 #' @param user user (email address or ID) provided by the ECMWF data service,
-#' used to retrieve the token set by \code{\link[ecmwfr]{wf_set_key}}
+#' used to retrieve the token set by \code{\link[apprs]{apprs_set_key}}
 #' @param path path were to store the downloaded data
 #' @param time_out how long to wait on a download to start (default =
 #' \code{3*3600} seconds).
@@ -37,15 +19,15 @@
 #'
 #' @return the path of the downloaded (requested file) or the an R6 object
 #' with download/transfer information
-#' @seealso \code{\link[ecmwfr]{wf_set_key}}
-#' \code{\link[ecmwfr]{wf_transfer}}
+#' @seealso \code{\link[apprs]{apprs_set_key}}
+#' \code{\link[apprs]{apprs_transfer}}
 #' @export
 #' @author Koen Hufkens
 #' @examples
 #'
 #' \dontrun{
 #' # set key
-#' wf_set_key(user = "test@mail.com", key = "123")
+#' apprs_set_key(user = "test@mail.com", key = "123")
 #'
 #' request <- list(stream = "oper",
 #'    levtype = "sfc",
@@ -62,15 +44,15 @@
 #'    target = "tmp.nc")
 #'
 #' # demo query
-#' wf_request(request = request, user = "test@mail.com")
+#' apprs_request(request = request, user = "test@mail.com")
 #'
 #' # Run as an RStudio Job. When finished, will create a
 #' # variable named "test" in your environment with the path to
 #' # the downloaded file.
-#' wf_request(request = request, user = "test@mail.com", job_name = "test")
+#' apprs_request(request = request, user = "test@mail.com", job_name = "test")
 #'}
 
-wf_request <- function(
+apprs_request <- function(
     request,
     user,
     transfer = TRUE,

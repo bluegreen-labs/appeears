@@ -1,4 +1,4 @@
-service <- R6::R6Class("appeears_service", cloneable = FALSE,
+service <- R6::R6Class("apprs_service", cloneable = FALSE,
   public = list(
     initialize = function(request,
                           user,
@@ -117,9 +117,7 @@ service <- R6::R6Class("appeears_service", cloneable = FALSE,
     is_pending = function() {
       # Always pending, unless it has failed or successfully downloaded.
       !(self$is_failed() | private$downloaded)
-    },
-
-    request_id = NA  # For compatibility with old code
+    }
 
   ),
   private = list(

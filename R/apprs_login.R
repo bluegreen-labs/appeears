@@ -1,13 +1,13 @@
 # checks credentials
-app_login <- function(
+apprs_login <- function(
     user
 ) {
 
   # retrieve password from key-chain
-  password <- app_get_key(user = user)
+  password <- apprs_get_key(user = user)
 
   # ct <- httr::POST(
-  #   file.path(app_server(),"login"),
+  #   file.path(apprs_server(),"login"),
   #   httr::authenticate(user, password, type = "basic"),
   #   body = "grant_type=client_credentials",
   #   httr::config(verbose = FALSE)
@@ -16,7 +16,7 @@ app_login <- function(
   secret <- base64_enc(paste(user, password, sep = ":"))
 
   ct <- httr::POST(
-    file.path(app_server(),"login"),
+    file.path(apprs_server(),"login"),
     httr::add_headers(
       "Authorization" = paste("Basic", gsub("\n", "", secret)),
       "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"),
@@ -40,12 +40,12 @@ app_login <- function(
 }
 
 # checks credentials
-app_logout <- function(
+apprs_logout <- function(
     token
 ) {
 
   ct <- httr::POST(
-    file.path(app_server(),"logout"),
+    file.path(apprs_server(),"logout"),
     httr::add_headers(
       Authorization = paste("Bearer", token),
       "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"),

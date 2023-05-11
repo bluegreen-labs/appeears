@@ -1,24 +1,24 @@
 #' Store username and password
 #'
-#' Returns you token set by \code{\link[appeears]{app_set_key}}
+#' Returns you token set by \code{\link[apprs]{apprs_set_key}}
 #'
 #' @param user username used to sign up
-#' @return the password set using \code{\link[appeears]{app_set_key}} saved
+#' @return the password set using \code{\link[apprs]{apprs_set_key}} saved
 #' in the keychain
-#' @seealso \code{\link[appeears]{app_set_key}}
+#' @seealso \code{\link[apprs]{apprs_set_key}}
 #' @export
 #' @author Koen Hufkens
 #' @examples
 #'
 #' \dontrun{
 #' # set key
-#' app_set_key(user = "test@mail.com", password = "123")
+#' apprs_set_key(user = "test@mail.com", password = "123")
 #'
 #' # get key
-#' app_get_key(user = "test@mail.com")
+#' apprs_get_key(user = "test@mail.com")
 #'}
 
-app_get_key <- function(user) {
+apprs_get_key <- function(user) {
 
   # set static service
   service = "appeears"
