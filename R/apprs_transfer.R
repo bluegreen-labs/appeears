@@ -4,149 +4,131 @@
 #' to disk or the current status of the requested transfer.
 #'
 #' @param user user (email address) used to sign up for the ECMWF data service,
-#' used to retrieve the token set by \code{\link[ecmwfr]{wf_set_key}}.
-#' @param url R6 \code{\link[apprs]{apprs_request}}) query output
-#' @param service which service to use, one of \code{webapi}, \code{cds}
-#' or \code{ads} (default = webapi)
+#' used to retrieve the token set by \code{\link[apprs]{apprs_set_key}}.
+#' @param task R6 \code{\link[apprs]{apprs_request}}) query output or task id
 #' @param path path were to store the downloaded data
-#' @param filename filename to use for the downloaded data
 #' @param verbose show feedback on data transfers
-#' @return a netCDF of data on disk as specified by a
-#' \code{\link[ecmwfr]{wf_request}}
-#' @seealso \code{\link[ecmwfr]{wf_set_key}}
-#' \code{\link[ecmwfr]{wf_request}}
+#' @return data on disk as specified by a
+#' \code{\link[apprs]{apprs_request}}
+#' @seealso \code{\link[apprs]{apprs_set_key}}
+#' \code{\link[apprs]{apprs_request}}
 #' @export
 #' @author Koen Hufkens
 #' @examples
 #'
 #' \dontrun{
 #' # set key
-#' apprs_set_key(user = "test@mail.com", key = "123")
+#' apprs_set_key(user = "test", password = "123")
 #'
 #' # request data and grab url and try a transfer
-#' r <- apprs_request(request, "test@email.com", transfer = FALSE)
+#' r <- apprs_request(request, "test", transfer = FALSE)
 #'
 #' # check transfer, will download if available
-#' apprs_transfer(r$get_url(), "test@email.com")
+#' apprs_transfer(r$get_task_id(), user = "test")
 #'}
 
 apprs_transfer <- function(
-    url,
+    task,
     user,
     path = tempdir(),
-    filename = tempfile("ecmwfr_", tmpdir = ""),
     verbose = TRUE
     ) {
 
-  if (inherits(url, "apprs_service")) {
-    url$transfer()
-    return(url)
+  if (inherits(task, "apprs_service")) {
+    task$transfer()
+    return(task)
   }
 
   # check the login credentials
-  if (missing(user) || missing(url)) {
-    stop("Please provide ECMWF login email / url!")
+  if (missing(user) || missing(task)) {
+    stop("Please provide AppEEARS login or task to download!")
   }
 
-  # get key
-  key <- wf_get_key(user = user, service = service)
+  # get token
+  token <- apprs_login(user)
 
-  # create (temporary) output file
-  tmp_file <- file.path(path, filename)
-
-  # download routine depends on service queried
-  if (service == "cds" | service == "ads") {
-    response <- httr::GET(
-      url,
-      httr::authenticate(user, key),
-      httr::add_headers("Accept" = "application/json",
-                        "Content-Type" = "application/json"),
-      encode = "json"
+  # get bundle
+  response <- httr::GET(
+    file.path(apprs_server(),"bundle", task),
+    httr::add_headers(
+      Authorization = paste("Bearer", token)
     )
-  } else {
-    # Webapi
-    response <- retrieve_header(
-      url,
-      list(
-        "Accept" = "application/json",
-        "Content-Type" = "application/json",
-        "From" = user,
-        "X-ECMWF-KEY" = key
-      )
-    )
-    status_code <- response[["status_code"]]
+  )
 
-    if (httr::http_error(status_code)) {
-      stop("Your requested download failed - check url", call. = FALSE)
-    }
-
-    if (status_code == "202") {
-      # still processing
-      # Simulated content with the things we need to use.
-      ct <- list(
-        code = status_code,
-        retry = as.numeric(response$headers$`retry-after`),
-        href = url
-      )
-      return(invisible(ct))
-
-    } else if (status_code == "200") {
-      # Done!
-      message("\nDownloading file")
-      response <- httr::GET(
-        url,
-        httr::add_headers(
-          "Accept" = "application/json",
-          "Content-Type" = "application/json",
-          "From" = user,
-          "X-ECMWF-KEY" = key
-        ),
-        encode = "json",
-        httr::write_disk(tmp_file, overwrite = TRUE),
-        # write on disk!
-        httr::progress()
-      )
-
-      return(invisible(list(code = 302,
-                            href = url)))
-    } else {
-      stop("Your requested download had a problem with code ",
-           status_code,
-           call. = FALSE)
-    }
-  }
-
-  # trap (http) errors on download, return a general error statement
+  # trap general http error
   if (httr::http_error(response)) {
-    stop("Your requested download failed - check url", call. = FALSE)
+    stop("Your requested download is unavailable as the session expired (download > 48h old).",
+         call. = FALSE
+    )
   }
 
-  # check the content, and status of the download
-  # will fail on large (binary) files
+  # split out the content from the returned
+  # API data, and clean up the JSON formatting
   ct <- httr::content(response)
 
-    # if the transfer failed, return error and stop()
-    if (ct$state == "failed") {
-      message("Data transfer failed!")
-      stop(ct$error)
-    }
+  # verbose feedback on download
+  if (verbose) {
+    message(sprintf("Processing bundle: %s", task))
+  }
 
-    if (ct$state != "completed" || is.null(ct$state)) {
-      ct$code <- 202
-    }
+  # try downloading whole bundle, log downloaded
+  # state
+  downloaded <- lapply(ct$files, function(file){
 
-    # if completed / should not happen but still there
-    if ("completed" == ct$state) {
-      # download file
-      httr::GET(
-        ct$location,
-        httr::write_disk(tmp_file, overwrite = TRUE),
-        httr::progress()
+    # set temp file name
+    temp_file <- file.path(tempdir(), file$file_name)
+
+    # set final file name
+    final_file <- file.path(path, file$file_name)
+
+    # write the file to disk using the destination directory and file name
+    response <- GET(
+      file.path(apprs_server(), "bundle/", task, file$file_id),
+      write_disk(temp_file, overwrite = TRUE),
+      httr::add_headers(
+        Authorization = paste("Bearer", token)
+      )
+    )
+
+    # log if the file was successfully downloaded
+    if (httr::http_error(response)) {
+      return(FALSE)
+    } else {
+
+      # This juggling of files is due to some error when writing to
+      # network drives in particular. Data is therefore first locally
+      # buffered and then transferred to any other drive (networked / local)
+
+      if(temp_file != final_file) {
+        file.copy(
+          temp_file,
+          final_file,
+          overwrite = TRUE
         )
+        file.remove(temp_file)
 
-      # return exit statement
-      ct$code <- 302
+        if (verbose) {
+          message(sprintf("- moved temporary files to -> %s", final_file))
+        }
+      } else {
+        if (verbose) {
+          message(sprintf("- downloaded file to -> %s", temp_file))
+        }
+      }
+
+      return(TRUE)
     }
+  })
+
+  # trap (http) errors on download, return a general error statement
+  if (all(unlist(downloaded))) {
+    if (fail_is_error) {
+      stop("Some downloads failed - consider redownloading")
+    } else {
+      warning("Some downloads failed - consider redownloading")
+      return(self)
+    }
+  }
 
   # return state variable
   return(invisible(ct))

@@ -61,6 +61,7 @@ apprs_request <- function(
     job_name,
     verbose = TRUE
 ) {
+
   if (!missing(job_name)) {
     if (make.names(job_name) != job_name) {
       stop("job_name '",
@@ -98,23 +99,18 @@ apprs_request <- function(
 
   # check the login credentials
   if (missing(request)) {
-    stop("Please provide ECMWF or CDS login credentials and data request!")
+    stop("Please provide an AppEEARS task/request!")
   }
 
   # check for user
   if (missing(user)){
-    stop("Missing user credentials, please provide a valid user/ID!")
+    stop("Missing user credentials, please provide a valid username!")
   }
 
-  # split out data
-  service <- "appeears"
-  url <- app_server()
-
   # Create request and submit to service
-  request <- service$new(
+  request <- apprs_service$new(
     request = request,
     user = user,
-    url = url,
     path = path
     )
 

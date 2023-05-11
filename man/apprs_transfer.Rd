@@ -4,32 +4,21 @@
 \alias{apprs_transfer}
 \title{AppEEARS data transfer function}
 \usage{
-apprs_transfer(
-  url,
-  user,
-  path = tempdir(),
-  filename = tempfile("ecmwfr_", tmpdir = ""),
-  verbose = TRUE
-)
+apprs_transfer(task, user, path = tempdir(), verbose = TRUE)
 }
 \arguments{
-\item{url}{R6 \code{\link[apprs]{apprs_request}}) query output}
+\item{task}{R6 \code{\link[apprs]{apprs_request}}) query output or task id}
 
 \item{user}{user (email address) used to sign up for the ECMWF data service,
-used to retrieve the token set by \code{\link[ecmwfr]{wf_set_key}}.}
+used to retrieve the token set by \code{\link[apprs]{apprs_set_key}}.}
 
 \item{path}{path were to store the downloaded data}
 
-\item{filename}{filename to use for the downloaded data}
-
 \item{verbose}{show feedback on data transfers}
-
-\item{service}{which service to use, one of \code{webapi}, \code{cds}
-or \code{ads} (default = webapi)}
 }
 \value{
-a netCDF of data on disk as specified by a
-\code{\link[ecmwfr]{wf_request}}
+data on disk as specified by a
+\code{\link[apprs]{apprs_request}}
 }
 \description{
 Returns the contents of the requested url as a NetCDF file downloaded
@@ -39,18 +28,18 @@ to disk or the current status of the requested transfer.
 
 \dontrun{
 # set key
-apprs_set_key(user = "test@mail.com", key = "123")
+apprs_set_key(user = "test", password = "123")
 
 # request data and grab url and try a transfer
-r <- apprs_request(request, "test@email.com", transfer = FALSE)
+r <- apprs_request(request, "test", transfer = FALSE)
 
 # check transfer, will download if available
-apprs_transfer(r$get_url(), "test@email.com")
+apprs_transfer(r$get_task_id(), user = "test")
 }
 }
 \seealso{
-\code{\link[ecmwfr]{wf_set_key}}
-\code{\link[ecmwfr]{wf_request}}
+\code{\link[apprs]{apprs_set_key}}
+\code{\link[apprs]{apprs_request}}
 }
 \author{
 Koen Hufkens

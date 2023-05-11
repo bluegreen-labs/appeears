@@ -2,6 +2,7 @@ apprs_service <- R6::R6Class("apprs_service",
   inherit = service,
   public = list(
     submit = function() {
+
       if (private$status != "unsubmitted") {
         return(self)
       }
@@ -44,6 +45,7 @@ apprs_service <- R6::R6Class("apprs_service",
       private$url <- file.path(apprs_server(), "task","task_id", ct$task_id)
       return(self)
     },
+
     update_status = function(fail_is_error = TRUE,
                              verbose = NULL) {
       if (private$status == "unsubmitted") {
@@ -224,11 +226,9 @@ apprs_service <- R6::R6Class("apprs_service",
 
       #  get the response for the query provided
       response <- httr::DELETE(
-        private$url,
-        httr::authenticate(private$user, key),
+        file.path(apprs_server(), "task", private$name),
         httr::add_headers(
-          "Accept" = "application/json",
-          "Content-Type" = "application/json"
+          Authorization = paste("Bearer", private$token)
         )
       )
 
@@ -241,8 +241,8 @@ apprs_service <- R6::R6Class("apprs_service",
 
       # some verbose feedback
       if (private$verbose) {
-        message("- Delete data from queue for url endpoint or request id:")
-        message("  ", private$url, "\n")
+        message("- Deleted data from queue for task id:")
+        message("  ", private$name, "\n")
       }
 
       private$status <- "deleted"

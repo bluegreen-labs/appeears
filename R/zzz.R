@@ -3,20 +3,11 @@
 # Returns the url of the data servers for downloading
 # public AppEEARS.
 #
-# @param id string, id of the request.
-#
 # @author Koen Kufkens
-apprs_server <- function(id) {
-
+apprs_server <- function() {
   # set base urls
   appeears_url <- "https://appeears.earthdatacloud.nasa.gov/api"
-
-  # return url depending on service or id
-  if (missing(id)) {
-    return(appeears_url)
-  } else {
-    return(file.path(appeears_url, "tasks", id))
-  }
+  return(appeears_url)
 }
 
 # Simple progress spinner
@@ -163,7 +154,7 @@ apprs_check_login <- function(
   }
 }
 
-# Downlaods only the header information
+# Downloads only the header information
 retrieve_header <- function(url, headers) {
   h <- curl::new_handle()
   curl::handle_setheaders(h, .list = headers)

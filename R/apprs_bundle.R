@@ -47,9 +47,3 @@ apprs_bundle <- function(
   # return content
   return(ct)
 }
-
-test <- bundle <- apprs_bundle(
-  user =  "khufkens",
-  task_id = task_response$task_id
-)
-
