@@ -20,33 +20,35 @@ apprs_list_task <- function(
     task_id
 ){
 
-  # retrieve password from key-chain
-  password <- apprs_get_key(user = user)
+  # retrieve token to list tasks
+  token <- apprs_login(user)
 
   # grab the content on a product query
   # and convert to data frame which is returned
   if(missing(task_id)){
-    print("check")
     ct <- httr::GET(
       file.path(apprs_server(),"task"),
-      httr::authenticate(user, password, type = "basic"),
+      httr::add_headers(
+        Authorization = paste("Bearer", token),
+        "Content-Type" = "application/json")
       )
   } else {
     ct <- httr::GET(
       file.path(apprs_server(),"task", task_id),
-      httr::authenticate(user, password, type = "basic"),
+      httr::add_headers(
+        Authorization = paste("Bearer", token),
+        "Content-Type" = "application/json")
       )
   }
 
+  # split out the content from the returned
+  # API data, and clean up the JSON formatting
   ct <- jsonlite::prettify(
-    jsonlite::toJSON(content(ct), auto_unbox = TRUE)
+    jsonlite::toJSON(httr::content(ct), auto_unbox = TRUE)
   )
-  ct <- jsonlite::fromJSON(ct)
 
-  # convert to data frame
-  df <- as.data.frame(
-    do.call("rbind",ct)
-  )
+  # convert the json data to a data frame
+  df <- jsonlite::fromJSON(ct)
 
   # return content
   return(df)
