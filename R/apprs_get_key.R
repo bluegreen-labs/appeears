@@ -29,8 +29,10 @@ apprs_get_key <- function(user) {
     if (keyring::default_backend()$name == "file") {
       if ("appeears" %in% keyring::keyring_list()$keyring) {
         if(keyring::keyring_is_locked(keyring = "appeears")){
-          message("Your keyring is locked please
-              unlock with your keyring password!")
+          message("
+  Your keyring is locked please
+  unlock with your keyring password!
+  ")
           keyring::keyring_unlock(keyring = "appeears")
         }
       } else {
