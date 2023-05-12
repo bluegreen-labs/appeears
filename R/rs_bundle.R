@@ -12,23 +12,23 @@
 #'
 #' \dontrun{
 #' # get a list of datasets
-#' apprs_bundle(
+#' rs_bundle(
 #' user = "your_user_name",
 #' task_id = "a_task_id"
 #' )
 #'}
 
-apprs_bundle <- function(
+rs_bundle <- function(
     user,
     task_id
 ){
 
   # retrieve token to list tasks
-  token <- apprs_login(user)
+  token <- rs_login(user)
 
   # get bundle
   response <- httr::GET(
-      file.path(apprs_server(),"bundle", task_id),
+      file.path(rs_server(),"bundle", task_id),
       httr::add_headers(
           Authorization = paste("Bearer", token)
         )

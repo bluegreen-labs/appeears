@@ -14,29 +14,29 @@
 #'
 #' \dontrun{
 #' # get a list of datasets
-#' apprs_list_task()
+#' rs_list_task()
 #'}
 
-apprs_list_task <- function(
+rs_list_task <- function(
     user,
     task_id
 ){
 
   # retrieve token to list tasks
-  token <- apprs_login(user)
+  token <- rs_login(user)
 
   # grab the content on a product query
   # and convert to data frame which is returned
   if(missing(task_id)){
     ct <- httr::GET(
-      file.path(apprs_server(),"task"),
+      file.path(rs_server(),"task"),
       httr::add_headers(
         Authorization = paste("Bearer", token),
         "Content-Type" = "application/json")
       )
   } else {
     ct <- httr::GET(
-      file.path(apprs_server(),"task", task_id),
+      file.path(rs_server(),"task", task_id),
       httr::add_headers(
         Authorization = paste("Bearer", token),
         "Content-Type" = "application/json")

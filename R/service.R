@@ -1,4 +1,4 @@
-service <- R6::R6Class("apprs_service",
+service <- R6::R6Class("appeears_service",
   cloneable = FALSE,
   public = list(
     initialize = function(request,
@@ -7,7 +7,7 @@ service <- R6::R6Class("apprs_service",
                           path = tempdir(),
                           verbose = TRUE) {
       private$user <- user
-      private$token <- apprs_login(user)
+      private$token <- rs_login(user)
       private$request <- request
       private$path <- path
       private$verbose <- verbose

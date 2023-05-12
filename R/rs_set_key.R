@@ -14,25 +14,25 @@
 #' @param password used to sign up for AppEEARS
 #'
 #' @return It invisibly returns the user.
-#' @seealso \code{\link[apprs]{apprs_get_key}}
+#' @seealso \code{\link[appeears]{rs_get_key}}
 #' @export
 #' @author Koen Hufkens
 #' @examples
 #'
 #' \dontrun{
 #' # set key
-#' apprs_set_key(user = "test", password = "123")
+#' rs_set_key(user = "test", password = "123")
 #'
 #' # get key
-#' apprs_get_key(user = "test")
+#' rs_get_key(user = "test")
 #'
 #' # leave user and key empty to open a browser window to the service's website
 #' # and type the key interactively
-#' apprs_get_key()
+#' rs_get_key()
 #'
 #'}
 #' @importFrom utils browseURL
-apprs_set_key <- function(user, password) {
+rs_set_key <- function(user, password) {
 
   # set static service
   service <- "appeears"
@@ -69,7 +69,7 @@ apprs_set_key <- function(user, password) {
   }
 
   # check login
-  login_ok <- apprs_check_login(
+  login_ok <- rs_check_login(
     user = user,
     password = password
   )

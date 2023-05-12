@@ -1,4 +1,4 @@
-apprs_service <- R6::R6Class("apprs_service",
+appeears_service <- R6::R6Class("appeears_service",
   inherit = service,
   public = list(
     submit = function() {
@@ -11,7 +11,7 @@ apprs_service <- R6::R6Class("apprs_service",
 
       #  get the response for the query provided
       response <- httr::POST(
-        file.path(apprs_server(),"task"),
+        file.path(rs_server(),"task"),
         body = private$request,
         encode = "json",
         httr::add_headers(
@@ -80,7 +80,7 @@ apprs_service <- R6::R6Class("apprs_service",
 
       # GET data on the task process (based on task ID)
       response <- httr::GET(
-        file.path(apprs_server(),"task", private$name),
+        file.path(rs_server(),"task", private$name),
         httr::add_headers(
           Authorization = paste("Bearer", private$token),
           "Content-Type" = "application/json")
@@ -133,7 +133,7 @@ apprs_service <- R6::R6Class("apprs_service",
 
       # get bundle
       response <- httr::GET(
-        file.path(apprs_server(),"bundle", private$name),
+        file.path(rs_server(),"bundle", private$name),
         httr::add_headers(
           Authorization = paste("Bearer", private$token)
         )
@@ -162,7 +162,7 @@ apprs_service <- R6::R6Class("apprs_service",
 
         # write the file to disk using the destination directory and file name
         response <- httr::GET(
-          file.path(apprs_server(), "bundle/", private$name, file$file_id),
+          file.path(rs_server(), "bundle/", private$name, file$file_id),
           httr::write_disk(temp_file, overwrite = TRUE),
           httr::add_headers(
             Authorization = paste("Bearer", private$token)
@@ -217,7 +217,7 @@ apprs_service <- R6::R6Class("apprs_service",
 
       #  get the response for the query provided
       response <- httr::DELETE(
-        file.path(apprs_server(), "task", private$name),
+        file.path(rs_server(), "task", private$name),
         httr::add_headers(
           Authorization = paste("Bearer", private$token)
         )

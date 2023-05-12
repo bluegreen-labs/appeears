@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 # load the library
 library(ncdf4)
 library(terra)
-library(apprs)
+library(appeears)
 
 # load demo data
 ```
@@ -29,7 +29,7 @@ Setup your login credentials, this will store both the user name and password, w
 
 ```{r eval = FALSE}
 # load the package
-library("apprs")
+library("appeears")
 
 # set the keyring to be a file on
 # linux or headless systems
@@ -37,7 +37,7 @@ library("apprs")
 
 # store your credentials in a safe
 # keyring (either encrypted file or dedicated keyring)
-apprs_set_key(
+rs_set_key(
   user = "your_earth_data_username",
   password = "your_earth_data_password"
   )
@@ -52,14 +52,14 @@ You can list all available products on the AppEEARS API using the `apprs_product
 
 ```{r}
 # list all product information
-products <- apprs_products()
+products <- rs_products()
 
 # print the start of all products with their versions
 head(products$ProductAndVersion)
 
 # list all layers for a particular
 # product
-layers <- apprs_layers(
+layers <- rs_layers(
   product = "MCD12Q2.006"
 )
 
@@ -88,10 +88,10 @@ The `apprs_build_task()` function converts this data frame to a correctly struct
 ```{r eval = FALSE}
 # convert the task to JSON and
 # execute request
-task <- app_build_task(df = df)
+task <- rs_build_task(df = df)
 
 # request the task to be executed
-apprs_request(
+rs_request(
   request = task,
   user = "earth_data_user",
   transfer = TRUE,

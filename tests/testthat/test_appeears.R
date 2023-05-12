@@ -16,13 +16,13 @@ ON_GIT <- ifelse(
 )
 
 # is the server reachable
-server_check <- apprs:::apprs_running(apprs:::apprs_server())
+server_check <- appeears:::rs_running(appeears:::rs_server())
 
 # if the server is reachable, try to set login
 # if not set login check to TRUE as well
 if(server_check & ON_GIT){
   user <- try(
-    apprs::apprs_set_key(
+    appeears::rs_set_key(
         user = "khufkens",
         password = Sys.getenv("PASS")
         )

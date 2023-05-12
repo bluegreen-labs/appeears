@@ -2,10 +2,10 @@
 #'
 #' Stage a data request, and optionally download the data to disk. Alternatively
 #' you can only stage requests, logging the request URLs to submit download
-#' queries later on using \code{\link[apprs]{apprs_transfer}}.
+#' queries later on using \code{\link[appeears]{rs_transfer}}.
 #'
 #' @param user user (email address or ID) provided by the ECMWF data service,
-#' used to retrieve the token set by \code{\link[apprs]{apprs_set_key}}
+#' used to retrieve the token set by \code{\link[appeears]{rs_set_key}}
 #' @param path path were to store the downloaded data
 #' @param time_out how long to wait on a download to start (default =
 #' \code{3*3600} seconds).
@@ -19,8 +19,8 @@
 #'
 #' @return the path of the downloaded (requested file) or the an R6 object
 #' with download/transfer information
-#' @seealso \code{\link[apprs]{apprs_set_key}}
-#' \code{\link[apprs]{apprs_transfer}}
+#' @seealso \code{\link[appeears]{rs_set_key}}
+#' \code{\link[appeears]{rs_transfer}}
 #' @export
 #' @author Koen Hufkens
 #' @examples
@@ -40,10 +40,10 @@
 #')
 #'
 #' # build a proper JSON query
-#' task <- apprs_build_task(df = df)
+#' task <- rs_build_task(df = df)
 #'
 #' # request the task to be executed
-#' apprs_request(
+#' rs_request(
 #'  request = task,
 #'  user = "earth_data_user",
 #'  transfer = TRUE,
@@ -52,7 +52,7 @@
 #')
 #'}
 
-apprs_request <- function(
+rs_request <- function(
     request,
     user,
     transfer = TRUE,
@@ -108,7 +108,7 @@ apprs_request <- function(
   }
 
   # Create request and submit to service
-  request <- apprs_service$new(
+  request <- appeears_service$new(
     request = request,
     user = user,
     path = path

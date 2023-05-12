@@ -4,37 +4,37 @@
 #' to disk or the current status of the requested transfer.
 #'
 #' @param user user (email address) used to sign up for the ECMWF data service,
-#' used to retrieve the token set by \code{\link[apprs]{apprs_set_key}}.
-#' @param task R6 \code{\link[apprs]{apprs_request}}) query output or task id
+#' used to retrieve the token set by \code{\link[appeears]{rs_set_key}}.
+#' @param task R6 \code{\link[appeears]{rs_request}}) query output or task id
 #' @param path path were to store the downloaded data
 #' @param verbose show feedback on data transfers
 #' @return data on disk as specified by a
-#' \code{\link[apprs]{apprs_request}}
-#' @seealso \code{\link[apprs]{apprs_set_key}}
-#' \code{\link[apprs]{apprs_request}}
+#' \code{\link[appeears]{rs_request}}
+#' @seealso \code{\link[appeears]{rs_set_key}}
+#' \code{\link[appeears]{rs_request}}
 #' @export
 #' @author Koen Hufkens
 #' @examples
 #'
 #' \dontrun{
 #' # set key
-#' apprs_set_key(user = "test", password = "123")
+#' rs_set_key(user = "test", password = "123")
 #'
 #' # request data and grab url and try a transfer
-#' r <- apprs_request(request, "test", transfer = FALSE)
+#' r <- rs_request(request, "test", transfer = FALSE)
 #'
 #' # check transfer, will download if available
-#' apprs_transfer(r$get_task_id(), user = "test")
+#' rs_transfer(r$get_task_id(), user = "test")
 #'}
 
-apprs_transfer <- function(
+rs_transfer <- function(
     task,
     user,
     path = tempdir(),
     verbose = TRUE
     ) {
 
-  if (inherits(task, "apprs_service")) {
+  if (inherits(task, "appeears_service")) {
     task$transfer()
     return(task)
   }
@@ -45,11 +45,11 @@ apprs_transfer <- function(
   }
 
   # get token
-  token <- apprs_login(user)
+  token <- rs_login(user)
 
   # get bundle
   response <- httr::GET(
-    file.path(apprs_server(),"bundle", task),
+    file.path(rs_server(),"bundle", task),
     httr::add_headers(
       Authorization = paste("Bearer", token)
     )
@@ -83,7 +83,7 @@ apprs_transfer <- function(
 
     # write the file to disk using the destination directory and file name
     response <- httr::GET(
-      file.path(apprs_server(), "bundle/", task, file$file_id),
+      file.path(rs_server(), "bundle/", task, file$file_id),
       httr::write_disk(temp_file, overwrite = TRUE),
       httr::add_headers(
         Authorization = paste("Bearer", token)

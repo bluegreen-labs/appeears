@@ -4,7 +4,7 @@
 # public AppEEARS.
 #
 # @author Koen Kufkens
-apprs_server <- function() {
+rs_server <- function() {
   # set base urls
   appeears_url <- "https://appeears.earthdatacloud.nasa.gov/api"
   return(appeears_url)
@@ -42,7 +42,7 @@ spinner <- function(seconds) {
 # Show message if user exits the function (interrupts execution)
 # or as soon as an error will be thrown.
 exit_message <- function(url, path, file) {
-  job_list <-  "check the task status (apprs_status()) or other functions,"
+  job_list <-  "check the task status (rs_list_task()) or other functions,"
 
   intro <- paste(
     "Even after exiting your request is still beeing processed!",
@@ -54,7 +54,7 @@ exit_message <- function(url, path, file) {
 
   options <- paste(
     "- Retry downloading as soon as as completed:\n",
-    "  apprs_transfer(url = '",
+    "  rs_transfer(url = '",
     url,
     "\n",
     "<user>,\n ",
@@ -64,7 +64,7 @@ exit_message <- function(url, path, file) {
     file,
     "')\n\n",
     "- Delete the job upon completion using:\n",
-    "  apprs_delete(<user>,\n url ='",
+    "  rs_delete(<user>,\n url ='",
     url,
     "')\n\n",
     sep = ""
@@ -86,7 +86,7 @@ exit_message <- function(url, path, file) {
     ) {
 
     # startup messages
-    vers <- as.character(utils::packageVersion("apprs"))
+    vers <- as.character(utils::packageVersion("appeears"))
     txt <- paste(
       "\n     This is 'apprs' version ",
       vers,
@@ -102,7 +102,7 @@ exit_message <- function(url, path, file) {
 
 # check if server is reachable
 # returns Boolean TRUE if so
-apprs_running <- function(url) {
+rs_running <- function(url) {
   ct <- try(httr::GET(url))
 
   # trap time-out, httr should exit clean but doesn't
@@ -120,7 +120,7 @@ apprs_running <- function(url) {
 }
 
 # checks credentials
-apprs_check_login <- function(
+rs_check_login <- function(
     user,
     password,
     token = FALSE
@@ -128,11 +128,11 @@ apprs_check_login <- function(
 
   # retrieve password from key-chain
   if(missing(password)) {
-    password <- apprs_get_key(user = user)
+    password <- rs_get_key(user = user)
   }
 
   ct <- httr::POST(
-    file.path(apprs_server(),"login"),
+    file.path(rs_server(),"login"),
     httr::authenticate(user, password, type = "basic"),
     body = "grant_type=client_credentials",
     httr::config(verbose = FALSE)

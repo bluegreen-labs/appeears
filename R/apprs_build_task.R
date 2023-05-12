@@ -15,7 +15,7 @@
 #' @return a valid AppEEARS JSON formatted task
 #' @export
 
-apprs_build_task <- function(
+rs_build_task <- function(
     df,
     roi
     ) {

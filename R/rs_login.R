@@ -8,16 +8,16 @@
 #' @return returns an AppEEARS session (bearer) token
 #' @export
 
-apprs_login <- function(
+rs_login <- function(
     user
 ) {
 
   # retrieve password from key-chain
-  password <- apprs_get_key(user = user)
+  password <- rs_get_key(user = user)
   secret <- jsonlite::base64_enc(paste(user, password, sep = ":"))
 
   ct <- httr::POST(
-    file.path(apprs_server(),"login"),
+    file.path(rs_server(),"login"),
     httr::add_headers(
       "Authorization" = paste("Basic", gsub("\n", "", secret)),
       "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"),
@@ -45,17 +45,17 @@ apprs_login <- function(
 #' Given a token it will log out / delete this
 #' token, invalidating it.
 #'
-#' @param token a Bearer token as returned by apprs_login()
+#' @param token a Bearer token as returned by rs_login()
 #'
 #' @return returns if the session has closed TRUE/FALSE
 #' @export
 
-apprs_logout <- function(
+rs_logout <- function(
     token
 ) {
 
   ct <- httr::POST(
-    file.path(apprs_server(),"logout"),
+    file.path(rs_server(),"logout"),
     httr::add_headers(
       Authorization = paste("Bearer", token),
       "Content-Type" = "application/x-www-form-urlencoded;charset=UTF-8"),
