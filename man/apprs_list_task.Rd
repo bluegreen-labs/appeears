@@ -8,6 +8,9 @@ apprs_list_task(user, task_id)
 }
 \arguments{
 \item{user}{username used to sign up}
+
+\item{task_id}{task for which to list the status (if missing
+all tasks are listed)}
 }
 \value{
 returns a data frame with the AppEEARS tasks

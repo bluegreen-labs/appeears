@@ -8,6 +8,8 @@ apprs_bundle(user, task_id)
 }
 \arguments{
 \item{user}{username used to sign up}
+
+\item{task_id}{task id for which to return the file download bundle}
 }
 \value{
 returns a nested list of files to download

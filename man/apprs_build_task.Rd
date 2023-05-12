@@ -8,15 +8,19 @@ apprs_build_task(df, roi)
 }
 \arguments{
 \item{df}{a data frame with task name (task), subtask name (subtask),
-latitude (lat), longitude (lon), start (start) and end (end) date.}
+latitude, longitude, start (start) and end (end) date.}
 
 \item{roi}{a region of interest defined by a SpatRaster or sf object,
-the roi will override any point based data provided as lat/lon coordinates
-in the data frame}
+the roi will override any point based data provided as latittude/longitude
+coordinates in the data frame}
 }
 \value{
 a valid AppEEARS JSON formatted task
 }
 \description{
-Build a task request
+Builds a valid JSON formatted API request from either
+a tidy data frame with point based sub-tasks, or when
+a region of interest (roi) is specified coordinates
+(latitude/longitude) will be ignored and a bounding
+box for an sf or SpatRaster object will be used instead.
 }
