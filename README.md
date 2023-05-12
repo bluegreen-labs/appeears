@@ -3,4 +3,159 @@
 [![R-CMD-check](https://github.com/bluegreen-labs/appeears/workflows/R-CMD-check/badge.svg)](https://github.com/bluegreen-labs/appeears/actions)
 [![codecov](https://codecov.io/gh/bluegreen-labs/ecmwfr/branch/master/graph/badge.svg)](https://codecov.io/gh/bluegreen-labs/ecmwfr)
 
-Programmatic interface to NASA AppEEARS
+Programmatic interface to the [NASA AppEEARS API](https://appeears.earthdatacloud.nasa.gov/) services. Where "The Application for Extracting and Exploring Analysis Ready Samples (AρρEEARS) offers a simple and efficient way to access and transform geospatial data from a variety of federal data archives. AρρEEARS enables users to subset geospatial datasets using spatial, temporal, and band/layer parameters."
+
+## How to cite this package in your article
+
+You can cite this package like this "we obtained data from the AppEEARS
+API using the {apprs} R package Hufkens 2023". Here is the full
+bibliographic reference to include in your reference list (don't forget
+to update the 'last accessed' date):
+
+> Hufkens, K. (2019). apprs:
+> Programmatic interface to the NASA AppEEARS API. 
+> Zenodo. <http://doi.org/10.5281/zenodo.xxx>.
+
+## Installation
+
+### development release
+
+To install the development releases of the package run the following
+commands:
+
+``` r
+if(!require(remotes)){install.packages("remotes")}
+remotes::install_github("bluegreen-labs/apprs")
+library("apprs")
+```
+
+Vignettes are not rendered by default, if you want to include additional
+documentation please use:
+
+``` r
+if(!require(remotes)){install.packages("remotes")}
+remotes::install_github("bluegreen-labs/apprs", build_vignettes = TRUE)
+library("apprs")
+```
+
+## Use
+
+### Setup
+
+Before starting save the provided NASA Earth Data password to your local keychain. The
+package does not allow you to use your password inline in scripts to limit
+security issues when sharing scripts on github or otherwise.
+
+``` r
+# set a key to the keychain
+apprs_set_key(
+  user = "earth_data_user",
+  password = "XXXXXXXXXXXXXXXXXXXXXX"
+  )
+
+# you can retrieve the password using
+apprs_get_key(user = "earth_data_user")
+
+# the output should be the key you provided
+# "XXXXXXXXXXXXXXXXXXXXXX"
+```
+
+Downloads are managed using a Bearer/session token. This token is valid for 48 hours,
+after which it will expire and you will need to request a new one. Although downloads
+are managed using the user (keychain) details only, you can request the current token
+using `apprs_login()`, while `apprs_logout()` will explicitly invalidate the current
+session token.
+
+```r
+# request the current token
+token <- apprs_login(user = "earth_data_user")
+
+# invalidate the current session
+apprs_logout(token)
+```
+
+### Point based data requests
+
+All point based queries are made by first creating a
+tidy data frame with the desired products and layers
+to query.
+
+In this data frame `task` specifies the overall name
+of the task to run (this prefix will be used to name
+the final downloaded files). The `subtask` denotes the
+various locations and or products you want to query. As
+such, you can query multiple locations in the same larger
+task, avoiding multiple queries to the API.
+
+The `latitude` and `longitude` fields specify geographic
+coordinates of query locations, while `start` and `end`
+columns define the range of the data queried. Note that
+the date range will cover the maximum date range across
+all `subtasks`. If date ranges vary widely it is adviced
+to create separate tasks.
+
+Finally the `product` and `layer` columns denote the 
+remote sensing product and particular layer to download.
+A full list of products can be queried using `apprs_products()`,
+while the layers of a particular product can be listed
+using `apprs_layers()`. Note that the product needs to be
+specified using the full product name, including the version
+of the product (as stored in the `ProductAndVersion` field).
+
+An abbreviated workflow can be found below, while a full
+worked example is provided in the vignettes.
+
+```r
+# Load the library
+library(apprs)
+
+# list all products
+apprs_products()
+
+# list layers of the MOD11A2.061 product
+apprs_layers("MOD11A2.061")
+
+# specifiy a task/request as a
+# data frame
+df <- data.frame(
+  task = "grand canyon",
+  subtask = c("test1", "test2"),
+  latitude = c(36.206228, 36.206228),
+  longitude = c(-112.127134, -112.127134),
+  start = c("2018-01-01","2018-01-01"),
+  end = c("2018-01-15","2018-01-15"),
+  product = c("MOD11A2.061","MCD12Q2.006"),
+  layer = c("LST_Day_1km","Dormancy")
+)
+
+# build a proper JSON query
+task <- apprs_build_task(df = df)
+
+# request the task to be executed
+apprs_request(
+  request = task,
+  user = "khufkens",
+  transfer = TRUE,
+  path = "~/tmp/test",
+  verbose = TRUE
+)
+````
+
+### Area based data requests
+
+
+## File based keychains
+
+On linux you can opt to use a file based keyring, instead of a GUI based
+keyring manager. This is helpful for headless setups such as servers.
+For this option to work linux users must set an environmental option.
+
+``` r
+options(keyring_backend="file")
+```
+
+You will be asked to provide a password to encrypt the keyring with.
+Upon the start of each session you will be asked to provide this
+password, unlocking all `apprs` credentials for this session. Should
+you ever forget the password just delete the file at:
+`~/.config/r-keyring/ecmwfr.keyring` and re-enter all your credentials.
