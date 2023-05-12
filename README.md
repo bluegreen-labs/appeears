@@ -3,18 +3,16 @@
 [![R-CMD-check](https://github.com/bluegreen-labs/appeears/workflows/R-CMD-check/badge.svg)](https://github.com/bluegreen-labs/appeears/actions)
 [![codecov](https://codecov.io/gh/bluegreen-labs/ecmwfr/branch/master/graph/badge.svg)](https://codecov.io/gh/bluegreen-labs/ecmwfr)
 
-Programmatic interface to the [NASA AppEEARS API](https://appeears.earthdatacloud.nasa.gov/) services. Where "The Application for Extracting and Exploring Analysis Ready Samples (AρρEEARS) offers a simple and efficient way to access and transform geospatial data from a variety of federal data archives. AρρEEARS enables users to subset geospatial datasets using spatial, temporal, and band/layer parameters."
+Programmatic interface to the [NASA AppEEARS API](https://appeears.earthdatacloud.nasa.gov/) services where, and I quote, "The Application for Extracting and Exploring Analysis Ready Samples (AρρEEARS) offers a simple and efficient way to access and transform geospatial data from a variety of federal data archives. AρρEEARS enables users to subset geospatial datasets using spatial, temporal, and band/layer parameters."
 
 ## How to cite this package in your article
 
-You can cite this package like this "we obtained data from the AppEEARS
-API using the {apprs} R package Hufkens 2023". Here is the full
+You can cite this package like this "we obtained data through the NASA AppEEARS
+API using the {appeears} R package (Hufkens 2023)". Here is the full
 bibliographic reference to include in your reference list (don't forget
 to update the 'last accessed' date):
 
-> Hufkens, K. (2019). apprs:
-> Programmatic interface to the NASA AppEEARS API. 
-> Zenodo. <http://doi.org/10.5281/zenodo.xxx>.
+> Hufkens, K. (2023). appeears: Programmatic interface to the NASA AppEEARS API. Zenodo. <http://doi.org/10.5281/zenodo.xxx>.
 
 ## Installation
 
@@ -25,8 +23,8 @@ commands:
 
 ``` r
 if(!require(remotes)){install.packages("remotes")}
-remotes::install_github("bluegreen-labs/apprs")
-library("apprs")
+remotes::install_github("bluegreen-labs/appeears")
+library("appeears")
 ```
 
 Vignettes are not rendered by default, if you want to include additional
@@ -34,8 +32,8 @@ documentation please use:
 
 ``` r
 if(!require(remotes)){install.packages("remotes")}
-remotes::install_github("bluegreen-labs/apprs", build_vignettes = TRUE)
-library("apprs")
+remotes::install_github("bluegreen-labs/appeears", build_vignettes = TRUE)
+library("appeears")
 ```
 
 ## Use
@@ -48,13 +46,13 @@ security issues when sharing scripts on github or otherwise.
 
 ``` r
 # set a key to the keychain
-apprs_set_key(
+rs_set_key(
   user = "earth_data_user",
   password = "XXXXXXXXXXXXXXXXXXXXXX"
   )
 
 # you can retrieve the password using
-apprs_get_key(user = "earth_data_user")
+rs_get_key(user = "earth_data_user")
 
 # the output should be the key you provided
 # "XXXXXXXXXXXXXXXXXXXXXX"
@@ -63,15 +61,15 @@ apprs_get_key(user = "earth_data_user")
 Downloads are managed using a Bearer/session token. This token is valid for 48 hours,
 after which it will expire and you will need to request a new one. Although downloads
 are managed using the user (keychain) details only, you can request the current token
-using `apprs_login()`, while `apprs_logout()` will explicitly invalidate the current
+using `rs_login()`, while `rs_logout()` will explicitly invalidate the current
 session token.
 
 ```r
 # request the current token
-token <- apprs_login(user = "earth_data_user")
+token <- rs_login(user = "earth_data_user")
 
 # invalidate the current session
-apprs_logout(token)
+rs_logout(token)
 ```
 
 ### Point based data requests
@@ -96,9 +94,9 @@ to create separate tasks.
 
 Finally the `product` and `layer` columns denote the 
 remote sensing product and particular layer to download.
-A full list of products can be queried using `apprs_products()`,
+A full list of products can be queried using `rs_products()`,
 while the layers of a particular product can be listed
-using `apprs_layers()`. Note that the product needs to be
+using `rs_layers()`. Note that the product needs to be
 specified using the full product name, including the version
 of the product (as stored in the `ProductAndVersion` field).
 
@@ -107,13 +105,13 @@ worked example is provided in the vignettes.
 
 ```r
 # Load the library
-library(apprs)
+library(appeears)
 
 # list all products
-apprs_products()
+rs_products()
 
 # list layers of the MOD11A2.061 product
-apprs_layers("MOD11A2.061")
+rs_layers("MOD11A2.061")
 
 # specifiy a task/request as a
 # data frame
@@ -129,10 +127,10 @@ df <- data.frame(
 )
 
 # build a proper JSON query
-task <- apprs_build_task(df = df)
+task <- rs_build_task(df = df)
 
 # request the task to be executed
-apprs_request(
+rs_request(
   request = task,
   user = "earth_data_user",
   transfer = TRUE,
@@ -156,6 +154,6 @@ options(keyring_backend="file")
 
 You will be asked to provide a password to encrypt the keyring with.
 Upon the start of each session you will be asked to provide this
-password, unlocking all `apprs` credentials for this session. Should
+password, unlocking all `appeears` credentials for this session. Should
 you ever forget the password just delete the file at:
 `~/.config/r-keyring/ecmwfr.keyring` and re-enter all your credentials.
