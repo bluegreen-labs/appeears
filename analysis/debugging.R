@@ -7,10 +7,10 @@ options(keyring_backend = "file")
 df <- data.frame(
   task = "grand canyon",
   subtask = c("test1", "test2"),
-  lat = c(36.206228,36.206228),
-  lon = c(-112.127134,-112.127134),
+  lat = c(36.206228, 36.206228),
+  lon = c(-112.127134, -112.127134),
   start = c("2018-01-01","2018-01-01"),
-  end = c("2018-03-30","2018-03-30"),
+  end = c("2018-01-15","2018-01-15"),
   product = c("MOD11A2.061","MCD12Q2.006"),
   layer = c("LST_Day_1km","Dormancy")
 )
