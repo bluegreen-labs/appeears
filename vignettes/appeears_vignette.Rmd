@@ -43,7 +43,7 @@ rs_set_key(
   )
 
 # request a token (valid for 48h)
-token <- app_login(user)
+token <- rs_login(user)
 ```
 
 ## Listing available data
