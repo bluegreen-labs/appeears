@@ -141,6 +141,7 @@ rs_request(
 
 ### Area based data requests
 
+Under development... contributions to `rs_build_task()` are welcome
 
 ## File based keychains
 
