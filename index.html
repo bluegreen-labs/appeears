@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface to AppEARS NASA Web Services • apprs</title>
+<title>Interface to AppEARS NASA Web Services • appeears</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png">
@@ -45,7 +45,7 @@
         <a class="external-link hidden-md hidden-lg" href="https://bluegreenlabs.org">
           <img src="https://bluegreenlabs.org/img/logo.png" id="hexlogo" alt="bluegreen labs"></a>
         <a class="navbar-brand" href="index.html">
-           <i>apprs <small>v0.9</small></i>
+           <i>appeears <small>v0.9</small></i>
         </a>
       </div>
     </div>
@@ -71,7 +71,7 @@
   <a href="news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/bluegreen-labs/apprs/" class="external-link">
+  <a href="https://github.com/bluegreen-labs/appeears/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -111,12 +111,12 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span><span class="op">}</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"bluegreen-labs/apprs"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bluegreen-labs/apprs" class="external-link">"apprs"</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"apprs"</span><span class="op">)</span></span></code></pre></div>
 <p>Vignettes are not rendered by default, if you want to include additional documentation please use:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span><span class="op">}</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"bluegreen-labs/apprs"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bluegreen-labs/apprs" class="external-link">"apprs"</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"apprs"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -128,23 +128,23 @@
 <p>Before starting save the provided NASA Earth Data password to your local keychain. The package does not allow you to use your password inline in scripts to limit security issues when sharing scripts on github or otherwise.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set a key to the keychain</span></span>
-<span><span class="fu"><a href="reference/apprs_set_key.html">apprs_set_key</a></span><span class="op">(</span></span>
+<span><span class="fu">apprs_set_key</span><span class="op">(</span></span>
 <span>  user <span class="op">=</span> <span class="st">"earth_data_user"</span>,</span>
 <span>  password <span class="op">=</span> <span class="st">"XXXXXXXXXXXXXXXXXXXXXX"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># you can retrieve the password using</span></span>
-<span><span class="fu"><a href="reference/apprs_get_key.html">apprs_get_key</a></span><span class="op">(</span>user <span class="op">=</span> <span class="st">"earth_data_user"</span><span class="op">)</span></span>
+<span><span class="fu">apprs_get_key</span><span class="op">(</span>user <span class="op">=</span> <span class="st">"earth_data_user"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># the output should be the key you provided</span></span>
 <span><span class="co"># "XXXXXXXXXXXXXXXXXXXXXX"</span></span></code></pre></div>
-<p>Downloads are managed using a Bearer/session token. This token is valid for 48 hours, after which it will expire and you will need to request a new one. Although downloads are managed using the user (keychain) details only, you can request the current token using <code><a href="reference/apprs_login.html">apprs_login()</a></code>, while <code><a href="reference/apprs_logout.html">apprs_logout()</a></code> will explicitly invalidate the current session token.</p>
+<p>Downloads are managed using a Bearer/session token. This token is valid for 48 hours, after which it will expire and you will need to request a new one. Although downloads are managed using the user (keychain) details only, you can request the current token using <code>apprs_login()</code>, while <code>apprs_logout()</code> will explicitly invalidate the current session token.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># request the current token</span></span>
-<span><span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/apprs_login.html">apprs_login</a></span><span class="op">(</span>user <span class="op">=</span> <span class="st">"earth_data_user"</span><span class="op">)</span></span>
+<span><span class="va">token</span> <span class="op">&lt;-</span> <span class="fu">apprs_login</span><span class="op">(</span>user <span class="op">=</span> <span class="st">"earth_data_user"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># invalidate the current session</span></span>
-<span><span class="fu"><a href="reference/apprs_logout.html">apprs_logout</a></span><span class="op">(</span><span class="va">token</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">apprs_logout</span><span class="op">(</span><span class="va">token</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="point-based-data-requests">Point based data requests<a class="anchor" aria-label="anchor" href="#point-based-data-requests"></a>
@@ -152,17 +152,17 @@
 <p>All point based queries are made by first creating a tidy data frame with the desired products and layers to query.</p>
 <p>In this data frame <code>task</code> specifies the overall name of the task to run (this prefix will be used to name the final downloaded files). The <code>subtask</code> denotes the various locations and or products you want to query. As such, you can query multiple locations in the same larger task, avoiding multiple queries to the API.</p>
 <p>The <code>latitude</code> and <code>longitude</code> fields specify geographic coordinates of query locations, while <code>start</code> and <code>end</code> columns define the range of the data queried. Note that the date range will cover the maximum date range across all <code>subtasks</code>. If date ranges vary widely it is adviced to create separate tasks.</p>
-<p>Finally the <code>product</code> and <code>layer</code> columns denote the remote sensing product and particular layer to download. A full list of products can be queried using <code><a href="reference/apprs_products.html">apprs_products()</a></code>, while the layers of a particular product can be listed using <code><a href="reference/apprs_layers.html">apprs_layers()</a></code>. Note that the product needs to be specified using the full product name, including the version of the product (as stored in the <code>ProductAndVersion</code> field).</p>
+<p>Finally the <code>product</code> and <code>layer</code> columns denote the remote sensing product and particular layer to download. A full list of products can be queried using <code>apprs_products()</code>, while the layers of a particular product can be listed using <code>apprs_layers()</code>. Note that the product needs to be specified using the full product name, including the version of the product (as stored in the <code>ProductAndVersion</code> field).</p>
 <p>An abbreviated workflow can be found below, while a full worked example is provided in the vignettes.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load the library</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bluegreen-labs/apprs" class="external-link">apprs</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">apprs</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># list all products</span></span>
-<span><span class="fu"><a href="reference/apprs_products.html">apprs_products</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">apprs_products</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># list layers of the MOD11A2.061 product</span></span>
-<span><span class="fu"><a href="reference/apprs_layers.html">apprs_layers</a></span><span class="op">(</span><span class="st">"MOD11A2.061"</span><span class="op">)</span></span>
+<span><span class="fu">apprs_layers</span><span class="op">(</span><span class="st">"MOD11A2.061"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># specifiy a task/request as a</span></span>
 <span><span class="co"># data frame</span></span>
@@ -178,10 +178,10 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># build a proper JSON query</span></span>
-<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/apprs_build_task.html">apprs_build_task</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
+<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu">apprs_build_task</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># request the task to be executed</span></span>
-<span><span class="fu"><a href="reference/apprs_request.html">apprs_request</a></span><span class="op">(</span></span>
+<span><span class="fu">apprs_request</span><span class="op">(</span></span>
 <span>  request <span class="op">=</span> <span class="va">task</span>,</span>
 <span>  user <span class="op">=</span> <span class="st">"earth_data_user"</span>,</span>
 <span>  transfer <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -209,8 +209,8 @@
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/bluegreen-labs/apprs/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/bluegreen-labs/apprs/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/bluegreen-labs/appeears/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/bluegreen-labs/appeears/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -225,7 +225,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing apprs</a></li>
+<li><a href="authors.html#citation">Citing appeears</a></li>
 </ul>
 </div>
 

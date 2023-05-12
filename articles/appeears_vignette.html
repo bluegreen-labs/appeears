@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AppEEARS functionality • apprs</title>
+<title>AppEEARS functionality • appeears</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- ropensci --><link href="../bglabs.css" rel="stylesheet">
 <meta property="og:title" content="AppEEARS functionality">
-<meta property="og:description" content="apprs">
+<meta property="og:description" content="appeears">
 <meta name="twitter:card" content="summary">
 </head>
 <body data-spy="scroll" data-target="#toc">
@@ -44,7 +44,7 @@
         <a class="external-link hidden-md hidden-lg" href="https://bluegreenlabs.org">
           <img src="https://bluegreenlabs.org/img/logo.png" id="hexlogo" alt="bluegreen labs"></a>
         <a class="navbar-brand" href="../index.html">
-           <i>apprs <small>v0.9</small></i>
+           <i>appeears <small>v0.9</small></i>
         </a>
       </div>
     </div>
@@ -70,7 +70,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/bluegreen-labs/apprs/" class="external-link">
+  <a href="https://github.com/bluegreen-labs/appeears/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -94,7 +94,7 @@ Hufkens</h4>
             
             <h4 data-toc-skip class="date">2023-05-12</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/apprs/blob/HEAD/vignettes/appeears_vignette.Rmd" class="external-link"><code>vignettes/appeears_vignette.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/appeears/blob/HEAD/vignettes/appeears_vignette.Rmd" class="external-link"><code>vignettes/appeears_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>appeears_vignette.Rmd</code></div>
 
     </div>
@@ -111,7 +111,7 @@ requests and retrieval. Don’t forget to set the system option as
 systems.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bluegreen-labs/apprs" class="external-link">"apprs"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bluegreen-labs/appeears" class="external-link">"appeears"</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># set the keyring to be a file on</span></span>
 <span><span class="co"># linux or headless systems</span></span>
@@ -119,7 +119,7 @@ systems.</p>
 <span></span>
 <span><span class="co"># store your credentials in a safe</span></span>
 <span><span class="co"># keyring (either encrypted file or dedicated keyring)</span></span>
-<span><span class="fu"><a href="../reference/apprs_set_key.html">apprs_set_key</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/rs_set_key.html">rs_set_key</a></span><span class="op">(</span></span>
 <span>  user <span class="op">=</span> <span class="st">"your_earth_data_username"</span>,</span>
 <span>  password <span class="op">=</span> <span class="st">"your_earth_data_password"</span></span>
 <span>  <span class="op">)</span></span>
@@ -131,14 +131,14 @@ systems.</p>
 <h2 id="listing-available-data">Listing available data<a class="anchor" aria-label="anchor" href="#listing-available-data"></a>
 </h2>
 <p>You can list all available products on the AppEEARS API using the
-<code><a href="../reference/apprs_products.html">apprs_products()</a></code> function. Similarly, you can list all
-available layers for a given product using <code><a href="../reference/apprs_layers.html">apprs_layers()</a></code>.
+<code>apprs_products()</code> function. Similarly, you can list all
+available layers for a given product using <code>apprs_layers()</code>.
 Note that when queryign the layers for a product you will need to use
 the field <code>ProductAndVersion</code> field, as some products are
 listed under various versions.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># list all product information</span></span>
-<span><span class="va">products</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/apprs_products.html">apprs_products</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">products</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rs_products.html">rs_products</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># print the start of all products with their versions</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">products</span><span class="op">$</span><span class="va">ProductAndVersion</span><span class="op">)</span></span>
@@ -148,7 +148,7 @@ listed under various versions.</p>
 <span></span>
 <span><span class="co"># list all layers for a particular</span></span>
 <span><span class="co"># product</span></span>
-<span><span class="va">layers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/apprs_layers.html">apprs_layers</a></span><span class="op">(</span></span>
+<span><span class="va">layers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rs_layers.html">rs_layers</a></span><span class="op">(</span></span>
 <span>  product <span class="op">=</span> <span class="st">"MCD12Q2.006"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -219,15 +219,15 @@ the following parameters. This allows for batch requests.</p>
 <span>  product <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MOD11A2.061"</span>,<span class="st">"MCD12Q2.006"</span><span class="op">)</span>,</span>
 <span>  layer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LST_Day_1km"</span>,<span class="st">"Dormancy"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>The <code><a href="../reference/apprs_build_task.html">apprs_build_task()</a></code> function converts this data frame
+<p>The <code>apprs_build_task()</code> function converts this data frame
 to a correctly structured JSON which will be used in the API call.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># convert the task to JSON and</span></span>
 <span><span class="co"># execute request</span></span>
-<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu">app_build_task</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
+<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rs_build_task.html">rs_build_task</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># request the task to be executed</span></span>
-<span><span class="fu"><a href="../reference/apprs_request.html">apprs_request</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/rs_request.html">rs_request</a></span><span class="op">(</span></span>
 <span>  request <span class="op">=</span> <span class="va">task</span>,</span>
 <span>  user <span class="op">=</span> <span class="st">"earth_data_user"</span>,</span>
 <span>  transfer <span class="op">=</span> <span class="cn">TRUE</span>,</span>
