@@ -23,7 +23,7 @@ Imports:
     getPass,
     curl,
     R6,
-    uuid
+    rstudioapi
 License: AGPL-3
 ByteCompile: true
 RoxygenNote: 7.2.3

@@ -176,3 +176,19 @@ warn_or_error <- function(..., error = FALSE) {
     warning(...)
   }
 }
+
+# Creates a script to then run as a job
+make_script <- function(call, name) {
+  script <- tempfile()
+
+  call$job_name <- NULL
+
+  lines <-
+    writeLines(paste0(
+      "library(apprs)\n",
+      name,
+      " <- ",
+      paste0(deparse(call), collapse = "")
+    ), script)
+  return(script)
+}

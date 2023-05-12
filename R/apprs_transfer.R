@@ -84,7 +84,7 @@ apprs_transfer <- function(
     # write the file to disk using the destination directory and file name
     response <- httr::GET(
       file.path(apprs_server(), "bundle/", task, file$file_id),
-      write_disk(temp_file, overwrite = TRUE),
+      httr::write_disk(temp_file, overwrite = TRUE),
       httr::add_headers(
         Authorization = paste("Bearer", token)
       )
@@ -122,12 +122,7 @@ apprs_transfer <- function(
 
   # trap (http) errors on download, return a general error statement
   if (all(unlist(downloaded))) {
-    if (fail_is_error) {
-      stop("Some downloads failed - consider redownloading")
-    } else {
       warning("Some downloads failed - consider redownloading")
-      return(self)
-    }
   }
 
   # return state variable

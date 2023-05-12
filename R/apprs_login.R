@@ -5,7 +5,7 @@
 #'
 #' @param user AppEEARS username
 #'
-#' @return
+#' @return returns an AppEEARS session (bearer) token
 #' @export
 
 apprs_login <- function(
@@ -47,7 +47,7 @@ apprs_login <- function(
 #'
 #' @param token a Bearer token as returned by apprs_login()
 #'
-#' @return
+#' @return returns if the session has closed TRUE/FALSE
 #' @export
 
 apprs_logout <- function(
@@ -65,7 +65,11 @@ apprs_logout <- function(
   if(httr::status_code(ct) < 400) {
     message("logged out of session ...")
   } else {
-    stop("Failed to login")
+    warning("Failed to login")
+    return(FALSE)
   }
+
+  # return NULL if successful
+  return(TRUE)
 }
 

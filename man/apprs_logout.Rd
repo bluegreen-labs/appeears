@@ -9,6 +9,9 @@ apprs_logout(token)
 \arguments{
 \item{token}{a Bearer token as returned by apprs_login()}
 }
+\value{
+returns if the session has closed TRUE/FALSE
+}
 \description{
 Given a token it will log out / delete this
 token, invalidating it.

@@ -9,6 +9,9 @@ apprs_login(user)
 \arguments{
 \item{user}{AppEEARS username}
 }
+\value{
+returns an AppEEARS session (bearer) token
+}
 \description{
 Returns a valid token for a session if
 successful otherwise fails with an error (stop())
