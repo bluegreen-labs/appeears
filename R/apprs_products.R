@@ -7,6 +7,7 @@
 #' \code{\link[apprs]{apprs_transfer}}
 #' \code{\link[apprs]{apprs_request}}
 #'
+#' @importFrom memoise memoise
 #' @export
 #' @author Koen Hufkens
 #' @examples

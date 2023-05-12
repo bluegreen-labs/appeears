@@ -4,6 +4,8 @@
 #' in full of when providing the di
 #'
 #' @param user username used to sign up
+#' @param task_id task for which to list the status (if missing
+#'  all tasks are listed)
 #' @return returns a data frame with the AppEEARS tasks
 #'
 #' @export

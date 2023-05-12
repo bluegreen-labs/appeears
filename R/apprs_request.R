@@ -15,7 +15,7 @@
 #' @param job_name optional name to use as an RStudio job and as output variable
 #'  name. It has to be a syntactically valid name.
 #' @param verbose show feedback on processing
-#' @import uuid
+#' @import R6
 #'
 #' @return the path of the downloaded (requested file) or the an R6 object
 #' with download/transfer information
@@ -26,30 +26,30 @@
 #' @examples
 #'
 #' \dontrun{
-#' # set key
-#' apprs_set_key(user = "test@mail.com", key = "123")
+#' # specifiy a task/request as a
+#' # data frame
+#' df <- data.frame(
+#'  task = "grand canyon",
+#'  subtask = c("test1", "test2"),
+#'  latitude = c(36.206228, 36.206228),
+#'  longitude = c(-112.127134, -112.127134),
+#'  start = c("2018-01-01","2018-01-01"),
+#'  end = c("2018-01-15","2018-01-15"),
+#'  product = c("MOD11A2.061","MCD12Q2.006"),
+#'  layer = c("LST_Day_1km","Dormancy")
+#')
 #'
-#' request <- list(stream = "oper",
-#'    levtype = "sfc",
-#'    param = "167.128",
-#'    dataset = "interim",
-#'    step = "0",
-#'    grid = "0.75/0.75",
-#'    time = "00",
-#'    date = "2014-07-01/to/2014-07-02",
-#'    type = "an",
-#'    class = "ei",
-#'    area = "50/10/51/11",
-#'    format = "netcdf",
-#'    target = "tmp.nc")
+#' # build a proper JSON query
+#' task <- apprs_build_task(df = df)
 #'
-#' # demo query
-#' apprs_request(request = request, user = "test@mail.com")
-#'
-#' # Run as an RStudio Job. When finished, will create a
-#' # variable named "test" in your environment with the path to
-#' # the downloaded file.
-#' apprs_request(request = request, user = "test@mail.com", job_name = "test")
+#' # request the task to be executed
+#' apprs_request(
+#'  request = task,
+#'  user = "earth_data_user",
+#'  transfer = TRUE,
+#'  path = "~/some_path",
+#'  verbose = TRUE
+#')
 #'}
 
 apprs_request <- function(

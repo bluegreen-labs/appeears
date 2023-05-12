@@ -3,6 +3,7 @@
 #' Returns a data frame of all data ready for download as one bundle
 #'
 #' @param user username used to sign up
+#' @param task_id task id for which to return the file download bundle
 #' @return returns a nested list of files to download
 #'
 #' @export

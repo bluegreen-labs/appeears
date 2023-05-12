@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+```{r setup}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 # load the library
 library(ncdf4)
 library(terra)
-library(maps)
+library(apprs)
 
 # load demo data
 ```
@@ -72,19 +72,30 @@ requests for data are generated from structured data frames, listing the followi
 
 ```{r eval = FALSE}
 df <- data.frame(
-  task = c("grand canyon", "grand canyon"),
+  task = "grand canyon",
   subtask = c("test1", "test2"),
-  lat = c(36.206228, 37.289327),
-  lon = c(-112.127134, -112.973760),
+  lat = c(36.206228, 36.206228),
+  lon = c(-112.127134, -112.127134),
   start = c("2018-01-01","2018-01-01"),
-  end = c("2018-12-31","2018-12-31"),
-  product = c("MOD11A2.061","MOD11A2.061"),
-  layer = c("LST_Day_1km","LST_Night_1km")
+  end = c("2018-01-15","2018-01-15"),
+  product = c("MOD11A2.061","MCD12Q2.006"),
+  layer = c("LST_Day_1km","Dormancy")
 )
 ```
 
 The `apprs_build_task()` function converts this data frame to a correctly structured JSON which will be used in the API call.
 
 ```{r eval = FALSE}
+# convert the task to JSON and
+# execute request
 task <- app_build_task(df = df)
+
+# request the task to be executed
+apprs_request(
+  request = task,
+  user = "earth_data_user",
+  transfer = TRUE,
+  path = tempdir(),
+  verbose = TRUE
+)
 ```
