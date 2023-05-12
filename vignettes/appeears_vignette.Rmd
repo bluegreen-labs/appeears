@@ -74,8 +74,8 @@ requests for data are generated from structured data frames, listing the followi
 df <- data.frame(
   task = "grand canyon",
   subtask = c("test1", "test2"),
-  lat = c(36.206228, 36.206228),
-  lon = c(-112.127134, -112.127134),
+  latitude = c(36.206228, 36.206228),
+  longitude = c(-112.127134, -112.127134),
   start = c("2018-01-01","2018-01-01"),
   end = c("2018-01-15","2018-01-15"),
   product = c("MOD11A2.061","MCD12Q2.006"),
