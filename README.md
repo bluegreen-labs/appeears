@@ -134,9 +134,9 @@ task <- apprs_build_task(df = df)
 # request the task to be executed
 apprs_request(
   request = task,
-  user = "khufkens",
+  user = "earth_data_user",
   transfer = TRUE,
-  path = "~/tmp/test",
+  path = "~/some_path",
   verbose = TRUE
 )
 ````
