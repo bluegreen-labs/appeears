@@ -171,6 +171,7 @@ apprs_service <- R6::R6Class("apprs_service",
 
         # log if the file was successfully downloaded
         if (httr::http_error(response)) {
+          message(sprintf("- download of %s failed", temp_file))
           return(FALSE)
         } else {
 
@@ -189,6 +190,8 @@ apprs_service <- R6::R6Class("apprs_service",
             if (private$verbose) {
               message(sprintf("- moved temporary files to -> %s", final_file))
             }
+          } else {
+            message(sprintf("- files are temporary stored in -> %s", temp_file))
           }
 
           return(TRUE)
@@ -196,7 +199,7 @@ apprs_service <- R6::R6Class("apprs_service",
       })
 
       # trap (http) errors on download, return a general error statement
-      if (all(unlist(downloaded))) {
+      if (!all(unlist(downloaded))) {
         if (fail_is_error) {
           stop("Some downloads failed - consider redownloading")
         } else {
