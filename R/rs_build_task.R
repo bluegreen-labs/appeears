@@ -29,9 +29,9 @@ rs_build_task <- function(
 
     # missing roi -> point extraction
     if (missing(roi)) {
-        taskType <- "point"
+        type <- "point"
     } else {
-        taskType <- "area"
+        type <- "area"
     }
 
     if(!("start" %in% cols & "end" %in% cols)){
@@ -57,28 +57,65 @@ rs_build_task <- function(
         layer = df$layer
     )
 
-    # combine coordinates
-    coordinates <- data.frame(
-        id = as.character(1:nrow(df)),
-        longitude = df$longitude,
-        latitude = df$latitude,
-        category = df$subtask
+    if(!missing(roi)){
+        if(inherits(roi, "sf", which = FALSE)) {
+
+            # convert simple feature to geojson
+            # and then to list
+            geojson_as_list <- roi |>
+                #st_geometry() |> # dorp attributes
+                st_transform(crs = "EPSG:4326") |>
+                geojsonio::geojson_json() |>
+                geojson_list(geometry = "Feature") |>
+                unclass()
+
+        } else if (
+            inherits(roi, "SpatRast", which = FALSE)
+        ) {
+            # convert to sf bounding box
+            # then to geojson list
+        } else {
+            stop("You region of interest is not of type 'sf' or 'SpatRaster")
+        }
+
+        # set output format
+        output <- list("projection" = "geographic")
+        output$format$type <- "geotiff"
+
+        # combine all task info fields
+        task_info <- list(
+            "dates" = date,
+            "layers" = layers,
+            "output"= output,
+            "geo" = geojson_as_list
+            )
+
+    } else {
+        # combine coordinates
+        coordinates <- data.frame(
+            id = as.character(1:nrow(df)),
+            longitude = df$longitude,
+            latitude = df$latitude,
+            category = df$subtask
         )
 
-    # list task info
-    task_info <- list(
-        "dates" = date,
-        "layers" = layers,
-        "coordinates" = coordinates
+        # list task info
+        task_info <- list(
+            "dates" = date,
+            "layers" = layers,
+            "coordinates" = coordinates
         )
+    }
 
+    # combine all bits to form a full task
     task <- list(
         "params" = task_info,
         "task_name" = unique(df$task),
-        "task_type" = taskType
-        )
+        "task_type" = type
+    )
 
-    task_json <- jsonlite::toJSON(task,auto_unbox = TRUE)
+    # convert to proper JSON format
+    task_json <- jsonlite::toJSON(task, auto_unbox = TRUE)
 
     return(task_json)
 }

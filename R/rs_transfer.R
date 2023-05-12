@@ -76,10 +76,10 @@ rs_transfer <- function(
   downloaded <- lapply(ct$files, function(file){
 
     # set temp file name
-    temp_file <- file.path(tempdir(), file$file_name)
+    temp_file <- file.path(tempdir(), basename(file$file_name))
 
     # set final file name
-    final_file <- file.path(path, file$file_name)
+    final_file <- file.path(path, basename(file$file_name))
 
     # write the file to disk using the destination directory and file name
     response <- httr::GET(
