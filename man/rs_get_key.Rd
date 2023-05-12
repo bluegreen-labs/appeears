@@ -2,7 +2,7 @@
 % Please edit documentation in R/rs_get_key.R
 \name{rs_get_key}
 \alias{rs_get_key}
-\title{Store username and password}
+\title{Retrieve NASA Earth Data password}
 \usage{
 rs_get_key(user)
 }

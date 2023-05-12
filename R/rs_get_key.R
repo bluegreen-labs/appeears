@@ -1,4 +1,4 @@
-#' Store username and password
+#' Retrieve NASA Earth Data password
 #'
 #' Returns you token set by \code{\link[appeears]{rs_set_key}}
 #'

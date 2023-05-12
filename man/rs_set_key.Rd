@@ -2,7 +2,7 @@
 % Please edit documentation in R/rs_set_key.R
 \name{rs_set_key}
 \alias{rs_set_key}
-\title{Set AppEEARS password}
+\title{Set NASA Earth Data password}
 \usage{
 rs_set_key(user, password)
 }

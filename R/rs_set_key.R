@@ -1,4 +1,4 @@
-#' Set AppEEARS password
+#' Set NASA Earth Data password
 #'
 #' Saves the token to your local keychain under
 #' a service called "appeears".
