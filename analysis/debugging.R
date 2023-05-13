@@ -10,14 +10,14 @@ user <- "khufkens"
 options(keyring_backend = "file")
 
 df <- data.frame(
-  task = "grand canyon",
-  subtask = c("test2"),
+  task = "task",
+  subtask = c("sub_task"),
   latitude = c(36.206228),
   longitude = c(-112.127134),
   start = c("2018-01-01"),
   end = c("2018-01-15"),
   product = c("MCD12Q2.006"),
-  layer = c("Dormancy")
+  layer = c("Greenup")
 )
 
 # load the north carolina demo data
