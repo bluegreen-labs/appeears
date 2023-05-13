@@ -76,7 +76,7 @@ box for an sf or SpatRaster object will be used instead.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rs_build_task</span><span class="op">(</span><span class="va">df</span>, <span class="va">roi</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rs_build_task</span><span class="op">(</span><span class="va">df</span>, <span class="va">roi</span>, format <span class="op">=</span> <span class="st">"netcdf4"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -88,8 +88,13 @@ latitude, longitude, start (start) and end (end) date.</p></dd>
 
 <dt>roi</dt>
 <dd><p>a region of interest defined by a SpatRaster or sf object,
-the roi will override any point based data provided as latittude/longitude
+the roi will override any point based data provided as latittude-longitude
 coordinates in the data frame</p></dd>
+
+
+<dt>format</dt>
+<dd><p>file format of the downloaded data either geotiff or
+netcdf4 (the default)</p></dd>
 
 </dl></div>
     <div id="value">
@@ -99,6 +104,28 @@ coordinates in the data frame</p></dd>
 <p>a valid AppEEARS JSON formatted task</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># define a task as a tidy data frame</span></span></span>
+<span class="r-in"><span><span class="co"># multiple subtasks can be provided</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>task <span class="op">=</span> <span class="st">"task_name"</span>,</span></span>
+<span class="r-in"><span>subtask <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub_task"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>latitude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">36.206228</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>longitude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">112.127134</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2018-01-01"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2018-01-15"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>product <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MCD12Q2.006"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>layer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Greenup"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># build a task</span></span></span>
+<span class="r-in"><span><span class="fu">rs_build_task</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

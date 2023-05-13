@@ -167,14 +167,14 @@
 <span><span class="co"># specifiy a task/request as a</span></span>
 <span><span class="co"># data frame</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  task <span class="op">=</span> <span class="st">"grand canyon"</span>,</span>
-<span>  subtask <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"test1"</span>, <span class="st">"test2"</span><span class="op">)</span>,</span>
+<span>  task <span class="op">=</span> <span class="st">"task"</span>,</span>
+<span>  subtask <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sub_task_1"</span>, <span class="st">"sub_task_2"</span><span class="op">)</span>,</span>
 <span>  latitude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">36.206228</span>, <span class="fl">36.206228</span><span class="op">)</span>,</span>
 <span>  longitude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">112.127134</span>, <span class="op">-</span><span class="fl">112.127134</span><span class="op">)</span>,</span>
 <span>  start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2018-01-01"</span>,<span class="st">"2018-01-01"</span><span class="op">)</span>,</span>
 <span>  end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2018-01-15"</span>,<span class="st">"2018-01-15"</span><span class="op">)</span>,</span>
 <span>  product <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MOD11A2.061"</span>,<span class="st">"MCD12Q2.006"</span><span class="op">)</span>,</span>
-<span>  layer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LST_Day_1km"</span>,<span class="st">"Dormancy"</span><span class="op">)</span></span>
+<span>  layer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LST_Day_1km"</span>,<span class="st">"Greenup"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># build a proper JSON query</span></span>
@@ -192,14 +192,78 @@
 <div class="section level3">
 <h3 id="area-based-data-requests">Area based data requests<a class="anchor" aria-label="anchor" href="#area-based-data-requests"></a>
 </h3>
-<p>Under development… contributions to <code><a href="reference/rs_build_task.html">rs_build_task()</a></code> are welcome</p>
+<p>You can select a region-of-interest (ROI) instead of point based data, using both <code>sf</code> polygons or the extent (bounding box) of an existing <code>terra</code> <code>SpatRaster</code> object. Both methods follow the same workflow.</p>
+<div class="section level4">
+<h4 id="sf-polygon-roi">{sf} polygon ROI<a class="anchor" aria-label="anchor" href="#sf-polygon-roi"></a>
+</h4>
+<p>When using an <code>sf</code> object, provide it to the <code>roi</code> argument of the <code><a href="reference/rs_build_task.html">rs_build_task()</a></code> function. The <code>sf</code> object must be of class <code>sf</code> not <code>sfc</code> when required convert <code>sfc</code> data using <code><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf()</a></code>.</p>
+<p>Note however that at the time only as simple polygon is supported. Multiple polygons in the same <code>sf</code> object might result in failure to query the data.</p>
+<p>Furthermore, no other means will be provided to specify a region-of-interest. As such, you will always have to query a region-of-interest using an <code>sf</code> object. This ensures consistency across queries and allows for rapid visualization of a region of interest (in contrast to a simple list of e.g. top-left, bottom-right coordinates).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load the required libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load the north carolina demo data</span></span>
+<span><span class="co"># included in the {sf} package</span></span>
+<span><span class="co"># and only retain Camden county</span></span>
+<span><span class="va">roi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"gpkg/nc.gpkg"</span>, package<span class="op">=</span><span class="st">"sf"</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">NAME</span> <span class="op">==</span> <span class="st">"Camden"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># build the area based request/task</span></span>
+<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rs_build_task.html">rs_build_task</a></span><span class="op">(</span></span>
+<span>  df <span class="op">=</span> <span class="va">df</span>,</span>
+<span>  roi <span class="op">=</span> <span class="va">roi</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">"geotiff"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># request the task to be executed</span></span>
+<span><span class="fu"><a href="reference/rs_request.html">rs_request</a></span><span class="op">(</span></span>
+<span>  request <span class="op">=</span> <span class="va">task</span>,</span>
+<span>  user <span class="op">=</span> <span class="st">"earth_data_user"</span>,</span>
+<span>  transfer <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  path <span class="op">=</span> <span class="st">"~/some_path"</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="terra-spatraster-roi">{terra} SpatRaster ROI<a class="anchor" aria-label="anchor" href="#terra-spatraster-roi"></a>
+</h4>
+<p>The <code>terra</code> based region-of-interest workflow is similar to that of <code>sf</code> polygon based queries. One only has to provide a <code>SpatRaster</code> as an <code>roi</code> argument in <code><a href="reference/rs_build_task.html">rs_build_task()</a></code> to query a region of the same extent as the <code>SpatRaster</code>. The use case for this functionality is obvious, creating a quick way to sample new data for an existing data set (using the same coverage).</p>
+<p>Note that unlike the <code>sf</code> method a bounding box is used and masked data is ignored (the full extent is downloaded and masking will have to be repeated afterwards).</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load the required libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create a SpatRaster ROI from the terra demo file</span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"ex/elev.tif"</span>, package<span class="op">=</span><span class="st">"terra"</span><span class="op">)</span></span>
+<span><span class="va">roi</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># build the area based request/task</span></span>
+<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rs_build_task.html">rs_build_task</a></span><span class="op">(</span></span>
+<span>  df <span class="op">=</span> <span class="va">df</span>,</span>
+<span>  roi <span class="op">=</span> <span class="va">roi</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">"geotiff"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># request the task to be executed</span></span>
+<span><span class="fu"><a href="reference/rs_request.html">rs_request</a></span><span class="op">(</span></span>
+<span>  request <span class="op">=</span> <span class="va">task</span>,</span>
+<span>  user <span class="op">=</span> <span class="st">"earth_data_user"</span>,</span>
+<span>  transfer <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  path <span class="op">=</span> <span class="st">"~/some_path"</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="file-based-keychains">File based keychains<a class="anchor" aria-label="anchor" href="#file-based-keychains"></a>
 </h2>
 <p>On linux you can opt to use a file based keyring, instead of a GUI based keyring manager. This is helpful for headless setups such as servers. For this option to work linux users must set an environmental option.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>keyring_backend<span class="op">=</span><span class="st">"file"</span><span class="op">)</span></span></code></pre></div>
 <p>You will be asked to provide a password to encrypt the keyring with. Upon the start of each session you will be asked to provide this password, unlocking all <code>appeears</code> credentials for this session. Should you ever forget the password just delete the file at: <code>~/.config/r-keyring/ecmwfr.keyring</code> and re-enter all your credentials.</p>
 </div>
