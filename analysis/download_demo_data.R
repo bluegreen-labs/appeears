@@ -1,23 +1,22 @@
-# Example workflows / scratchpad
+# Download demo data for inst/extdata
 library(appeears)
-library(sf)
-library(dplyr)
-library(geojsonio)
-library(geojson)
-library(terra)
 
 user <- "khufkens"
 options(keyring_backend = "file")
 
 df <- data.frame(
-  task = "task",
-  subtask = c("sub_task"),
-  latitude = c(36.206228),
-  longitude = c(-112.127134),
-  start = c("2018-01-01"),
-  end = c("2018-01-15"),
-  product = c("MCD12Q2.006"),
-  layer = c("Greenup")
+  task = "time_series",
+  subtask = "US-Ha1",
+  latitude = 42.5378,
+  longitude = -72.1715,
+  start = "2010-01-01",
+  end = "2010-12-31",
+  product = "MCD43A4.061",
+  layer = c("Nadir_Reflectance_Band3","Nadir_Reflectance_Band4")
+)
+
+task <- rs_build_task(
+  df = df
 )
 
 # load the north carolina demo data
@@ -44,11 +43,6 @@ task_roi_2 <- rs_build_task(
   df = df,
   roi = roi,
   format = "geotiff"
-)
-
-df$task <- "point"
-task <- rs_build_task(
-  df = df
 )
 
 rs_request(
