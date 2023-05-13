@@ -123,7 +123,7 @@ rs_transfer <- function(
   })
 
   # trap (http) errors on download, return a general error statement
-  if (all(unlist(downloaded))) {
+  if (!all(unlist(downloaded))) {
       warning("Some downloads failed - consider redownloading")
   }
 
