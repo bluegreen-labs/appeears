@@ -11,13 +11,16 @@
 #' @param roi a region of interest defined by a SpatRaster or sf object,
 #' the roi will override any point based data provided as latittude/longitude
 #' coordinates in the data frame
+#' @param format file format of the downloaded data either geotiff or
+#'  netcdf4 (the default)
 #'
 #' @return a valid AppEEARS JSON formatted task
 #' @export
 
 rs_build_task <- function(
     df,
-    roi
+    roi,
+    format = "netcdf4"
     ) {
 
     # split out names of the data frame
@@ -62,32 +65,42 @@ rs_build_task <- function(
 
             # convert simple feature to geojson
             # and then to list
-            geojson_as_list <- roi |>
-                #st_geometry() |> # dorp attributes
-                st_transform(crs = "EPSG:4326") |>
+            geojson_list <- roi |>
+                st_union() |> # create one polygon
+                st_as_sf() |> # create simple feature
+                st_transform(crs = "EPSG:4326") |> # transform to geographic
                 geojsonio::geojson_json() |>
                 geojson_list(geometry = "Feature") |>
                 unclass()
 
         } else if (
-            inherits(roi, "SpatRast", which = FALSE)
+            inherits(roi, "SpatRaster", which = FALSE)
         ) {
-            # convert to sf bounding box
-            # then to geojson list
+            # convert simple feature to geojson
+            # and then to list
+            geojson_list <- roi |>
+                sf::st_bbox() |>
+                st_as_sfc() |>
+                st_as_sf() |> # must be simple feature to work
+                st_transform(crs = "EPSG:4326") |>
+                geojsonio::geojson_json() |>
+                geojson_list(geometry = "Feature") |>
+                unclass()
+
         } else {
             stop("You region of interest is not of type 'sf' or 'SpatRaster")
         }
 
         # set output format
         output <- list("projection" = "geographic")
-        output$format$type <- "geotiff"
+        output$format$type <- format
 
         # combine all task info fields
         task_info <- list(
             "dates" = date,
             "layers" = layers,
             "output"= output,
-            "geo" = geojson_as_list
+            "geo" = geojson_list
             )
 
     } else {
