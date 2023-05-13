@@ -83,27 +83,25 @@ rs_build_task <- function(
     if (inherits(roi, "sf", which = FALSE)) {
       # convert simple feature to geojson
       # and then to list
-      geojson_list <- roi |>
-        st_union() |> # create one polygon
-        st_as_sf() |> # create simple feature
-        st_transform(crs = "EPSG:4326") |> # transform to geographic
-        geojsonio::geojson_json() |>
-        geojson_list(geometry = "Feature") |>
-        unclass()
+      geojson_list <- sf::st_union(roi)
+      geojson_list <- sf::st_as_sf(geojson_list)
+      geojson_list <- sf::st_transform(geojson_list, crs = "EPSG:4326")
+      geojson_list <- geojsonio::geojson_json(geojson_list)
+      geojson_list <- geojson_list(geojson_list, geometry = "Feature")
+      geojson_list <- unclass(geojson_list)
 
     } else if (
       inherits(roi, "SpatRaster", which = FALSE)
     ) {
       # convert simple feature to geojson
       # and then to list
-      geojson_list <- roi |>
-        sf::st_bbox() |>
-        st_as_sfc() |>
-        st_as_sf() |> # must be simple feature to work
-        st_transform(crs = "EPSG:4326") |>
-        geojsonio::geojson_json() |>
-        geojson_list(geometry = "Feature") |>
-        unclass()
+      geojson_list <- sf::st_bbox(roi)
+      geojson_list <- sf::st_as_sfc(geojson_list)
+      geojson_list <- sf::st_as_sf(geojson_list)
+      geojson_list <- sf::st_transform(geojson_list, crs = "EPSG:4326")
+      geojson_list <- geojsonio::geojson_json(geojson_list)
+      geojson_list <- geojson_list(geojson_list, geometry = "Feature")
+      geojson_list <- unclass(geojson_list)
 
     } else {
       stop("You region of interest is not of type 'sf' or 'SpatRaster")

@@ -15,7 +15,7 @@ Description: Programmatic interface to the NASA AppEEARS services. Provides easy
 URL: https://github.com/bluegreen-labs/appeears
 BugReports: https://github.com/bluegreen-labs/appeears/issues
 Depends:
-    R (>= 4.2)
+    R (>= 4.0)
 Imports:
     httr,
     keyring,
@@ -24,7 +24,6 @@ Imports:
     curl,
     R6,
     sf,
-    terra,
     jsonlite,
     geojsonio,
     rstudioapi
@@ -35,6 +34,7 @@ Suggests:
     rmarkdown,
     covr,
     testthat,
+    terra,
     ncdf4,
     knitr,
     rlang,
