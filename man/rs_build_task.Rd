@@ -4,15 +4,18 @@
 \alias{rs_build_task}
 \title{Build a task request}
 \usage{
-rs_build_task(df, roi)
+rs_build_task(df, roi, format = "netcdf4")
 }
 \arguments{
 \item{df}{a data frame with task name (task), subtask name (subtask),
 latitude, longitude, start (start) and end (end) date.}
 
 \item{roi}{a region of interest defined by a SpatRaster or sf object,
-the roi will override any point based data provided as latittude/longitude
+the roi will override any point based data provided as latittude-longitude
 coordinates in the data frame}
+
+\item{format}{file format of the downloaded data either geotiff or
+netcdf4 (the default)}
 }
 \value{
 a valid AppEEARS JSON formatted task
@@ -23,4 +26,24 @@ a tidy data frame with point based sub-tasks, or when
 a region of interest (roi) is specified coordinates
 (latitude/longitude) will be ignored and a bounding
 box for an sf or SpatRaster object will be used instead.
+}
+\examples{
+
+\dontrun{
+# define a task as a tidy data frame
+# multiple subtasks can be provided
+df <- data.frame(
+task = "task_name",
+subtask = c("sub_task"),
+latitude = c(36.206228),
+longitude = c(-112.127134),
+start = c("2018-01-01"),
+end = c("2018-01-15"),
+product = c("MCD12Q2.006"),
+layer = c("Dormancy")
+)
+
+# build a task
+rs_build_task(df)
+}
 }

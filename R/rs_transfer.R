@@ -49,7 +49,7 @@ rs_transfer <- function(
 
   # get bundle
   response <- httr::GET(
-    file.path(rs_server(),"bundle", task),
+    file.path(rs_server(), "bundle", task),
     httr::add_headers(
       Authorization = paste("Bearer", token)
     )
@@ -57,7 +57,9 @@ rs_transfer <- function(
 
   # trap general http error
   if (httr::http_error(response)) {
-    stop("Your requested download is unavailable as the session expired (download > 48h old).",
+    stop(
+      "       Your requested download is unavailable as \n
+       the session expired (download > 48h old).",
          call. = FALSE
     )
   }
@@ -73,7 +75,7 @@ rs_transfer <- function(
 
   # try downloading whole bundle, log downloaded
   # state
-  downloaded <- lapply(ct$files, function(file){
+  downloaded <- lapply(ct$files, function(file) {
 
     # set temp file name
     temp_file <- file.path(tempdir(), basename(file$file_name))
@@ -99,7 +101,7 @@ rs_transfer <- function(
       # network drives in particular. Data is therefore first locally
       # buffered and then transferred to any other drive (networked / local)
 
-      if(temp_file != final_file) {
+      if (temp_file != final_file) {
         file.copy(
           temp_file,
           final_file,
