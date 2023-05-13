@@ -89,7 +89,7 @@ The `latitude` and `longitude` fields specify geographic
 coordinates of query locations, while `start` and `end`
 columns define the range of the data queried. Note that
 the date range will cover the maximum date range across
-all `subtasks`. If date ranges vary widely it is adviced
+all `subtasks`. If date ranges vary widely it is advised
 to create separate tasks.
 
 Finally the `product` and `layer` columns denote the 
@@ -100,6 +100,8 @@ using `rs_layers()`. Note that the product needs to be
 specified using the full product name, including the version
 of the product (as stored in the `ProductAndVersion` field).
 
+For point and area based queries all data are saved in a
+subdirectory of the main `path` as defined by the task name.
 An abbreviated workflow can be found below, while a full
 worked example is provided in the vignettes.
 
