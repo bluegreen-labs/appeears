@@ -116,14 +116,14 @@ rs_layers("MOD11A2.061")
 # specifiy a task/request as a
 # data frame
 df <- data.frame(
-  task = "grand canyon",
-  subtask = c("test1", "test2"),
+  task = "task",
+  subtask = c("sub_task_1", "sub_task_2"),
   latitude = c(36.206228, 36.206228),
   longitude = c(-112.127134, -112.127134),
   start = c("2018-01-01","2018-01-01"),
   end = c("2018-01-15","2018-01-15"),
   product = c("MOD11A2.061","MCD12Q2.006"),
-  layer = c("LST_Day_1km","Dormancy")
+  layer = c("LST_Day_1km","Greenup")
 )
 
 # build a proper JSON query
@@ -141,7 +141,91 @@ rs_request(
 
 ### Area based data requests
 
-Under development... contributions to `rs_build_task()` are welcome
+You can select a region-of-interest (ROI) instead of point based data,
+using both `sf` polygons or the extent (bounding box) of an existing
+`terra` `SpatRaster` object. Both methods follow the same workflow.
+
+#### {sf} polygon ROI
+
+When using an `sf` object, provide it to the `roi` argument of the
+`rs_build_task()` function. The `sf` object must be of class `sf` not `sfc`
+when required convert `sfc` data using `st_as_sf()`.
+
+Note however that at the time only as simple polygon is supported. Multiple 
+polygons in the same `sf` object might result in failure to query the data.
+
+Furthermore, no other means will be provided to specify a region-of-interest.
+As such, you will always have to query a region-of-interest using an `sf`
+object. This ensures consistency across queries and allows for rapid visualization
+of a region of interest (in contrast to a simple list of e.g. top-left,
+bottom-right coordinates).
+
+```r
+# load the required libraries
+library(sf)
+library(dplyr)
+
+# load the north carolina demo data
+# included in the {sf} package
+# and only retain Camden county
+roi <- st_read(system.file("gpkg/nc.gpkg", package="sf"), quiet = TRUE) |>
+  filter(
+    NAME == "Camden"
+  )
+
+# build the area based request/task
+task <- rs_build_task(
+  df = df,
+  roi = roi,
+  format = "geotiff"
+)
+
+# request the task to be executed
+rs_request(
+  request = task,
+  user = "earth_data_user",
+  transfer = TRUE,
+  path = "~/some_path",
+  verbose = TRUE
+)
+```
+
+#### {terra} SpatRaster ROI
+
+The `terra` based region-of-interest workflow is similar to that of `sf`
+polygon based queries. One only has to provide a `SpatRaster` as an `roi`
+argument in `rs_build_task()` to query a region of the same extent as the
+`SpatRaster`. The use case for this functionality is obvious, creating a quick
+way to sample new data for an existing data set (using the same coverage).
+
+Note that unlike the `sf` method a bounding box is used and masked data is
+ignored (the full extent is downloaded and masking will have to be repeated
+afterwards).
+
+```r
+# load the required libraries
+library(terra)
+
+# create a SpatRaster ROI from the terra demo file
+f <- system.file("ex/elev.tif", package="terra")
+roi <- terra::rast(f)
+
+# build the area based request/task
+task <- rs_build_task(
+  df = df,
+  roi = roi,
+  format = "geotiff"
+)
+
+# request the task to be executed
+rs_request(
+  request = task,
+  user = "earth_data_user",
+  transfer = TRUE,
+  path = "~/some_path",
+  verbose = TRUE
+)
+```
 
 ## File based keychains
 
