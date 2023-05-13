@@ -1,4 +1,4 @@
-# appeears 1.0
+# appeears 0.9
 
-- first release
+- draft release
 
