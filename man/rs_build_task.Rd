@@ -40,7 +40,7 @@ longitude = c(-112.127134),
 start = c("2018-01-01"),
 end = c("2018-01-15"),
 product = c("MCD12Q2.006"),
-layer = c("Dormancy")
+layer = c("Greenup")
 )
 
 # build a task
