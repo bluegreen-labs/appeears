@@ -157,8 +157,21 @@ appeears_service <- R6::R6Class("appeears_service",
         # set temp file name
         temp_file <- file.path(tempdir(), basename(file$file_name))
 
-        # set final file name
-        final_file <- file.path(private$path, basename(file$file_name))
+        # sort downloads in directories by task name
+        # mostly because of potential repeated naming
+        # of area based downloads
+        final_path <- file.path(
+          private$path,
+          # private$name # use this to use the full task id (messy)
+          jsonlite::fromJSON(private$request)$task_name
+        )
+
+        # create final path if it does not exist
+        if (!dir.exists(final_path)) {
+          dir.create(final_path)
+        }
+
+        final_file <- file.path(final_path, basename(file$file_name))
 
         # write the file to disk using the destination directory and file name
         response <- httr::GET(

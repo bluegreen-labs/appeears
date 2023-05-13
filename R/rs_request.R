@@ -103,8 +103,13 @@ rs_request <- function(
   }
 
   # check for user
-  if (missing(user)){
+  if (missing(user)) {
     stop("Missing user credentials, please provide a valid username!")
+  }
+
+  # check download path
+  if (!dir.exists(path)) {
+    stop("Invalid download path, specify a valid download location!")
   }
 
   # Create request and submit to service

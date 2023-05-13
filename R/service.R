@@ -20,7 +20,6 @@ service <- R6::R6Class("appeears_service",
     print = function(...) {
       request <- capture.output(str(private$request, 1))
       cat("Download request \n")
-      cat("  Service: ", private$service, "\n")
       cat("  Status:  ", private$status, "\n")
       cat("  Location:", if (private$downloaded) private$path else "NA", "\n")
       cat("  Request:", request, sep = "\n     ")

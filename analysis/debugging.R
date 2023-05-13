@@ -23,34 +23,54 @@ df <- data.frame(
 # load the north carolina demo data
 # included in the {sf} package
 # and only retain Camden county
-roi <- st_read(system.file("gpkg/nc.gpkg", package="sf"), quiet = TRUE) |>
+roi <- sf::st_read(system.file("gpkg/nc.gpkg", package="sf"), quiet = TRUE) |>
   filter(
     NAME == "Camden"
   )
 
-# Create a SpatRaster from a file
-f <- system.file("ex/elev.tif", package="terra")
-roi <- rast(f)
-
-source("R/rs_build_task.R")
-
-task <- rs_build_task(
+df$task <- "polygon"
+task_roi_1 <- rs_build_task(
   df = df,
   roi = roi,
   format = "geotiff"
 )
 
-print(task)
+# Create a SpatRaster from a file
+# f <- system.file("ex/elev.tif", package="terra")
+roi <- rast(f)
+df$task <- "raster"
+
+task_roi_2 <- rs_build_task(
+  df = df,
+  roi = roi,
+  format = "geotiff"
+)
+
+df$task <- "point"
+task <- rs_build_task(
+  df = df
+)
+
+rs_request(
+  request = task_roi_1,
+  user = "khufkens",
+  transfer = TRUE,
+  path = "inst/extdata/",
+  verbose = TRUE
+)
+
+rs_request(
+  request = task_roi_2,
+  user = "khufkens",
+  transfer = TRUE,
+  path = "inst/extdata/",
+  verbose = TRUE
+)
 
 rs_request(
   request = task,
   user = "khufkens",
   transfer = TRUE,
-  path = "~/tmp/test",
+  path = "inst/extdata/",
   verbose = TRUE
 )
-
-#source("R/rs_transfer.R")
-#source("R/zzz.R")
-
-#rs_transfer("309f2a64-7963-4cd2-b76a-09f4453cbb04","khufkens","~/tmp/test")
