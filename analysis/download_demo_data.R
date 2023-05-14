@@ -15,7 +15,7 @@ task_time_series <- data.frame(
   end = "2010-12-31",
   product = "MCD43A4.061",
   layer = c("Nadir_Reflectance_Band3","Nadir_Reflectance_Band4")
-) |> appeears::rs_build_task()
+) |> rs_build_task()
 
 rs_request(
   request = task_time_series,
