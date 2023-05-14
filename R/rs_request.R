@@ -127,18 +127,15 @@ rs_request <- function(
     request$transfer(time_out = time_out)
     if (request$is_success()) {
 
-      # download the data to a set file location
-      file_location <- request$get_file()
-
       # delete from queue
       request$delete()
 
-      # return file location
-      return(file_location)
+      # return path file location
+      return(path)
     }
     message("Transfer was not successfull - please check your request later at:")
-    message(request$get_url())
+    message(request$get_task_id())
   }
 
-  return(request)
+  return(invisible(request))
 }

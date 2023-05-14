@@ -28,8 +28,8 @@
 #'}
 
 rs_delete <- function(
-    user,
     task_id,
+    user,
     purge = FALSE
 ){
 

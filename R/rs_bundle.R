@@ -19,8 +19,8 @@
 #'}
 
 rs_bundle <- function(
-    user,
-    task_id
+    task_id,
+    user
 ){
 
   # retrieve token to list tasks
