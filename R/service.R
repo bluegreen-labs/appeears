@@ -79,14 +79,6 @@ service <- R6::R6Class("appeears_service",
       stop("not implemented")
     },
 
-    get_file = function() {
-      if (private$downloaded) {
-        return(private$file)
-      } else {
-        return(NA)
-      }
-    },
-
     # rename private$name to private$task_id
     get_task_id = function() {
       private$name
