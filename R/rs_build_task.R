@@ -69,14 +69,20 @@ rs_build_task <- function(
   start <- min(as.Date(df$start))
   end <- max(as.Date(df$end))
 
+  # set date ranges
   date <- data.frame(
     startDate = format(as.Date(start), "%m-%d-%Y"),
     endDate = format(as.Date(end), "%m-%d-%Y")
   )
 
+  # get unique product layer combinations
+  # to limit unnecessary downloads
+  df_layer <- unique(df[,c("product","layer")])
+
+  # layer product combinations
   layers <- data.frame(
-    product = df$product,
-    layer = df$layer
+    product = df_layer$product,
+    layer = df_layer$layer
   )
 
   if (!missing(roi)) {
@@ -145,12 +151,16 @@ rs_build_task <- function(
       )
     }
 
+    # only retain unique locations to limit
+    # unnecessary downloads
+    df_task <- unique(df[,c("task","subtask","latitude","longitude")])
+
     # combine coordinates
     coordinates <- data.frame(
-      id = as.character(seq_len(nrow(df))),
-      longitude = df$longitude,
-      latitude = df$latitude,
-      category = df$subtask
+      id = as.character(seq_len(nrow(df_task))),
+      longitude = df_task$longitude,
+      latitude = df_task$latitude,
+      category = df_task$subtask
     )
 
     # list task info
