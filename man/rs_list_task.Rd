@@ -4,13 +4,13 @@
 \alias{rs_list_task}
 \title{AppEEARS list of tasks and status}
 \usage{
-rs_list_task(user, task_id)
+rs_list_task(task_id, user)
 }
 \arguments{
-\item{user}{username used to sign up}
-
 \item{task_id}{task for which to list the status (if missing
 all tasks are listed)}
+
+\item{user}{username used to sign up}
 }
 \value{
 returns a data frame with the AppEEARS tasks

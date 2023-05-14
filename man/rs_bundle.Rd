@@ -4,12 +4,12 @@
 \alias{rs_bundle}
 \title{AppEEARS list of bundled files to download}
 \usage{
-rs_bundle(user, task_id)
+rs_bundle(task_id, user)
 }
 \arguments{
-\item{user}{username used to sign up}
-
 \item{task_id}{task id for which to return the file download bundle}
+
+\item{user}{username used to sign up}
 }
 \value{
 returns a nested list of files to download
