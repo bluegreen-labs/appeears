@@ -103,8 +103,13 @@ rs_request <- function(
   }
 
   # check for user
-  if (missing(user)){
+  if (missing(user)) {
     stop("Missing user credentials, please provide a valid username!")
+  }
+
+  # check download path
+  if (!dir.exists(path)) {
+    stop("Invalid download path, specify a valid download location!")
   }
 
   # Create request and submit to service
@@ -122,18 +127,15 @@ rs_request <- function(
     request$transfer(time_out = time_out)
     if (request$is_success()) {
 
-      # download the data to a set file location
-      file_location <- request$get_file()
-
       # delete from queue
       request$delete()
 
-      # return file location
-      return(file_location)
+      # return path file location
+      return(invisible(path))
     }
     message("Transfer was not successfull - please check your request later at:")
-    message(request$get_url())
+    message(request$get_task_id())
   }
 
-  return(request)
+  return(invisible(request))
 }

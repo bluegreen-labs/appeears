@@ -18,37 +18,53 @@ knitr::opts_chunk$set(
 # load the library
 library(ncdf4)
 library(terra)
+library(sf)
 library(appeears)
 
 # load demo data
 ```
 
-## Login setup
+## Setup
 
-Setup your login credentials, this will store both the user name and password, which will be needed to generate the API tokens needed in data requests and retrieval. Don't forget to set the system option as `options(keyring_backend = "file")` on linux (headless) systems.
+Before starting save the provided NASA Earth Data password to your local keychain. The
+package does not allow you to use your password inline in scripts to limit
+security issues when sharing scripts on github or otherwise.
 
 ```{r eval = FALSE}
-# load the package
-library("appeears")
+library(appeears)
 
-# set the keyring to be a file on
-# linux or headless systems
-# options(keyring_backend = "file")
-
-# store your credentials in a safe
-# keyring (either encrypted file or dedicated keyring)
+# set a key to the keychain
 rs_set_key(
-  user = "your_earth_data_username",
-  password = "your_earth_data_password"
+  user = "earth_data_user",
+  password = "XXXXXXXXXXXXXXXXXXXXXX"
   )
 
-# request a token (valid for 48h)
-token <- rs_login(user)
+# you can retrieve the password using
+rs_get_key(user = "earth_data_user")
+
+# the output should be the key you provided
+# "XXXXXXXXXXXXXXXXXXXXXX"
 ```
 
-## Listing available data
+Downloads are managed using a Bearer/session token. This token is valid for 48 hours,
+after which it will expire and you will need to request a new one. Although downloads
+are managed using the user (keychain) details only, you can request the current token
+using `rs_login()`, while `rs_logout()` will explicitly invalidate the current
+session token.
 
-You can list all available products on the AppEEARS API using the `apprs_products()` function. Similarly, you can list all available layers for a given product using `apprs_layers()`. Note that when queryign the layers for a product you will need to use the field `ProductAndVersion` field, as some products are listed under various versions.
+```{r eval = FALSE}
+# request the current token
+token <- rs_login(user = "earth_data_user")
+
+# invalidate the current session
+rs_logout(token)
+```
+
+## Use
+
+### Listing available data
+
+You can list all available products on the AppEEARS API using the `rs_products()` function. Similarly, you can list all available layers for a given product using `rs_layers()`. Note that when queryign the layers for a product you will need to use the field `ProductAndVersion` field, as some products are listed under various versions.
 
 ```{r}
 # list all product information
@@ -66,28 +82,65 @@ layers <- rs_layers(
 head(layers)
 ```
 
-## Formatting data requests
+### Point based data requests
 
-requests for data are generated from structured data frames, listing the following parameters. This allows for batch requests.
+All point based queries are made by first creating a
+tidy data frame with the desired products and layers
+to query.
+
+In this data frame `task` specifies the overall name
+of the task to run (this prefix will be used to name
+the final downloaded files). The `subtask` denotes the
+various locations and or products you want to query. As
+such, you can query multiple locations in the same larger
+task, avoiding multiple queries to the API.
+
+The `latitude` and `longitude` fields specify geographic
+coordinates of query locations, while `start` and `end`
+columns define the range of the data queried. Note that
+the date range will cover the maximum date range across
+all `subtasks`. If date ranges vary widely it is advised
+to create separate tasks.
+
+Finally the `product` and `layer` columns denote the 
+remote sensing product and particular layer to download.
+A full list of products can be queried using `rs_products()`,
+while the layers of a particular product can be listed
+using `rs_layers()`. Note that the product needs to be
+specified using the full product name, including the version
+of the product (as stored in the `ProductAndVersion` field).
+
+For point and area based queries all data are saved in a
+subdirectory of the main `path` as defined by the task name.
 
 ```{r eval = FALSE}
+# Load the library
+library(appeears)
+
+# list all products
+rs_products()
+
+# list layers of the MOD11A2.061 product
+rs_layers("MOD11A2.061")
+
+# specifiy a task/request as a
+# data frame
 df <- data.frame(
-  task = "grand canyon",
-  subtask = c("test1", "test2"),
+  task = "task_name",
+  subtask = c("sub_task_1", "sub_task_2"),
   latitude = c(36.206228, 36.206228),
   longitude = c(-112.127134, -112.127134),
   start = c("2018-01-01","2018-01-01"),
   end = c("2018-01-15","2018-01-15"),
   product = c("MOD11A2.061","MCD12Q2.006"),
-  layer = c("LST_Day_1km","Dormancy")
+  layer = c("LST_Day_1km","Greenup")
 )
-```
 
-The `apprs_build_task()` function converts this data frame to a correctly structured JSON which will be used in the API call.
-
-```{r eval = FALSE}
-# convert the task to JSON and
-# execute request
+# build the area based request/task
+# rename the task name so data will
+# be saved in the "point" folder
+# as defined by the task name
+df$task <- "point"
 task <- rs_build_task(df = df)
 
 # request the task to be executed
@@ -95,7 +148,103 @@ rs_request(
   request = task,
   user = "earth_data_user",
   transfer = TRUE,
-  path = tempdir(),
+  path = "~/some_path",
+  verbose = TRUE
+)
+````
+
+### Area based data requests
+
+You can select a region-of-interest (ROI) instead of point based data,
+using both `sf` polygons or the extent (bounding box) of an existing
+`terra` `SpatRaster` object. Both methods follow the same workflow.
+
+#### {sf} polygon ROI
+
+When using an `sf` object, provide it to the `roi` argument of the
+`rs_build_task()` function. The `sf` object must be of class `sf` not `sfc`
+when required convert `sfc` data using `st_as_sf()`.
+
+Note however that at the time only as simple polygon is supported. Multiple 
+polygons in the same `sf` object might result in failure to query the data.
+
+Furthermore, no other means will be provided to specify a region-of-interest.
+As such, you will always have to query a region-of-interest using an `sf`
+object. This ensures consistency across queries and allows for rapid visualization
+of a region of interest (in contrast to a simple list of e.g. top-left,
+bottom-right coordinates).
+
+```{r eval = FALSE}
+# load the required libraries
+library(sf)
+library(dplyr)
+
+# load the north carolina demo data
+# included in the {sf} package
+# and only retain Camden county
+roi <- st_read(system.file("gpkg/nc.gpkg", package="sf"), quiet = TRUE) |>
+  filter(
+    NAME == "Camden"
+  )
+
+# build the area based request/task
+# rename the task name so data will
+# be saved in the "polygon" folder
+# as defined by the task name
+df$task <- "polygon"
+task <- rs_build_task(
+  df = df,
+  roi = roi,
+  format = "geotiff"
+)
+
+# request the task to be executed
+rs_request(
+  request = task,
+  user = "earth_data_user",
+  transfer = TRUE,
+  path = "~/some_path",
+  verbose = TRUE
+)
+```
+
+#### {terra} SpatRaster ROI
+
+The `terra` based region-of-interest workflow is similar to that of `sf`
+polygon based queries. One only has to provide a `SpatRaster` as an `roi`
+argument in `rs_build_task()` to query a region of the same extent as the
+`SpatRaster`. The use case for this functionality is obvious, creating a quick
+way to sample new data for an existing data set (using the same coverage).
+
+Note that unlike the `sf` method a bounding box is used and masked data is
+ignored (the full extent is downloaded and masking will have to be repeated
+afterwards).
+
+```{r eval = FALSE}
+# load the required libraries
+library(terra)
+
+# create a SpatRaster ROI from the terra demo file
+f <- system.file("ex/elev.tif", package="terra")
+roi <- terra::rast(f)
+
+# build the area based request/task
+# rename the task name so data will
+# be saved in the "raster" folder
+# as defined by the task name
+df$task <- "raster"
+task <- rs_build_task(
+  df = df,
+  roi = roi,
+  format = "geotiff"
+)
+
+# request the task to be executed
+rs_request(
+  request = task,
+  user = "earth_data_user",
+  transfer = TRUE,
+  path = "~/some_path",
   verbose = TRUE
 )
 ```

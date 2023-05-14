@@ -69,41 +69,45 @@ rs_build_task <- function(
   start <- min(as.Date(df$start))
   end <- max(as.Date(df$end))
 
+  # set date ranges
   date <- data.frame(
     startDate = format(as.Date(start), "%m-%d-%Y"),
     endDate = format(as.Date(end), "%m-%d-%Y")
   )
 
+  # get unique product layer combinations
+  # to limit unnecessary downloads
+  df_layer <- unique(df[,c("product","layer")])
+
+  # layer product combinations
   layers <- data.frame(
-    product = df$product,
-    layer = df$layer
+    product = df_layer$product,
+    layer = df_layer$layer
   )
 
   if (!missing(roi)) {
     if (inherits(roi, "sf", which = FALSE)) {
       # convert simple feature to geojson
       # and then to list
-      geojson_list <- roi |>
-        st_union() |> # create one polygon
-        st_as_sf() |> # create simple feature
-        st_transform(crs = "EPSG:4326") |> # transform to geographic
-        geojsonio::geojson_json() |>
-        geojson_list(geometry = "Feature") |>
-        unclass()
+      geojson_list <- sf::st_union(roi)
+      geojson_list <- sf::st_as_sf(geojson_list)
+      geojson_list <- sf::st_transform(geojson_list, crs = "EPSG:4326")
+      geojson_list <- geojsonio::geojson_json(geojson_list)
+      geojson_list <- geojson_list(geojson_list, geometry = "Feature")
+      geojson_list <- unclass(geojson_list)
 
     } else if (
       inherits(roi, "SpatRaster", which = FALSE)
     ) {
       # convert simple feature to geojson
       # and then to list
-      geojson_list <- roi |>
-        sf::st_bbox() |>
-        st_as_sfc() |>
-        st_as_sf() |> # must be simple feature to work
-        st_transform(crs = "EPSG:4326") |>
-        geojsonio::geojson_json() |>
-        geojson_list(geometry = "Feature") |>
-        unclass()
+      geojson_list <- sf::st_bbox(roi)
+      geojson_list <- sf::st_as_sfc(geojson_list)
+      geojson_list <- sf::st_as_sf(geojson_list)
+      geojson_list <- sf::st_transform(geojson_list, crs = "EPSG:4326")
+      geojson_list <- geojsonio::geojson_json(geojson_list)
+      geojson_list <- geojson_list(geojson_list, geometry = "Feature")
+      geojson_list <- unclass(geojson_list)
 
     } else {
       stop("You region of interest is not of type 'sf' or 'SpatRaster")
@@ -147,12 +151,16 @@ rs_build_task <- function(
       )
     }
 
+    # only retain unique locations to limit
+    # unnecessary downloads
+    df_task <- unique(df[,c("task","subtask","latitude","longitude")])
+
     # combine coordinates
     coordinates <- data.frame(
-      id = as.character(seq_len(nrow(df))),
-      longitude = df$longitude,
-      latitude = df$latitude,
-      category = df$subtask
+      id = as.character(seq_len(nrow(df_task))),
+      longitude = df_task$longitude,
+      latitude = df_task$latitude,
+      category = df_task$subtask
     )
 
     # list task info

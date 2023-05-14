@@ -4,12 +4,12 @@
 \alias{rs_delete}
 \title{Delete AppEEARS task from queue}
 \usage{
-rs_delete(user, task_id, purge = FALSE)
+rs_delete(task_id, user, purge = FALSE)
 }
 \arguments{
-\item{user}{username used to sign up}
-
 \item{task_id}{AppEEARS task id}
+
+\item{user}{username used to sign up}
 
 \item{purge}{if TRUE, remove all previously finished tasks from
 the task list (default = FALSE)}

@@ -5,7 +5,7 @@
 #'
 #' @param user user (email address) used to sign up for the ECMWF data service,
 #' used to retrieve the token set by \code{\link[appeears]{rs_set_key}}.
-#' @param task R6 \code{\link[appeears]{rs_request}}) query output or task id
+#' @param task_id R6 \code{\link[appeears]{rs_request}}) query output or task id
 #' @param path path were to store the downloaded data
 #' @param verbose show feedback on data transfers
 #' @return data on disk as specified by a
@@ -28,7 +28,7 @@
 #'}
 
 rs_transfer <- function(
-    task,
+    task_id,
     user,
     path = tempdir(),
     verbose = TRUE
@@ -123,7 +123,7 @@ rs_transfer <- function(
   })
 
   # trap (http) errors on download, return a general error statement
-  if (all(unlist(downloaded))) {
+  if (!all(unlist(downloaded))) {
       warning("Some downloads failed - consider redownloading")
   }
 

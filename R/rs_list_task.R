@@ -18,8 +18,8 @@
 #'}
 
 rs_list_task <- function(
-    user,
-    task_id
+  task_id,
+  user
 ){
 
   # retrieve token to list tasks
