@@ -131,7 +131,7 @@ rs_request <- function(
       request$delete()
 
       # return path file location
-      return(path)
+      return(invisible(path))
     }
     message("Transfer was not successfull - please check your request later at:")
     message(request$get_task_id())
