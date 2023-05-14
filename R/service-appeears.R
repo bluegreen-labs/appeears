@@ -129,7 +129,7 @@ appeears_service <- R6::R6Class("appeears_service",
       }
 
       # If it's completed, begin download
-      if (private$verbose) message("\nDownloading file")
+      if (private$verbose) message("\nDownloading files")
 
       # get bundle
       response <- httr::GET(
