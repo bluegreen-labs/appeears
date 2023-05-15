@@ -4,7 +4,7 @@
 \alias{rs_build_task}
 \title{Build a task request}
 \usage{
-rs_build_task(df, roi, format = "netcdf4")
+rs_build_task(df, roi, format = "geotiff")
 }
 \arguments{
 \item{df}{a data frame with task name (task), subtask name (subtask),
@@ -14,8 +14,8 @@ latitude, longitude, start (start) and end (end) date.}
 the roi will override any point based data provided as latittude-longitude
 coordinates in the data frame}
 
-\item{format}{file format of the downloaded data either geotiff or
-netcdf4 (the default)}
+\item{format}{file format of the downloaded data either geotiff (the default)
+or netcdf4}
 }
 \value{
 a valid AppEEARS JSON formatted task

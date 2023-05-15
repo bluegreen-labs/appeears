@@ -19,7 +19,7 @@ ON_GIT <- ifelse(
 )
 
 # is the server reachable
-server_check <- appeears:::rs_running(appeears:::rs_server())
+server_check <- appeears:::rs_running(file.path(rs_server(),"product"))
 
 # if the server is reachable, try to set login
 # if not set login check to TRUE as well
