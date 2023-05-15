@@ -20,6 +20,11 @@
 
 rs_get_key <- function(user) {
 
+  # trap missing user
+  if (missing(user)) {
+    stop("No user provided, can't retrieve user password from keyring.")
+  }
+
   # set static service
   service = "appeears"
 
