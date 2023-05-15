@@ -59,7 +59,7 @@ roi_sf <- sf::st_read(system.file("gpkg/nc.gpkg", package="sf"), quiet = TRUE) |
 
 test_that("test functions without task ids", {
   skip_on_cran()
-  skip_if(login_check)
+  skip_if(!server_check)
 
   # list products / layers
   expect_true(inherits(rs_products(), "data.frame"))
