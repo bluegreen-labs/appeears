@@ -18,11 +18,11 @@
 #' @examples
 #'
 #' \dontrun{
-#' # get a list of datasets
+#' # get a list of quality layers for all data products
 #' rs_quality()
 #'}
 
-rs_quality <- function(
+rs_quality <- memoise::memoise(function(
   product,
   layer,
   value
@@ -71,4 +71,4 @@ rs_quality <- function(
 
   # return content
   return(df)
-}
+})

@@ -27,7 +27,7 @@ into plain language
 \examples{
 
 \dontrun{
-# get a list of datasets
+# get a list of quality layers for all data products
 rs_quality()
 }
 }
