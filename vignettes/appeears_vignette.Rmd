@@ -165,7 +165,7 @@ rs_request(
   path = "~/some_path",
   verbose = TRUE
 )
-````
+```
 
 We can now read in the downloaded data from the download path. Note that a subfolder will be created based upon the task name, and "_" will be converted internally to "-" in the downloaded file names.
 
