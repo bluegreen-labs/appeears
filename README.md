@@ -115,20 +115,21 @@ rs_products()
 # list layers of the MOD11A2.061 product
 rs_layers("MOD11A2.061")
 
-# specifiy a task/request as a
-# data frame
 df <- data.frame(
-  task = "task",
-  subtask = c("sub_task_1", "sub_task_2"),
-  latitude = c(36.206228, 36.206228),
-  longitude = c(-112.127134, -112.127134),
-  start = c("2018-01-01","2018-01-01"),
-  end = c("2018-01-15","2018-01-15"),
-  product = c("MOD11A2.061","MCD12Q2.006"),
-  layer = c("LST_Day_1km","Greenup")
+  task = "time_series",
+  subtask = "US-Ha1",
+  latitude = 42.5378,
+  longitude = -72.1715,
+  start = "2010-01-01",
+  end = "2010-12-31",
+  product = "MCD43A4.061",
+  layer = c("Nadir_Reflectance_Band3","Nadir_Reflectance_Band4")
 )
 
-# build a proper JSON query
+# build the area based request/task
+# rename the task name so data will
+# be saved in the "point" folder
+# as defined by the task name
 task <- rs_build_task(df = df)
 
 # request the task to be executed
@@ -164,8 +165,20 @@ bottom-right coordinates).
 
 ```r
 # load the required libraries
+library(appeears)
 library(sf)
 library(dplyr)
+
+df <- data.frame(
+  task = "time_series",
+  subtask = "subtask",
+  latitude = 42.5378,
+  longitude = -72.1715,
+  start = "2010-01-01",
+  end = "2010-12-31",
+  product = "MCD12Q2.006",
+  layer = c("Greenup")
+)
 
 # load the north carolina demo data
 # included in the {sf} package
@@ -176,6 +189,10 @@ roi <- st_read(system.file("gpkg/nc.gpkg", package="sf"), quiet = TRUE) |>
   )
 
 # build the area based request/task
+# rename the task name so data will
+# be saved in the "polygon" folder
+# as defined by the task name
+df$task <- "polygon"
 task <- rs_build_task(
   df = df,
   roi = roi,
@@ -213,6 +230,10 @@ f <- system.file("ex/elev.tif", package="terra")
 roi <- terra::rast(f)
 
 # build the area based request/task
+# rename the task name so data will
+# be saved in the "raster" folder
+# as defined by the task name
+df$task <- "raster"
 task <- rs_build_task(
   df = df,
   roi = roi,

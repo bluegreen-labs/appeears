@@ -1,0 +1,14 @@
+Value,Greenup,MidGreenup,Maturity,Peak,Senescence,MidGreendown,Dormancy
+0,Best,Best,Best,Best,Best,Best,Best
+960,Best,Best,Best,Poor,Poor,Best,Best
+3072,Best,Best,Best,Best,Best,Poor,Best
+4096,Best,Best,Best,Best,Best,Best,Good
+7168,Best,Best,Best,Best,Best,Poor,Good
+8192,Best,Best,Best,Best,Best,Best,Fair
+9216,Best,Best,Best,Best,Best,Good,Fair
+11264,Best,Best,Best,Best,Best,Poor,Fair
+12288,Best,Best,Best,Best,Best,Best,Poor
+13312,Best,Best,Best,Best,Best,Good,Poor
+14336,Best,Best,Best,Best,Best,Fair,Poor
+14592,Best,Best,Best,Best,Good,Fair,Poor
+15360,Best,Best,Best,Best,Best,Poor,Poor
