@@ -34,13 +34,13 @@ rs_transfer <- function(
     verbose = TRUE
     ) {
 
-  if (inherits(task, "appeears_service")) {
-    task$transfer()
-    return(task)
+  if (inherits(task_id, "appeears_service")) {
+    task_id$transfer()
+    return(task_id)
   }
 
   # check the login credentials
-  if (missing(user) || missing(task)) {
+  if (missing(user) | missing(task_id)) {
     stop("Please provide AppEEARS login or task to download!")
   }
 
@@ -48,29 +48,11 @@ rs_transfer <- function(
   token <- rs_login(user)
 
   # get bundle
-  response <- httr::GET(
-    file.path(rs_server(), "bundle", task),
-    httr::add_headers(
-      Authorization = paste("Bearer", token)
-    )
-  )
-
-  # trap general http error
-  if (httr::http_error(response)) {
-    stop(
-      "       Your requested download is unavailable as \n
-       the session expired (download > 48h old).",
-         call. = FALSE
-    )
-  }
-
-  # split out the content from the returned
-  # API data, and clean up the JSON formatting
-  ct <- httr::content(response)
+  ct <- rs_bundle(task_id, user)
 
   # verbose feedback on download
   if (verbose) {
-    message(sprintf("Processing bundle: %s", task))
+    message(sprintf("Processing bundle: %s", task_id))
   }
 
   # try downloading whole bundle, log downloaded
@@ -85,7 +67,7 @@ rs_transfer <- function(
 
     # write the file to disk using the destination directory and file name
     response <- httr::GET(
-      file.path(rs_server(), "bundle/", task, file$file_id),
+      file.path(rs_server(), "bundle/", task_id, file$file_id),
       httr::write_disk(temp_file, overwrite = TRUE),
       httr::add_headers(
         Authorization = paste("Bearer", token)
