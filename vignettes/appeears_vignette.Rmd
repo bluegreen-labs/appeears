@@ -123,17 +123,15 @@ rs_products()
 # list layers of the MOD11A2.061 product
 rs_layers("MOD11A2.061")
 
-# specifiy a task/request as a
-# data frame
 df <- data.frame(
-  task = "task_name",
-  subtask = c("sub_task_1", "sub_task_2"),
-  latitude = c(36.206228, 36.206228),
-  longitude = c(-112.127134, -112.127134),
-  start = c("2018-01-01","2018-01-01"),
-  end = c("2018-01-15","2018-01-15"),
-  product = c("MOD11A2.061","MCD12Q2.006"),
-  layer = c("LST_Day_1km","Greenup")
+  task = "time_series",
+  subtask = "US-Ha1",
+  latitude = 42.5378,
+  longitude = -72.1715,
+  start = "2010-01-01",
+  end = "2010-12-31",
+  product = "MCD43A4.061",
+  layer = c("Nadir_Reflectance_Band3","Nadir_Reflectance_Band4")
 )
 
 # build the area based request/task
@@ -176,8 +174,20 @@ bottom-right coordinates).
 
 ```{r eval = FALSE}
 # load the required libraries
+library(appeears)
 library(sf)
 library(dplyr)
+
+df <- data.frame(
+  task = "time_series",
+  subtask = "subtask",
+  latitude = 42.5378,
+  longitude = -72.1715,
+  start = "2010-01-01",
+  end = "2010-12-31",
+  product = "MCD12Q2.006",
+  layer = c("Greenup")
+)
 
 # load the north carolina demo data
 # included in the {sf} package
