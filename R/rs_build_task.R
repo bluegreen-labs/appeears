@@ -11,8 +11,8 @@
 #' @param roi a region of interest defined by a SpatRaster or sf object,
 #' the roi will override any point based data provided as latittude-longitude
 #' coordinates in the data frame
-#' @param format file format of the downloaded data either geotiff or
-#'  netcdf4 (the default)
+#' @param format file format of the downloaded data either geotiff (the default)
+#' or netcdf4
 #'
 #' @return a valid AppEEARS JSON formatted task
 #' @export
@@ -39,30 +39,59 @@
 rs_build_task <- function(
     df,
     roi,
-    format = "netcdf4"
+    format = "geotiff"
 ) {
 
-  # split out names of the data frame
-  cols <- names(df)
-
-  # check minimum required data
-  # task, subtask, start, end, product, layer
-  # lat/lon is elective if an roi is provided
+  # required fields
+  required_fields <- c(
+    "task",
+    "subtask",
+    "latitude",
+    "longitude",
+    "start",
+    "end",
+    "product",
+    "layer"
+  )
 
   # missing roi -> point extraction
   if (missing(roi)) {
     type <- "point"
+
+    if (!all(required_fields %in% names(df))) {
+
+      missing_fields <- paste(
+        required_fields[!(required_fields %in% names(df))],
+        collapse = ", "
+      )
+
+      stop(
+        sprintf("Your task list misses required fields: %s",
+                missing_fields)
+      )
+    }
+
   } else {
     type <- "area"
+    required_fields <- required_fields[-c(3,4)]
+
+    if (!all(required_fields %in% names(df))) {
+
+      missing_fields <- paste(
+        required_fields[!(required_fields %in% names(df))],
+        collapse = ", "
+      )
+
+      stop(
+        sprintf("Your task list misses required fields: %s",
+                missing_fields)
+      )
+    }
   }
 
-  if (!(("start" %in% cols) && ("end" %in% cols))) {
+  if (!(("start" %in% names(df)) && ("end" %in% names(df)))) {
     stop("missing date range")
   }
-
-  # set date range, with reall, a MM-DD-YYYY format
-  # dear people at NASA get your sh*t together, this
-  # stuff crashes satellites
 
   # extract the maximum date range from all listed
   # subtasks
