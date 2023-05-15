@@ -244,3 +244,8 @@ Upon the start of each session you will be asked to provide this
 password, unlocking all `appeears` credentials for this session. Should
 you ever forget the password just delete the file at:
 `~/.config/r-keyring/ecmwfr.keyring` and re-enter all your credentials.
+
+
+# Acknowledgements
+
+The `appeears` package is a product of BlueGreen Labs, and has been in part supported by the LEMONTREE project funded through the Schmidt Futures fund, under the umbrella of the Virtual Earth System Research Institute (VESRI).
