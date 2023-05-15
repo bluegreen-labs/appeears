@@ -237,7 +237,6 @@ library(appeears)
 library(sf)
 library(dplyr)
 library(ggplot2)
-library(ggnewscale)
 
 df <- data.frame(
   task = "time_series",
