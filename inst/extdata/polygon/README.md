@@ -29,18 +29,18 @@
 
     Name: polygon  
 
-    Date Completed: 2023-05-13T10:56:49.920729  
+    Date Completed: 2023-05-15T07:54:32.862283  
 
-    ID: 01be1202-e694-49e6-9833-6e4bc9245e3d  
+    ID: a9fb9732-8125-4776-ae92-95168c19ceb1  
 
     Details:  
 
         
         Number of Vector Features:    1  
 
-        Start Date:                   01-01-2018  
+        Start Date:                   01-01-2010  
 
-        End Date:                     01-15-2018  
+        End Date:                     12-31-2010  
         
         Layers:  
 
@@ -363,11 +363,11 @@ AppEEARS sample request outputs are available to download for a limited amount o
 
 ## 9. Data Product Citations  
 
-- Friedl, M., Gray, J., Sulla-Menashe, D. (2019). MCD12Q2 MODIS/Terra+Aqua Land Cover Dynamics Yearly L3 Global 500m SIN Grid V006. NASA EOSDIS Land Processes DAAC. Accessed 2023-05-13 from https://doi.org/10.5067/MODIS/MCD12Q2.006. Accessed May 13, 2023.
+- Friedl, M., Gray, J., Sulla-Menashe, D. (2019). MCD12Q2 MODIS/Terra+Aqua Land Cover Dynamics Yearly L3 Global 500m SIN Grid V006. NASA EOSDIS Land Processes DAAC. Accessed 2023-05-15 from https://doi.org/10.5067/MODIS/MCD12Q2.006. Accessed May 15, 2023.
 
 ## 10. Software Citation  
 
-AppEEARS Team. (2023). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). Ver. 3.28. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed May 13, 2023. https://appeears.earthdatacloud.nasa.gov
+AppEEARS Team. (2023). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). Ver. 3.28. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed May 15, 2023. https://appeears.earthdatacloud.nasa.gov
 
 ## 11. Feedback  
 
