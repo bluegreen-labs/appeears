@@ -122,7 +122,7 @@ rs_build_task <- function(
       geojson_list <- sf::st_as_sf(geojson_list)
       geojson_list <- sf::st_transform(geojson_list, crs = "EPSG:4326")
       geojson_list <- geojsonio::geojson_json(geojson_list)
-      geojson_list <- geojson_list(geojson_list, geometry = "Feature")
+      geojson_list <- geojsonio::geojson_list(geojson_list, geometry = "Feature")
       geojson_list <- unclass(geojson_list)
 
     } else if (
@@ -135,7 +135,7 @@ rs_build_task <- function(
       geojson_list <- sf::st_as_sf(geojson_list)
       geojson_list <- sf::st_transform(geojson_list, crs = "EPSG:4326")
       geojson_list <- geojsonio::geojson_json(geojson_list)
-      geojson_list <- geojson_list(geojson_list, geometry = "Feature")
+      geojson_list <- geojsonio::geojson_list(geojson_list, geometry = "Feature")
       geojson_list <- unclass(geojson_list)
 
     } else {
