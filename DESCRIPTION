@@ -38,4 +38,7 @@ Suggests:
     ncdf4,
     knitr,
     rlang,
+    dplyr,
+    ggplot2,
+    patchwork
 VignetteBuilder: knitr
