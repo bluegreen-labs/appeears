@@ -131,17 +131,20 @@ appeears_service <- R6::R6Class("appeears_service",
       # If it's completed, begin download
       if (private$verbose) message("\nDownloading files")
 
-      # get bundle
+      # get bundle (can't take more than 30 seconds)
       response <- httr::GET(
         file.path(rs_server(),"bundle", private$name),
         httr::add_headers(
           Authorization = paste("Bearer", private$token)
-        )
+        ),
+        httr::timeout(30)
       )
 
       # trap general http error
       if (httr::http_error(response)) {
-        stop("Your requested download is unavailable as the session expired (download > 48h old).",
+        stop(
+      "      Your requested download is unavailable as the session expired\n
+      (download > 48h old), or your connection timed out!",
              call. = FALSE
         )
       }
