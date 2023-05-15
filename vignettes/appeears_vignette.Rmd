@@ -333,9 +333,9 @@ ggplot() +
     fill = NA,
     colour = "red",
     lwd = 2
-    )
+    ) +
+  theme_bw()
   
-
 ```
 
 #### {terra} SpatRaster ROI
@@ -432,7 +432,8 @@ p <- ggplot() +
     x = "",
     y = ""
   ) +
-  scale_fill_viridis_c()
+  scale_fill_viridis_c() +
+  theme_bw()
 
 p2 <- ggplot() +
   geom_raster(
@@ -447,7 +448,8 @@ p2 <- ggplot() +
     x = "",
     y = ""
   ) +
-  scale_fill_viridis_c()
+  scale_fill_viridis_c() +
+  theme_bw()
 
 # patchwork side by side plot
 p | p2
