@@ -22,7 +22,7 @@ to plain language.
 \description{
 Returns a data frame of all quality layers,
 or the translation of a quality layer value
-into plain language
+into plain language.
 }
 \examples{
 
