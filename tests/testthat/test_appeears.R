@@ -73,10 +73,10 @@ test_that("test functions without task ids", {
   expect_error(rs_build_task(df_missing))
 
   # create polygon tasks
-  expect_type(rs_build_task(df, roi), "character")
+  expect_type(rs_build_task(df, roi_sf), "character")
 
   # create polygon task
-  expect_type(rs_build_task(df, roi, format = "netcdf4"), "character")
+  expect_type(rs_build_task(df, roi_sf, format = "netcdf4"), "character")
 
   # list tasks
   expect_type(rs_list_task(user = "khufkens"), "list")
@@ -99,7 +99,7 @@ test_that("test data transfers", {
   )
 
   # list environment/tasks
-  expect_type(task_id, "environment")
+  expect_type(request, "environment")
   expect_type(rs_list_task(request$get_task_id(), "khufkens"), "list")
   expect_message(request$delete())
 
