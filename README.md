@@ -13,7 +13,7 @@ API using the {appeears} R package (Hufkens 2023)". Here is the full
 bibliographic reference to include in your reference list (don't forget
 to update the 'last accessed' date):
 
-> Hufkens, K. (2023). appeears: Programmatic interface to the NASA AppEEARS API. Zenodo. <http://doi.org/10.5281/zenodo.xxx>.
+> Hufkens, K. (2023). appeears: Programmatic interface to the NASA AppEEARS API. Zenodo. <https://doi.org/10.5281/zenodo.7938190>.
 
 ## Installation
 
