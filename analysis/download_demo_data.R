@@ -29,13 +29,13 @@ rs_request(
 
 df <- data.frame(
   task = "time_series",
-  subtask = "US-Ha1",
+  subtask = "subtask",
   latitude = 42.5378,
   longitude = -72.1715,
   start = "2010-01-01",
   end = "2010-12-31",
-  product = "MCD43A4.061",
-  layer = c("Nadir_Reflectance_Band3","Nadir_Reflectance_Band4")
+  product = "MCD12Q2.006",
+  layer = c("Greenup")
 )
 
 # load the north carolina demo data
@@ -54,7 +54,7 @@ task_roi_1 <- rs_build_task(
 )
 
 # Create a SpatRaster from a file
-# f <- system.file("ex/elev.tif", package="terra")
+f <- system.file("ex/elev.tif", package="terra")
 roi <- rast(f)
 df$task <- "raster"
 

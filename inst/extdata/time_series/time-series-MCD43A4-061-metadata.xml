@@ -102,7 +102,7 @@
 
   <!-- METADATA DATE -->
   <gmd:dateStamp>
-    <gco:Date>2023-05-14</gco:Date>
+    <gco:Date>2023-05-15</gco:Date>
   </gmd:dateStamp>
 
   <!-- METADATA STANDARD NAME -->
@@ -155,7 +155,7 @@
           <gmd:date>
             <gmd:CI_Date>
               <gmd:date>
-                <gco:Date>2023-05-14</gco:Date>
+                <gco:Date>2023-05-15</gco:Date>
               </gmd:date>
               <gmd:dateType>
                 <gmd:CI_DateTypeCode
@@ -228,10 +228,10 @@
         </gmd:EX_Extent>
       </gmd:extent>
       <gmd:supplementalInformation>
-        <gco:CharacterString>Schaaf, C., Wang, Z. (2021). MODIS/Terra+Aqua BRDF/Albedo Nadir BRDF Adjusted Ref Daily L3 Global - 500m V061. NASA EOSDIS Land Processes DAAC. Accessed 2023-05-14 from https://doi.org/10.5067/MODIS/MCD43A4.061. Accessed May 14, 2023.</gco:CharacterString>
+        <gco:CharacterString>Schaaf, C., Wang, Z. (2021). MODIS/Terra+Aqua BRDF/Albedo Nadir BRDF Adjusted Ref Daily L3 Global - 500m V061. NASA EOSDIS Land Processes DAAC. Accessed 2023-05-15 from https://doi.org/10.5067/MODIS/MCD43A4.061. Accessed May 15, 2023.</gco:CharacterString>
       </gmd:supplementalInformation>
       <gmd:supplementalInformation>
-        <gco:CharacterString>AppEEARS Team. (2023). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). Ver. 3.28. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed May 14, 2023. https://appeears.earthdatacloud.nasa.gov</gco:CharacterString>
+        <gco:CharacterString>AppEEARS Team. (2023). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). Ver. 3.28. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed May 15, 2023. https://appeears.earthdatacloud.nasa.gov</gco:CharacterString>
       </gmd:supplementalInformation>
     </gmd:MD_DataIdentification>
   </gmd:identificationInfo>
@@ -322,7 +322,7 @@
                       <gmd:date>
                         <gmd:CI_Date>
                           <gmd:date>
-                            <gco:Date>2023-05-14</gco:Date>
+                            <gco:Date>2023-05-15</gco:Date>
                           </gmd:date>
                           <gmd:dateType>
                             <gmd:CI_DateTypeCode
@@ -351,7 +351,7 @@
                   <gmd:date>
                     <gmd:CI_Date>
                       <gmd:date>
-                        <gco:Date>2023-05-14</gco:Date>
+                        <gco:Date>2023-05-15</gco:Date>
                       </gmd:date>
                       <gmd:dateType>
                         <gmd:CI_DateTypeCode

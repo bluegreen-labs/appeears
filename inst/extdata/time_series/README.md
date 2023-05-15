@@ -28,9 +28,9 @@
 
     Name: time_series  
 
-    Date Completed:** 2023-05-14T18:07:03.210158  
+    Date Completed:** 2023-05-15T09:03:46.421473  
 
-    ID: f0f22f62-8503-481b-bc58-d4d5818013f3  
+    ID: cbb2c2ad-c147-4a6c-a05c-c46ec2d42b60  
 
     Details:  
 
@@ -235,11 +235,11 @@ AppEEARS sample request outputs are available to download for a limited amount o
 
 ## 8. Data Product Citations  
 
-- Schaaf, C., Wang, Z. (2021). MODIS/Terra+Aqua BRDF/Albedo Nadir BRDF Adjusted Ref Daily L3 Global - 500m V061. NASA EOSDIS Land Processes DAAC. Accessed 2023-05-14 from https://doi.org/10.5067/MODIS/MCD43A4.061. Accessed May 14, 2023.
+- Schaaf, C., Wang, Z. (2021). MODIS/Terra+Aqua BRDF/Albedo Nadir BRDF Adjusted Ref Daily L3 Global - 500m V061. NASA EOSDIS Land Processes DAAC. Accessed 2023-05-15 from https://doi.org/10.5067/MODIS/MCD43A4.061. Accessed May 15, 2023.
 
 ## 9. Software Citation  
 
-AppEEARS Team. (2023). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). Ver. 3.28. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed May 14, 2023. https://appeears.earthdatacloud.nasa.gov
+AppEEARS Team. (2023). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). Ver. 3.28. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed May 15, 2023. https://appeears.earthdatacloud.nasa.gov
 
 ## 10. Feedback  
 

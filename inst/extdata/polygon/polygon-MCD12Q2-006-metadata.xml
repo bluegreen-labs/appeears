@@ -102,7 +102,7 @@
 
   <!-- METADATA DATE -->
   <gmd:dateStamp>
-    <gco:Date>2023-05-13</gco:Date>
+    <gco:Date>2023-05-15</gco:Date>
   </gmd:dateStamp>
 
   <!-- METADATA STANDARD NAME -->
@@ -201,7 +201,7 @@
           <gmd:date>
             <gmd:CI_Date>
               <gmd:date>
-                <gco:Date>2023-05-13</gco:Date>
+                <gco:Date>2023-05-15</gco:Date>
               </gmd:date>
               <gmd:dateType>
                 <gmd:CI_DateTypeCode
@@ -274,10 +274,10 @@
         </gmd:EX_Extent>
       </gmd:extent>
       <gmd:supplementalInformation>
-        <gco:CharacterString>Friedl, M., Gray, J., Sulla-Menashe, D. (2019). MCD12Q2 MODIS/Terra+Aqua Land Cover Dynamics Yearly L3 Global 500m SIN Grid V006. NASA EOSDIS Land Processes DAAC. Accessed 2023-05-13 from https://doi.org/10.5067/MODIS/MCD12Q2.006. Accessed May 13, 2023.</gco:CharacterString>
+        <gco:CharacterString>Friedl, M., Gray, J., Sulla-Menashe, D. (2019). MCD12Q2 MODIS/Terra+Aqua Land Cover Dynamics Yearly L3 Global 500m SIN Grid V006. NASA EOSDIS Land Processes DAAC. Accessed 2023-05-15 from https://doi.org/10.5067/MODIS/MCD12Q2.006. Accessed May 15, 2023.</gco:CharacterString>
       </gmd:supplementalInformation>
       <gmd:supplementalInformation>
-        <gco:CharacterString>AppEEARS Team. (2023). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). Ver. 3.28. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed May 13, 2023. https://appeears.earthdatacloud.nasa.gov</gco:CharacterString>
+        <gco:CharacterString>AppEEARS Team. (2023). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). Ver. 3.28. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed May 15, 2023. https://appeears.earthdatacloud.nasa.gov</gco:CharacterString>
       </gmd:supplementalInformation>
     </gmd:MD_DataIdentification>
   </gmd:identificationInfo>
@@ -319,7 +319,7 @@
                   <gmd:extent>
                     <gml:TimeInstant gml:id="StartDate">
                       <gml:name>Start Date</gml:name>
-                      <gml:timePosition>2018-01-01T00:00:00</gml:timePosition>
+                      <gml:timePosition>2010-01-01T00:00:00</gml:timePosition>
                     </gml:TimeInstant>
                   </gmd:extent>
                 </gmd:EX_TemporalExtent>
@@ -328,7 +328,7 @@
                 <gmd:EX_TemporalExtent>
                   <gmd:extent>
                     <gml:TimeInstant gml:id="EndDate">
-                      <gml:timePosition>2018-01-15T00:00:00</gml:timePosition>
+                      <gml:timePosition>2010-12-31T00:00:00</gml:timePosition>
                     </gml:TimeInstant>
                   </gmd:extent>
                 </gmd:EX_TemporalExtent>
@@ -369,7 +369,7 @@
                       <gmd:date>
                         <gmd:CI_Date>
                           <gmd:date>
-                            <gco:Date>2023-05-13</gco:Date>
+                            <gco:Date>2023-05-15</gco:Date>
                           </gmd:date>
                           <gmd:dateType>
                             <gmd:CI_DateTypeCode
@@ -484,7 +484,7 @@
                   <gmd:date>
                     <gmd:CI_Date>
                       <gmd:date>
-                        <gco:Date>2023-05-13</gco:Date>
+                        <gco:Date>2023-05-15</gco:Date>
                       </gmd:date>
                       <gmd:dateType>
                         <gmd:CI_DateTypeCode
