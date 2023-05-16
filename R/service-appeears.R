@@ -174,6 +174,7 @@ appeears_service <- R6::R6Class("appeears_service",
           dir.create(final_path)
         }
 
+        # final file name
         final_file <- file.path(final_path, basename(file$file_name))
 
         # write the file to disk using the destination directory and file name
