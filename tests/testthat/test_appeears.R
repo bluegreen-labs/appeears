@@ -188,7 +188,7 @@ test_that("test full download", {
       transfer = TRUE,
       verbose = FALSE
     ),
-    "environment"
+    "character"
   )
 
 })
