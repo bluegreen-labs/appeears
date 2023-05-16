@@ -118,25 +118,25 @@ rs_build_task <- function(
     if (inherits(roi, "sf", which = FALSE)) {
       # convert simple feature to geojson
       # and then to list
-      geojson_list <- sf::st_union(roi)
-      geojson_list <- sf::st_as_sf(geojson_list)
-      geojson_list <- sf::st_transform(geojson_list, crs = "EPSG:4326")
-      geojson_list <- geojsonio::geojson_json(geojson_list)
-      geojson_list <- geojsonio::geojson_list(geojson_list, geometry = "Feature")
-      geojson_list <- unclass(geojson_list)
+      geojson_task <- sf::st_union(roi)
+      geojson_task <- sf::st_as_sf(geojson_task)
+      geojson_task <- sf::st_transform(geojson_task, crs = "EPSG:4326")
+      geojson_task <- geojsonio::geojson_json(geojson_task)
+      geojson_task <- geojsonio::geojson_list(geojson_task, geometry = "Feature")
+      geojson_task <- unclass(geojson_task)
 
     } else if (
       inherits(roi, "SpatRaster", which = FALSE)
     ) {
       # convert simple feature to geojson
       # and then to list
-      geojson_list <- sf::st_bbox(roi)
-      geojson_list <- sf::st_as_sfc(geojson_list)
-      geojson_list <- sf::st_as_sf(geojson_list)
-      geojson_list <- sf::st_transform(geojson_list, crs = "EPSG:4326")
-      geojson_list <- geojsonio::geojson_json(geojson_list)
-      geojson_list <- geojsonio::geojson_list(geojson_list, geometry = "Feature")
-      geojson_list <- unclass(geojson_list)
+      geojson_task <- sf::st_bbox(roi)
+      geojson_task <- sf::st_as_sfc(geojson_task)
+      geojson_task <- sf::st_as_sf(geojson_task)
+      geojson_task <- sf::st_transform(geojson_task, crs = "EPSG:4326")
+      geojson_task <- geojsonio::geojson_json(geojson_task)
+      geojson_task <- geojsonio::geojson_list(geojson_task, geometry = "Feature")
+      geojson_task <- unclass(geojson_task)
 
     } else {
       stop("You region of interest is not of type 'sf' or 'SpatRaster")
@@ -151,7 +151,7 @@ rs_build_task <- function(
       "dates" = date,
       "layers" = layers,
       "output" = output,
-      "geo" = geojson_list
+      "geo" = geojson_task
     )
 
   } else {
