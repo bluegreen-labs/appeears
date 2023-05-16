@@ -61,9 +61,14 @@ test_that("test functions without task ids", {
   skip_on_cran()
   skip_if(!server_check)
 
-  # list products / layers
+  # list products / layers / quality
   expect_true(inherits(rs_products(), "data.frame"))
   expect_true(inherits(rs_layers("MCD12Q2.006"), "data.frame"))
+  expect_true(inherits(rs_quality(), "data.frame"))
+  expect_true(inherits(rs_quality(product = "MCD12Q2.006"), "data.frame"))
+  expect_true(inherits(rs_quality(
+    product = "MCD12Q2.006",
+    layer = "Greenup"), "list"))
 
   # create tasks
   expect_type(rs_build_task(df), "character")
@@ -83,7 +88,14 @@ test_that("test functions without task ids", {
 })
 
 
-test_that("test data transfers", {
+test_that("test login-logout", {
+  skip_on_cran()
+  skip_if(login_check)
+  expect_type(rs_logout(rs_login("khufkens")), "logical")
+})
+
+
+test_that("test request environment", {
   skip_on_cran()
   skip_if(login_check)
 
@@ -110,6 +122,10 @@ test_that("test data transfers", {
 
   # update status
   expect_type(request$update_status(), "environment")
+
+  # get request/status
+  expect_type(request$get_status(), "character")
+  expect_type(request$get_request(), "character")
 
   # delete task
   expect_message(request$delete())
