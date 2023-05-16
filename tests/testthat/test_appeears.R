@@ -168,9 +168,14 @@ test_that("test request environment", {
   expect_type(request$get_status(), "character")
   expect_type(request$get_request(), "character")
 
+  # list bundle
+  expect_type(rs_bundle(request$get_task_id(), "khufkens"), "list")
+
+  # missing task id for bundle
+  expect_error(rs_bundle(user = "khufkens"))
+
   # delete task
   expect_message(request$delete())
-
 })
 
 test_that("test full download", {
