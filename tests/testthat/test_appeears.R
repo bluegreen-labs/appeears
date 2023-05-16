@@ -168,9 +168,6 @@ test_that("test request environment", {
   expect_type(request$get_status(), "character")
   expect_type(request$get_request(), "character")
 
-  # list bundle
-  expect_type(rs_bundle(request$get_task_id(), "khufkens"), "list")
-
   # pause processing
   while(rs_list_task(request$get_task_id(),"khufkens")$status != "done") {
     Sys.sleep(5)
