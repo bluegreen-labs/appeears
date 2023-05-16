@@ -177,7 +177,7 @@ test_that("test request environment", {
   expect_type(rs_transfer(request$get_task_id(), user = "khufkens"), "list")
 
   # delete task
-  expect_message(rs_delete(request$get_task_id(), user = "khufkens"))
+  expect_type(rs_delete(request$get_task_id(), user = "khufkens"), "NULL")
 })
 
 test_that("test full download", {
