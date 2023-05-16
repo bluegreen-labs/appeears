@@ -171,11 +171,16 @@ test_that("test request environment", {
   # list bundle
   expect_type(rs_bundle(request$get_task_id(), "khufkens"), "list")
 
+  # pause processing
+  while(rs_list_task(request$get_task_id(),"khufkens")$status != "done") {
+    Sys.sleep(5)
+  }
+
   # missing task id for bundle
-  expect_error(rs_bundle(user = "khufkens"))
+  expect_type(rs_transfer(request$get_task_id(), user = "khufkens"), "list")
 
   # delete task
-  expect_message(request$delete())
+  expect_message(rs_delete(request$get_task_id(), user = "khufkens"))
 })
 
 test_that("test full download", {
