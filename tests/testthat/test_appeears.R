@@ -101,6 +101,17 @@ test_that("test data transfers", {
   # list environment/tasks
   expect_type(request, "environment")
   expect_type(rs_list_task(request$get_task_id(), "khufkens"), "list")
+
+  # status info from request
+  expect_type(request$is_pending(), "logical")
+  expect_type(request$is_running(), "logical")
+  expect_type(request$is_success(), "logical")
+  expect_type(request$is_failed(), "logical")
+
+  # update status
+  expect_type(request$update_status(), "environment")
+
+  # delete task
   expect_message(request$delete())
 
 })
