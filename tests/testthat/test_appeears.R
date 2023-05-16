@@ -47,7 +47,7 @@ df <- data.frame(
   layer = "Greenup"
 )
 
-# load the north carolina demo data
+# load the north Carolina demo data
 # included in the {sf} package
 # and only retain Camden county
 roi_sf <- sf::st_read(system.file("gpkg/nc.gpkg", package="sf"), quiet = TRUE) |>
@@ -82,15 +82,14 @@ test_that("test functions without task ids", {
 
   # create polygon task
   expect_type(rs_build_task(df, roi_sf, format = "netcdf4"), "character")
-
-  # list tasks
-  expect_type(rs_list_task(user = "khufkens"), "list")
 })
 
 
 test_that("test login-logout", {
   skip_on_cran()
   skip_if(login_check)
+
+  # login logout
   expect_type(rs_logout(rs_login("khufkens")), "logical")
 })
 
@@ -112,6 +111,9 @@ test_that("test request environment", {
 
   # list environment/tasks
   expect_type(request, "environment")
+
+  # list tasks
+  expect_type(rs_list_task(user = "khufkens"), "list")
   expect_type(rs_list_task(request$get_task_id(), "khufkens"), "list")
 
   # status info from request
