@@ -265,7 +265,7 @@ You will be asked to provide a password to encrypt the keyring with.
 Upon the start of each session you will be asked to provide this
 password, unlocking all `appeears` credentials for this session. Should
 you ever forget the password just delete the file at:
-`~/.config/r-keyring/ecmwfr.keyring` and re-enter all your credentials.
+`~/.config/r-keyring/appeears.keyring` and re-enter all your credentials.
 
 
 # Acknowledgements
