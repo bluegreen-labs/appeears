@@ -85,7 +85,7 @@ exit_message <- function(url, path) {
     # startup messages
     vers <- as.character(utils::packageVersion("appeears"))
     txt <- paste(
-      "\n     This is 'apprs' version ",
+      "\n     This is 'appeears' version ",
       vers,
       ". Please respect the terms of use:\n",
       "     - https://appeears.earthdatacloud.nasa.gov/\n"
