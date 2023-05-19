@@ -64,11 +64,15 @@ service <- R6::R6Class("appeears_service",
         if (private$verbose) {
           # needs to change!
           message("  Your download timed out, however ...\n")
-          # self$exit_message()  # TODO
+          self$exit_message()  # TODO
         }
       }
       return(self)
 
+    },
+
+    exit_message = function() {
+      stop("not implemented")
     },
 
     delete = function() {

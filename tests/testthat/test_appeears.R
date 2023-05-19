@@ -173,11 +173,18 @@ test_that("test request environment", {
     Sys.sleep(5)
   }
 
-  # missing task id for bundle
+  # download data
   expect_type(rs_transfer(request$get_task_id(), user = "khufkens"), "list")
+
+  # missing user error
+  expect_error(rs_transfer(request$get_task_id()))
 
   # delete task
   expect_type(rs_delete(request$get_task_id(), user = "khufkens"), "NULL")
+
+  # purge all data
+  expect_type(rs_delete(purge = TRUE, user = "khufkens"), "NULL")
+
 })
 
 test_that("test full download", {
@@ -198,4 +205,23 @@ test_that("test full download", {
     "character"
   )
 
+})
+
+test_that("test timed out download", {
+  skip_on_cran()
+  skip_if(login_check)
+
+  # build task
+  task <- rs_build_task(df)
+
+  # let run full request
+  expect_message(
+    rs_request(
+      request = task,
+      user = "khufkens",
+      transfer = TRUE,
+      verbose = TRUE,
+      time_out = 2
+    )
+  )
 })
