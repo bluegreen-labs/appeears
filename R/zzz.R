@@ -168,7 +168,7 @@ make_script <- function(call, name) {
 
   lines <-
     writeLines(paste0(
-      "library(apprs)\n",
+      "library(appeears)\n",
       name,
       " <- ",
       paste0(deparse(call), collapse = "")
