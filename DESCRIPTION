@@ -10,8 +10,8 @@ Authors@R: c(person(
             person(given = "BlueGreen Labs",
               role = c("cph", "fnd"))
            )
-Description: Programmatic interface to the NASA AppEEARS services. Provides easy
- access to APPlication Ready Samples (apprs) of earth observation data.
+Description: Programmatic interface to the NASA Application for Extracting and Exploring Analysis Ready Samples services (AppEEARS; <https://appeears.earthdatacloud.nasa.gov/>).
+ Provides easy access to application ready samples of earth observation data in R.
 URL: https://github.com/bluegreen-labs/appeears
 BugReports: https://github.com/bluegreen-labs/appeears/issues
 Depends:
@@ -21,7 +21,6 @@ Imports:
     keyring,
     memoise,
     getPass,
-    curl,
     R6,
     sf,
     jsonlite,
