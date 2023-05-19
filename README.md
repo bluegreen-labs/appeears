@@ -6,7 +6,7 @@
 
 Programmatic interface to the [NASA AppEEARS API](https://appeears.earthdatacloud.nasa.gov/) services where, and I quote, "The Application for Extracting and Exploring Analysis Ready Samples (AρρEEARS) offers a simple and efficient way to access and transform geospatial data from a variety of federal data archives. AρρEEARS enables users to subset geospatial datasets using spatial, temporal, and band/layer parameters."
 
-## How to cite this package in your article
+## How to cite this package
 
 You can cite this package like this "we obtained data through the NASA AppEEARS
 API using the {appeears} R package (Hufkens 2023)". Here is the full
