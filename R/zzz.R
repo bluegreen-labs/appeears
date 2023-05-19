@@ -41,7 +41,7 @@ spinner <- function(seconds) {
 
 # Show message if user exits the function (interrupts execution)
 # or as soon as an error will be thrown.
-exit_message <- function(url, path, file) {
+exit_message <- function(url, path) {
   job_list <-  "check the task status (rs_list_task()) or other functions,"
 
   intro <- paste(
@@ -54,28 +54,25 @@ exit_message <- function(url, path, file) {
 
   options <- paste(
     "- Retry downloading as soon as as completed:\n",
-    "  rs_transfer(url = '",
+    "  rs_transfer(\n    task_id = '",
     url,
-    "\n",
-    "<user>,\n ",
-    "',\n path = '",
+    "', \n",
+    "    <user>,\n ",
+    "    path = '",
     path,
-    "',\n filename = '",
-    file,
-    "')\n\n",
+    "'\n  )\n\n",
     "- Delete the job upon completion using:\n",
-    "  rs_delete(<user>,\n url ='",
+    "  rs_delete(task_id ='",
     url,
-    "')\n\n",
+    "', <user>)\n\n",
     sep = ""
   )
 
   # combine all messages
   exit_msg <- paste(intro, options, sep = "")
-  message(sprintf(
-    "- Your request has been submitted as a %s request.\n\n  %s",
-    exit_msg
-  ))
+  message(
+  exit_msg
+  )
 }
 
 # Startup message when attaching the package.

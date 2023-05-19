@@ -25,30 +25,14 @@ df <- data.frame(
 )
 
 task_new <- df |> rs_build_task()
-task_old <- appeears::rs_build_task(df)
-
-# print(
-#   jsonlite::prettify(task_time_series)
-#   )
-#
-# print(
-#   jsonlite::prettify(test)
-# )
 
 rs_list_task(user = "khufkens")
 
 request_new <- rs_request(
   request = task_new,
   user = "khufkens",
-  transfer = FALSE,
+  transfer = TRUE,
   path = "~/tmp/test/",
-  verbose = TRUE
-)
-
-request_old <- rs_request(
-  request = task_old,
-  user = "khufkens",
-  transfer = FALSE,
-  path = "~/tmp/test/",
-  verbose = TRUE
+  verbose = TRUE,
+  time_out = 2
 )

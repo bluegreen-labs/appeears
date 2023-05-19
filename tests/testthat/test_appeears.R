@@ -199,3 +199,22 @@ test_that("test full download", {
   )
 
 })
+
+test_that("test timed out download", {
+  skip_on_cran()
+  skip_if(login_check)
+
+  # build task
+  task <- rs_build_task(df)
+
+  # let run full request
+  expect_message(
+    rs_request(
+      request = task,
+      user = "khufkens",
+      transfer = TRUE,
+      verbose = TRUE,
+      time_out = 2
+    )
+  )
+})

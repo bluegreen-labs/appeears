@@ -230,6 +230,13 @@ appeears_service <- R6::R6Class("appeears_service",
       return(self)
     },
 
+    exit_message = function() {
+      appeears:::exit_message(
+        url = private$name,
+        path = private$path
+      )
+    },
+
     delete = function() {
 
       #  get the response for the query provided
