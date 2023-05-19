@@ -1,6 +1,6 @@
 Dear CRAN team,
 
-This is the first release of the {appeears} package. This package provides a
+This is the first submission of the {appeears} package. This package provides a
 convenient interface to the Application for Extracting and Exploring Analysis
 Ready Samples (AppEEARS) API. This API which allows querying of various remote
 sensing data product for point or restricted geographic areas. This package will
@@ -34,3 +34,4 @@ http://cran.r-project.org/web/packages/policies.html
 ## github actions R CMD check results
 
 0 errors | 0 warnings | 0 notes
+
