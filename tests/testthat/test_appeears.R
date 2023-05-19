@@ -178,6 +178,10 @@ test_that("test request environment", {
 
   # delete task
   expect_type(rs_delete(request$get_task_id(), user = "khufkens"), "NULL")
+
+  # purge all data
+  expect_type(rs_delete(purge = TRUE, user = "khufkens"), "NULL")
+
 })
 
 test_that("test full download", {
