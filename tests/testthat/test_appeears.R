@@ -173,8 +173,11 @@ test_that("test request environment", {
     Sys.sleep(5)
   }
 
-  # missing task id for bundle
+  # download data
   expect_type(rs_transfer(request$get_task_id(), user = "khufkens"), "list")
+
+  # missing user error
+  expect_error(rs_transfer(request$get_task_id()))
 
   # delete task
   expect_type(rs_delete(request$get_task_id(), user = "khufkens"), "NULL")
