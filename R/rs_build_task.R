@@ -18,7 +18,6 @@
 #' @export
 #' @examples
 #'
-#' \dontrun{
 #' # define a task as a tidy data frame
 #' # multiple subtasks can be provided
 #' df <- data.frame(
@@ -34,7 +33,6 @@
 #'
 #' # build a task
 #' rs_build_task(df)
-#'}
 
 rs_build_task <- function(
     df,

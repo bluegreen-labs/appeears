@@ -11,10 +11,15 @@
 #' @author Koen Hufkens
 #' @examples
 #'
-#' \dontrun{
+#' # is the server reachable
+#' server_check <- appeears:::rs_running(
+#'  file.path(appeears:::rs_server(),"product")
+#' )
+#'
 #' # get a list of datasets
-#' rs_layers()
-#'}
+#' if(server_check){
+#'  layers <- rs_layers()
+#' }
 
 rs_layers <- function(
     product
