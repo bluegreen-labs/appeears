@@ -2,12 +2,12 @@ citHeader("To cite appeears in publications use:")
 
 bibentry(bibtype = "Misc",
          title = "The appeears package: an interface to NASA AppEEARS API endpoints",
-         author = c(as.person("Koen Hufkens")),
+         author = c(as.person("Koen Hufkens"), as.person("Elio Campitelli")),
          year = "2023",
          doi = "10.5281/zenodo.7938190",
          url = "https://bluegreen-labs.github.io/appeears/",
          textVersion  =
-           paste("Hufkens (2023).",
+           paste("Hufkens & Campitelli (2023).",
                  "The appeears package: an interface to NASA AppEEARS API endpoints",
                  "https://doi.org/10.5281/zenodo.7938190")
 )

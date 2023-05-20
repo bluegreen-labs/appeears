@@ -15,7 +15,7 @@ errors (which are hard to test for). The underlying framework borrows heavily
 from my {ecmwfr} package due to similarities of the NASA API with those used
 by ECMWF in serving climate data.
 
-## revisions
+## revisions (per )
 
 All code is tested outside CRAN as personal API codes can not be shared. For
 a breakdown of coverage statistics I refer to:
@@ -31,7 +31,12 @@ as per review request. Functions covered in this way are, rs_layers() and
 rs_products() which require no authentication. rs_build_task() is now exposed
 as well (not wrapped in dontrun).
 
-I hope with these additions the package can be considered.
+Furthermore, I added Elio Campitelli as contributor, as the R6 refactoring of 
+{ecmwfr} was mostly his work. I've borrowed this for the package and I
+realized this seems fair (I've got written consent, and both DESCRIPTION and 
+CITATION files were updated accordingly).
+
+I hope with these additions the package can be reconsidered.
 Kind regards,
 Koen Hufkens
 
