@@ -3,6 +3,8 @@
 [![R-CMD-check](https://github.com/bluegreen-labs/appeears/workflows/R-CMD-check/badge.svg)](https://github.com/bluegreen-labs/appeears/actions)
 [![codecov](https://codecov.io/gh/bluegreen-labs/appeears/branch/main/graph/badge.svg)](https://app.codecov.io/gh/bluegreen-labs/appeears)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7938190.svg)](https://doi.org/10.5281/zenodo.7938190)
+![](https://cranlogs.r-pkg.org/badges/grand-total/appeears) 
+![](https://www.r-pkg.org/badges/version/appeears)
 
 Programmatic interface to the [NASA AppEEARS API](https://appeears.earthdatacloud.nasa.gov/) services where, and I quote, "The Application for Extracting and Exploring Analysis Ready Samples (AρρEEARS) offers a simple and efficient way to access and transform geospatial data from a variety of federal data archives. AρρEEARS enables users to subset geospatial datasets using spatial, temporal, and band/layer parameters."
 
