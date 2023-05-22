@@ -46,7 +46,8 @@ rs_delete <- function(
   # keep running processes untouched
   if (purge) {
     task_list <- rs_list_task(user = user)
-    task_id <- task_list[task_list$status == "done" | task_list$crashed,]$task_id
+    task_id <-
+      task_list$task_id[which(task_list$status == "done" | task_list$crashed)]
   }
 
   lapply(task_id, function(id){
