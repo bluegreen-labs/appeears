@@ -22,14 +22,9 @@ a breakdown of coverage statistics I refer to:
 
 https://app.codecov.io/gh/bluegreen-labs/appeears
 
-Limited functions are documented with "dynamic" examples which are run.
-The code required to trap potential errors if the service is down
-exceeds that of actual function coverage (which can be confusing, and the
-reason I tend to avoid this). However, I will retain these changes
-as per review request. Functions covered in this way are, rs_layers() and 
-rs_products() which require no authentication. rs_build_task() is now exposed
-as well (not wrapped in dontrun). All other function touch upon some form of
-authentication (and can't be tested due to credentials).
+Limited functions are documented with "dynamic" examples which are run (on CRAN).
+Functions covered in this way are, rs_layers() and  rs_products() which require no authentication. rs_build_task() is now exposed as well (not wrapped in dontrun). 
+All other function touch upon some form of authentication (and can't be tested due to credentials).
 
 Furthermore, I added Elio Campitelli as contributor, as the R6 refactoring of 
 {ecmwfr} was mostly his work. I've borrowed this for the package in hindsight 
