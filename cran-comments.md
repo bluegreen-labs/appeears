@@ -15,7 +15,7 @@ errors (which are hard to test for). The underlying framework borrows heavily
 from my {ecmwfr} package due to similarities of the NASA API with those used
 by ECMWF in serving climate data.
 
-## revisions (per )
+## revisions (per review)
 
 All code is tested outside CRAN as personal API codes can not be shared. For
 a breakdown of coverage statistics I refer to:
@@ -24,16 +24,16 @@ https://app.codecov.io/gh/bluegreen-labs/appeears
 
 Limited functions are documented with "dynamic" examples which are run.
 The code required to trap potential errors if the service is down
-exceeds that of actual function coverage. Therefore I personally would object 
-to this course of action, as it might confuse users to why this is included and if
-this is necessary within their own code. However, I will retain these changes
+exceeds that of actual function coverage (which can be confusing, and the
+reason I tend to avoid this). However, I will retain these changes
 as per review request. Functions covered in this way are, rs_layers() and 
 rs_products() which require no authentication. rs_build_task() is now exposed
-as well (not wrapped in dontrun).
+as well (not wrapped in dontrun). All other function touch upon some form of
+authentication (and can't be tested due to credentials).
 
 Furthermore, I added Elio Campitelli as contributor, as the R6 refactoring of 
-{ecmwfr} was mostly his work. I've borrowed this for the package and I
-realized this seems fair (I've got written consent, and both DESCRIPTION and 
+{ecmwfr} was mostly his work. I've borrowed this for the package in hindsight 
+this seems only fair (I've got written consent, and both DESCRIPTION and 
 CITATION files were updated accordingly).
 
 I hope with these additions the package can be reconsidered.
