@@ -29,7 +29,6 @@ box for an sf or SpatRaster object will be used instead.
 }
 \examples{
 
-\dontrun{
 # define a task as a tidy data frame
 # multiple subtasks can be provided
 df <- data.frame(
@@ -45,5 +44,4 @@ layer = c("Greenup")
 
 # build a task
 rs_build_task(df)
-}
 }
