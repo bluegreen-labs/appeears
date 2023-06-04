@@ -87,8 +87,6 @@ rs_request_batch <- function(
       }
     }
   }
-
-  unlist(lapply(done, function(x) x$get_file()))
 }
 
 repeat_if_one <- function(x, N) {
