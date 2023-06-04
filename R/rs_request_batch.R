@@ -1,8 +1,9 @@
 #' @param request_list a list of requests that will be processed in parallel.
 #' @param workers maximum number of simultaneous request that will be submitted
-#' to the service. Most ECMWF services are limited to 20 concurrent requests
+#' to the service. Most services are limited to ~20 concurrent requests
 #' (default = 2).
 #' @param total_timeout overall timeout limit for all the requests in seconds.
+#'  (note that the overall timeout on a session is 48h)
 #' @importFrom R6 R6Class
 #'
 #' @rdname rs_request
@@ -12,21 +13,26 @@ rs_request_batch <- function(
     workers = 2,
     user,
     path = tempdir(),
-    time_out = 3600,
+    time_out = 7200,
     total_timeout = length(request_list)*time_out/workers
 ) {
 
-  list_in_list <- vapply(request_list, is.list, logical(1))
+  json_in_list <- vapply(request_list, function(req) {
+    any(grepl("task_name", names(jsonlite::fromJSON(req))))
+    },
+    logical(1)
+  )
 
-  if (any(!list_in_list)) {
-    stop("request_list must be a list of requests")
+  if (any(!json_in_list)) {
+    stop("request_list must be a list of JSON requests")
   }
 
-  filenames <- vapply(request_list, function(x) x$target, character(1))
-
-  if (any(duplicated(filenames))) {
-    stop("Duplicated targets found in `request_list`.")
-  }
+  # can't check for filenames as too diverse in output
+  # filenames <- vapply(request_list, function(x) x$target, character(1))
+  #
+  # if (any(duplicated(filenames))) {
+  #   stop("Duplicated targets found in `request_list`.")
+  # }
 
   N <- length(request_list)
   slots <- as.list(rep(FALSE, workers))
@@ -49,11 +55,12 @@ rs_request_batch <- function(
       # assign to it the next pending request,
       # remove that request from the queue
       if (isFALSE(slots[[w]]) & length(queue) > 0) {
-        slots[[w]] <- wf_request(
+        slots[[w]] <- rs_request(
           queue[[1]],
           user = user[1],
           time_out = time_out[1],
-          path = path[1], transfer = FALSE
+          path = path[1],
+          transfer = FALSE
         )
         queue <- queue[-1]
         user <- user[-1]
