@@ -25,7 +25,8 @@ server_check <- appeears:::rs_running(
 
 # get a list of datasets
 if(server_check){
- layers <- rs_layers()
+ layers <- rs_layers("MCD43A4.006")
+ print(layers$Layer)
 }
 }
 \seealso{

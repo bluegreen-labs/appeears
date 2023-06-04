@@ -20,7 +20,7 @@ rs_request_batch(
   workers = 2,
   user,
   path = tempdir(),
-  time_out = 3600,
+  time_out = 7200,
   total_timeout = length(request_list) * time_out/workers
 )
 }
@@ -46,10 +46,11 @@ name. It has to be a syntactically valid name.}
 \item{request_list}{a list of requests that will be processed in parallel.}
 
 \item{workers}{maximum number of simultaneous request that will be submitted
-to the service. Most ECMWF services are limited to 20 concurrent requests
+to the service. Most services are limited to ~20 concurrent requests
 (default = 2).}
 
-\item{total_timeout}{overall timeout limit for all the requests in seconds.}
+\item{total_timeout}{overall timeout limit for all the requests in seconds.
+(note that the overall timeout on a session is 48h)}
 }
 \value{
 the path of the downloaded (requested file) or the an R6 object
