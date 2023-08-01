@@ -239,9 +239,7 @@ test_that("test batch download", {
   expect_type(
     rs_request_batch(
       request = task,
-      user = "khufkens",
-      transfer = TRUE,
-      verbose = FALSE
+      user = "khufkens"
     ),
     "character"
   )
