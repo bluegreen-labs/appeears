@@ -44,7 +44,7 @@
         <a class="external-link hidden-md hidden-lg" href="https://bluegreenlabs.org">
           <img src="https://bluegreenlabs.org/img/logo.png" id="hexlogo" alt="bluegreen labs"></a>
         <a class="navbar-brand" href="../index.html">
-           <i>appeears <small>v1.0</small></i>
+           <i>appeears <small>v1.1</small></i>
         </a>
       </div>
     </div>
@@ -92,7 +92,7 @@
                         <h4 data-toc-skip class="author">Koen
 Hufkens</h4>
             
-            <h4 data-toc-skip class="date">2023-05-22</h4>
+            <h4 data-toc-skip class="date">2023-08-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/appeears/blob/HEAD/vignettes/appeears_vignette.Rmd" class="external-link"><code>vignettes/appeears_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>appeears_vignette.Rmd</code></div>
@@ -155,7 +155,7 @@ listed under various versions.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">products</span><span class="op">$</span><span class="va">ProductAndVersion</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "GPW_DataQualityInd.411"    "GPW_UN_Adj_PopCount.411"  </span></span>
 <span><span class="co">#&gt; [3] "GPW_UN_Adj_PopDensity.411" "GPW_Basic_Demog_Char.411" </span></span>
-<span><span class="co">#&gt; [5] "MCD12Q1.006"               "MCD12Q2.006"</span></span>
+<span><span class="co">#&gt; [5] "MCD12Q1.061"               "MCD12Q2.061"</span></span>
 <span></span>
 <span><span class="co"># list all layers for a particular</span></span>
 <span><span class="co"># product</span></span>
@@ -164,55 +164,8 @@ listed under various versions.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">layers</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   AddOffset Available DataType</span></span>
-<span><span class="co">#&gt; 1                TRUE    int16</span></span>
-<span><span class="co">#&gt; 2                TRUE    int16</span></span>
-<span><span class="co">#&gt; 3                TRUE    int16</span></span>
-<span><span class="co">#&gt; 4                TRUE    int16</span></span>
-<span><span class="co">#&gt; 5                TRUE    int16</span></span>
-<span><span class="co">#&gt; 6                TRUE    int16</span></span>
-<span><span class="co">#&gt;                                                      Description</span></span>
-<span><span class="co">#&gt; 1  Date when EVI2 last crossed 15% of the segment EVI2 amplitude</span></span>
-<span><span class="co">#&gt; 2                                 Segment maximum - minimum EVI2</span></span>
-<span><span class="co">#&gt; 3        Sum of daily interpolated EVI2 from Greenup to Dormancy</span></span>
-<span><span class="co">#&gt; 4                                     Segment minimum EVI2 value</span></span>
-<span><span class="co">#&gt; 5 Date when EVI2 first crossed 15% of the segment EVI2 amplitude</span></span>
-<span><span class="co">#&gt; 6 Date when EVI2 first crossed 90% of the segment EVI2 amplitude</span></span>
-<span><span class="co">#&gt;                    Dimensions FillValue FillValueRaw Group  IsQA         Layer</span></span>
-<span><span class="co">#&gt; 1 time, YDim, XDim, Num_Modes     32767        32767       FALSE      Dormancy</span></span>
-<span><span class="co">#&gt; 2 time, YDim, XDim, Num_Modes     32767        32767       FALSE EVI_Amplitude</span></span>
-<span><span class="co">#&gt; 3 time, YDim, XDim, Num_Modes     32767        32767       FALSE      EVI_Area</span></span>
-<span><span class="co">#&gt; 4 time, YDim, XDim, Num_Modes     32767        32767       FALSE   EVI_Minimum</span></span>
-<span><span class="co">#&gt; 5 time, YDim, XDim, Num_Modes     32767        32767       FALSE       Greenup</span></span>
-<span><span class="co">#&gt; 6 time, YDim, XDim, Num_Modes     32767        32767       FALSE      Maturity</span></span>
-<span><span class="co">#&gt;   OrigDataType OrigValidMax OrigValidMin</span></span>
-<span><span class="co">#&gt; 1        int16        32766        11138</span></span>
-<span><span class="co">#&gt; 2        int16        10000            0</span></span>
-<span><span class="co">#&gt; 3        int16         3700            0</span></span>
-<span><span class="co">#&gt; 4        int16        10000            0</span></span>
-<span><span class="co">#&gt; 5        int16        32766        11138</span></span>
-<span><span class="co">#&gt; 6        int16        32766        11138</span></span>
-<span><span class="co">#&gt;                                                     QualityLayers</span></span>
-<span><span class="co">#&gt; 1 ['QA_Detailed_0','QA_Detailed_1','QA_Overall_0','QA_Overall_1']</span></span>
-<span><span class="co">#&gt; 2 ['QA_Detailed_0','QA_Detailed_1','QA_Overall_0','QA_Overall_1']</span></span>
-<span><span class="co">#&gt; 3 ['QA_Detailed_0','QA_Detailed_1','QA_Overall_0','QA_Overall_1']</span></span>
-<span><span class="co">#&gt; 4 ['QA_Detailed_0','QA_Detailed_1','QA_Overall_0','QA_Overall_1']</span></span>
-<span><span class="co">#&gt; 5 ['QA_Detailed_0','QA_Detailed_1','QA_Overall_0','QA_Overall_1']</span></span>
-<span><span class="co">#&gt; 6 ['QA_Detailed_0','QA_Detailed_1','QA_Overall_0','QA_Overall_1']</span></span>
-<span><span class="co">#&gt;   QualityProductAndVersion ScaleFactor Units ValidMax ValidMin XSize YSize</span></span>
-<span><span class="co">#&gt; 1              MCD12Q2.006           1   Day    32766    11138  2400  2400</span></span>
-<span><span class="co">#&gt; 2              MCD12Q2.006       1e-04  EVI2    10000        0  2400  2400</span></span>
-<span><span class="co">#&gt; 3              MCD12Q2.006         0.1  EVI2     3700        0  2400  2400</span></span>
-<span><span class="co">#&gt; 4              MCD12Q2.006       1e-04  EVI2    10000        0  2400  2400</span></span>
-<span><span class="co">#&gt; 5              MCD12Q2.006           1   Day    32766    11138  2400  2400</span></span>
-<span><span class="co">#&gt; 6              MCD12Q2.006           1   Day    32766    11138  2400  2400</span></span>
-<span><span class="co">#&gt;            Band</span></span>
-<span><span class="co">#&gt; 1      Dormancy</span></span>
-<span><span class="co">#&gt; 2 EVI_Amplitude</span></span>
-<span><span class="co">#&gt; 3      EVI_Area</span></span>
-<span><span class="co">#&gt; 4   EVI_Minimum</span></span>
-<span><span class="co">#&gt; 5       Greenup</span></span>
-<span><span class="co">#&gt; 6      Maturity</span></span></code></pre></div>
+<span><span class="co">#&gt;                  V1    Band</span></span>
+<span><span class="co">#&gt; 1 Product not found message</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="point-based-data-requests">Point based data requests<a class="anchor" aria-label="anchor" href="#point-based-data-requests"></a>
