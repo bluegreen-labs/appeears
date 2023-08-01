@@ -1,6 +1,7 @@
 # appeears 1.1
 
 - adding batch processing (initially not included, but helps in product download management)
+- correcting documentation
 
 # appeears 1.0
 
