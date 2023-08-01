@@ -21,7 +21,8 @@ rs_request_batch(
   user,
   path = tempdir(),
   time_out = 7200,
-  total_timeout = length(request_list) * time_out/workers
+  total_timeout = length(request_list) * time_out/workers,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -35,8 +36,7 @@ used to retrieve the token set by \code{\link[appeears]{rs_set_key}}}
 
 \item{path}{path were to store the downloaded data}
 
-\item{time_out}{how long to wait on a download to start (default =
-\code{3*3600} seconds).}
+\item{time_out}{individual time out for each request}
 
 \item{job_name}{optional name to use as an RStudio job and as output variable
 name. It has to be a syntactically valid name.}

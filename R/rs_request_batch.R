@@ -1,9 +1,14 @@
+#' @param user user (email address or ID) provided by the AppEEARS data service,
+#' used to retrieve the token set by \code{\link[appeears]{rs_set_key}}
+#' @param path path were to store the downloaded data
 #' @param request_list a list of requests that will be processed in parallel.
 #' @param workers maximum number of simultaneous request that will be submitted
 #' to the service. Most services are limited to ~20 concurrent requests
 #' (default = 2).
+#' @param time_out individual time out for each request
 #' @param total_timeout overall timeout limit for all the requests in seconds.
 #'  (note that the overall timeout on a session is 48h)
+#' @param verbose show feedback on processing
 #' @importFrom R6 R6Class
 #'
 #' @rdname rs_request
@@ -14,7 +19,8 @@ rs_request_batch <- function(
     user,
     path = tempdir(),
     time_out = 7200,
-    total_timeout = length(request_list)*time_out/workers
+    total_timeout = length(request_list)*time_out/workers,
+    verbose = TRUE
 ) {
 
   json_in_list <- vapply(request_list, function(req) {
@@ -60,7 +66,8 @@ rs_request_batch <- function(
           user = user[1],
           time_out = time_out[1],
           path = path[1],
-          transfer = FALSE
+          transfer = FALSE,
+          verbose = verbose
         )
         queue <- queue[-1]
         user <- user[-1]
