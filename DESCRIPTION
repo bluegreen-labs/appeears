@@ -1,5 +1,5 @@
 Package: appeears
-Title: Interface to 'AppEARS' NASA Web Services
+Title: Interface to 'AppEEARS' NASA Web Services
 Version: 1.1
 Authors@R: c(person(
                family = "Hufkens",
