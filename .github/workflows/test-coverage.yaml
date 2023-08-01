@@ -13,7 +13,7 @@ name: test-coverage
 jobs:
   test-coverage:
     timeout-minutes: 120
-    runs-on: macos-latest
+    runs-on: windows-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       PASS: ${{secrets.PASS}}
