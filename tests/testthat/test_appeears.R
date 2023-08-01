@@ -236,12 +236,13 @@ test_that("test batch download", {
   task <- list(task, task)
 
   # let run full request
+  # (doesn't return anything / NULL)
   expect_type(
     rs_request_batch(
       request = task,
       user = "khufkens"
     ),
-    "character"
+    "NULL"
   )
 })
 
