@@ -26,9 +26,9 @@ rs_request_batch(
 }
 \arguments{
 \item{request}{nested list with query parameters following the layout
-as specified on the ECMWF APIs page}
+as specified on the AppEEARS APIs page}
 
-\item{user}{user (email address or ID) provided by the ECMWF data service,
+\item{user}{user (email address or ID) provided by the AppEEARS data service,
 used to retrieve the token set by \code{\link[appeears]{rs_set_key}}}
 
 \item{transfer}{logical, download data TRUE or FALSE (default = TRUE)}

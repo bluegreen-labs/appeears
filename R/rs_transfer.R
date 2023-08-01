@@ -3,7 +3,7 @@
 #' Returns the contents of the requested url as a NetCDF file downloaded
 #' to disk or the current status of the requested transfer.
 #'
-#' @param user user (email address) used to sign up for the ECMWF data service,
+#' @param user user (email address) used to sign up for the AppEEARS data service,
 #' used to retrieve the token set by \code{\link[appeears]{rs_set_key}}.
 #' @param task_id R6 \code{\link[appeears]{rs_request}}) query output or task id
 #' @param path path were to store the downloaded data

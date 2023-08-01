@@ -39,7 +39,7 @@ rs_set_key <- function(user, password) {
 
   if (keyring::default_backend()$name != "env") {
     if (keyring::default_backend()$name == "file") {
-      if ("ecmwfr" %in% keyring::keyring_list()$keyring) {
+      if ("appeears" %in% keyring::keyring_list()$keyring) {
         if(keyring::keyring_is_locked(keyring = "appeears")){
           message("Your keyring is locked please
               unlock with your keyring password!")

@@ -41,7 +41,7 @@ rs_get_key <- function(user) {
           keyring::keyring_unlock(keyring = "appeears")
         }
       } else {
-        stop("Can't find your credentials in the ecmwfr keyring file")
+        stop("Can't find your credentials in the appeears keyring file")
       }
     } else {
       if (keyring::keyring_is_locked()) {

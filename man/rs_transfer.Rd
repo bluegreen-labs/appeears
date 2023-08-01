@@ -9,7 +9,7 @@ rs_transfer(task_id, user, path = tempdir(), verbose = TRUE)
 \arguments{
 \item{task_id}{R6 \code{\link[appeears]{rs_request}}) query output or task id}
 
-\item{user}{user (email address) used to sign up for the ECMWF data service,
+\item{user}{user (email address) used to sign up for the AppEEARS data service,
 used to retrieve the token set by \code{\link[appeears]{rs_set_key}}.}
 
 \item{path}{path were to store the downloaded data}
