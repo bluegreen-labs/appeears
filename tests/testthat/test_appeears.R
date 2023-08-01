@@ -45,7 +45,7 @@ df <- data.frame(
   longitude = -72.1715,
   start = "2010-01-01",
   end = "2010-01-15",
-  product = "MCD12Q2.006",
+  product = "MCD12Q2.061",
   layer = "Greenup"
 )
 
@@ -206,7 +206,6 @@ test_that("test full download", {
     ),
     "character"
   )
-
 })
 
 test_that("test timed out download", {
@@ -227,3 +226,23 @@ test_that("test timed out download", {
     )
   )
 })
+
+test_that("test batch download", {
+  skip_on_cran()
+  skip_if(login_check)
+
+  # build task
+  task <- rs_build_task(df)
+  task <- list(task, task)
+
+  # let run full request
+  # (doesn't return anything / NULL)
+  expect_type(
+    rs_request_batch(
+      request = task,
+      user = "khufkens"
+    ),
+    "NULL"
+  )
+})
+

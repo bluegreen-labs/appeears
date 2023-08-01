@@ -4,14 +4,14 @@
 #' you can only stage requests, logging the request URLs to submit download
 #' queries later on using \code{\link[appeears]{rs_transfer}}.
 #'
-#' @param user user (email address or ID) provided by the ECMWF data service,
+#' @param user user (email address or ID) provided by the AppEEARS data service,
 #' used to retrieve the token set by \code{\link[appeears]{rs_set_key}}
 #' @param path path were to store the downloaded data
 #' @param time_out how long to wait on a download to start (default =
 #' \code{3*3600} seconds).
 #' @param transfer logical, download data TRUE or FALSE (default = TRUE)
 #' @param request nested list with query parameters following the layout
-#' as specified on the ECMWF APIs page
+#' as specified on the AppEEARS APIs page
 #' @param job_name optional name to use as an RStudio job and as output variable
 #'  name. It has to be a syntactically valid name.
 #' @param verbose show feedback on processing

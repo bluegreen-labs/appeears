@@ -14,9 +14,14 @@ Returns a data frame of available data products
 }
 \examples{
 
-\dontrun{
+# is the server reachable
+server_check <- appeears:::rs_running(
+ file.path(appeears:::rs_server(),"product")
+)
+
 # get a list of datasets
-rs_products()
+if(server_check){
+ products <- rs_products()
 }
 }
 \seealso{
