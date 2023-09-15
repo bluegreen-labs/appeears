@@ -1,14 +1,9 @@
 Dear CRAN team,
 
-This is an update of the {appeears} package (version 1.1). This package provides a
-convenient interface to the Application for Extracting and Exploring Analysis
-Ready Samples (AppEEARS) API.
+This is an update of the {appeears} package (version 1.1). This package provides a convenient interface to the Application for Extracting and Exploring Analysis Ready Samples (AppEEARS) API.
 
 The update includes one single feature, the addition of a batch downloading
-option. This was initially not included (as you can requests larger/complex batches
-from the API). However, to organize timely downloads from the API the batch
-scheduler still seems useful. Code coverage remains at ~73%. Additional
-corrections to the documentation were also made.
+option. This was initially not included (as you can requests larger/complex batches from the API). However, to organize timely downloads from the API the batch scheduler still seems useful. Code coverage remains at ~73%. Additional corrections to the documentation were also made.
 
 Kind regards,
 Koen Hufkens
@@ -28,4 +23,3 @@ http://cran.r-project.org/web/packages/policies.html
 ## github actions R CMD check results
 
 0 errors | 0 warnings | 0 notes
-
