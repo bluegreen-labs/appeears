@@ -20,7 +20,7 @@ Authors@R: c(person(
            )
 Description: Programmatic interface to the NASA Application for Extracting and Exploring Analysis Ready Samples services (AppEEARS; <https://appeears.earthdatacloud.nasa.gov/>).
  The package provides easy access to analysis ready earth observation data in R.
-URL: https://github.com/bluegreen-labs/appeears
+URL: https://github.com/bluegreen-labs/appeears, https://bluegreen-labs.github.io/appeears/
 BugReports: https://github.com/bluegreen-labs/appeears/issues
 Depends:
     R (>= 4.0)
