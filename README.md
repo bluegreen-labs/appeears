@@ -1,4 +1,4 @@
-# appeears 
+# appeears <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 [![R-CMD-check](https://github.com/bluegreen-labs/appeears/workflows/R-CMD-check/badge.svg)](https://github.com/bluegreen-labs/appeears/actions)
 [![codecov](https://codecov.io/gh/bluegreen-labs/appeears/branch/main/graph/badge.svg)](https://app.codecov.io/gh/bluegreen-labs/appeears)
