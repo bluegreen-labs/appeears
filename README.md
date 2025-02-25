@@ -54,7 +54,13 @@ library("appeears")
 
 Before starting save the provided NASA Earth Data password to your local keychain. The
 package does not allow you to use your password inline in scripts to limit
-security issues when sharing scripts on github or otherwise.
+security issues when sharing scripts on github or otherwise. In the `appeears` package and API
+the login user is your chosen user name, **not your email address**.
+
+In the `R` console (command line) use the following workflow to enter your `appeears`
+credentials in your keychain management. If this fails, please fall back to file
+based keychain management (see below). Avoid putting the `rs_set_key()`
+code in your script as you might leak login credentials through code sharing!
 
 ``` r
 # set a key to the keychain
@@ -83,6 +89,54 @@ token <- rs_login(user = "earth_data_user")
 # invalidate the current session
 rs_logout(token)
 ```
+
+#### File based keychains
+
+On linux, or systems with key management issues, you can opt to use
+a file based keyring instead of a graphical user interface (GUI) based keyring manager. 
+For example, this is helpful for headless setups such as servers without a GUI.
+For this option to work users must set an `R` environmental option
+at the beginning of each session or script (before executing any login routines).
+
+On the `R` console (command line) set the environmental option as shown below and set
+your key using your username and password.
+
+``` r
+# set the environmental variable
+# on the command line or in any
+# script that runs on a file based
+# keychain
+options(keyring_backend="file")
+```
+
+``` r
+# on the command line set your key
+rs_set_key(
+  user = "earth_data_user",
+  password = "XXXXXXXXXXXXXXXXXXXXXX"
+  )
+```
+
+When using a file based keychain you will need to set the environmental option
+at the beginning of each session (on the command line) or at the
+beginning of each script (before login commands).
+
+``` r
+# set the environmental variable
+# on the command line or in any
+# script that runs on a file based
+# keychain
+options(keyring_backend="file")
+
+# submit a request
+rs_request(...)
+```
+
+Upon the start of each session/script you will be asked to provide your
+password, unlocking all `appeears` credentials for this session. Should
+you ever forget the password just delete the file at:
+`~/.config/r-keyring/appeears.keyring` and re-enter all your credentials
+on the command line (see above).
 
 ### Point based data requests
 
@@ -261,23 +315,6 @@ rs_request(
   verbose = TRUE
 )
 ```
-
-## File based keychains
-
-On linux you can opt to use a file based keyring, instead of a GUI based
-keyring manager. This is helpful for headless setups such as servers.
-For this option to work linux users must set an environmental option.
-
-``` r
-options(keyring_backend="file")
-```
-
-You will be asked to provide a password to encrypt the keyring with.
-Upon the start of each session you will be asked to provide this
-password, unlocking all `appeears` credentials for this session. Should
-you ever forget the password just delete the file at:
-`~/.config/r-keyring/appeears.keyring` and re-enter all your credentials.
-
 
 # Acknowledgements
 
