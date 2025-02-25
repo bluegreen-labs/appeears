@@ -1,72 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/appeears_vignette.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/contact.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_build_task.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_bundle.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_get_key.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_layers.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_list_task.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_login.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_logout.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_products.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_quality.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_request.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_set_key.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rs_transfer.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/CONDUCT.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/articles/appeears_vignette.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/contact.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/rs_build_task.html</loc></url>
+<url><loc>/reference/rs_bundle.html</loc></url>
+<url><loc>/reference/rs_delete.html</loc></url>
+<url><loc>/reference/rs_get_key.html</loc></url>
+<url><loc>/reference/rs_layers.html</loc></url>
+<url><loc>/reference/rs_list_task.html</loc></url>
+<url><loc>/reference/rs_login.html</loc></url>
+<url><loc>/reference/rs_logout.html</loc></url>
+<url><loc>/reference/rs_products.html</loc></url>
+<url><loc>/reference/rs_quality.html</loc></url>
+<url><loc>/reference/rs_request.html</loc></url>
+<url><loc>/reference/rs_set_key.html</loc></url>
+<url><loc>/reference/rs_transfer.html</loc></url>
 </urlset>
+
