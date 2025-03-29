@@ -8,6 +8,8 @@
 
 Programmatic interface to the [NASA AppEEARS API](https://appeears.earthdatacloud.nasa.gov/) services where, and I quote, "The Application for Extracting and Exploring Analysis Ready Samples (AρρEEARS) offers a simple and efficient way to access and transform geospatial data from a variety of federal data archives. AρρEEARS enables users to subset geospatial datasets using spatial, temporal, and band/layer parameters."
 
+> We received news from Dr. Michele Thornton at the Oak Ridge National Laboratory (ORNL) that the DAYMET API they host will be decommissioned. This change will be effective within weeks (late March 2025) and affect first and foremost the spatial (gridded/tiled) data products, before most likely covering the whole THREDDS data server setup including point based data by the end of the year. We suggest that users of our {daymetr} R package migrate to the NASA EarthData Appeears based API as covered by our [{appeears} R package](https://bluegreen-labs.github.io/appeears/).
+
 ## How to cite this package
 
 You can cite this package like this "we obtained data through the NASA AppEEARS
