@@ -22,8 +22,8 @@
 ^\.Rproj\.user$
 ^\.httr-oauth$
 ^.*-logo\..*$
-^globe-eurafcia\.png$
-^globe-eurafcia\.svg$
+^globe-eurafrica\.png$
+^globe-eurafrica\.svg$
 ^logo.png$
 ^codemeta\.json$
 ^CRAN-SUBMISSION$
