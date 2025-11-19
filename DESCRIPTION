@@ -36,7 +36,7 @@ Imports:
     rstudioapi
 License: AGPL-3
 ByteCompile: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Suggests:
     rmarkdown,
     covr,
@@ -49,3 +49,4 @@ Suggests:
     ggplot2,
     patchwork
 VignetteBuilder: knitr
+Encoding: UTF-8

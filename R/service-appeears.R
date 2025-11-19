@@ -1,4 +1,5 @@
 appeears_service <- R6::R6Class("appeears_service",
+  cloneable = FALSE,
   inherit = service,
   public = list(
     submit = function() {

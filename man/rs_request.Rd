@@ -64,7 +64,7 @@ queries later on using \code{\link[appeears]{rs_transfer}}.
 \examples{
 
 \dontrun{
-# specifiy a task/request as a
+# specify a task/request as a
 # data frame
 df <- data.frame(
  task = "grand canyon",
