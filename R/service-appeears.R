@@ -90,7 +90,16 @@ appeears_service <- R6::R6Class("appeears_service",
       # split out response and status
       # if done, hand over data for download
       ct <- httr::content(response)
-      private$status <- ct$status
+
+      # at times the response is atomic
+      # does not exist / or the content format returned
+      # is inconsistent, trap this case and default
+      # to 404
+      if(is.atomic(ct)){
+        private$status <- "unspecified"
+      } else {
+        private$status <- ct$status
+      }
 
       if (private$status != "done" || is.null(private$status)) {
         private$code <- 202
@@ -104,6 +113,12 @@ appeears_service <- R6::R6Class("appeears_service",
           ct$attempts, " attempts!"
         )
         warn_or_error(error_msg, error = fail_is_error)
+      } else if (private$status == "unspecified") {
+        private$code <- 404
+        error_msg <- paste0(
+          "Data request crashed for ", ct$task_id, "!"
+        )
+        warn_or_error(error_msg, error = FALSE)
       }
       private$next_retry <- Sys.time()
       return(self)
