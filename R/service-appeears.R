@@ -84,13 +84,23 @@ appeears_service <- R6::R6Class("appeears_service",
         file.path(rs_server(),"task", private$name),
         httr::add_headers(
           Authorization = paste("Bearer", private$token),
-          "Content-Type" = "application/json")
+          "Content-Type" = "application/json"
+        ),
+        httr::timeout(30)
       )
 
       # split out response and status
       # if done, hand over data for download
       ct <- httr::content(response)
-      private$status <- ct$status
+
+      # at times the response is atomic
+      # does not exist / or the content format returned
+      # is inconsistent, trap this case and report as 500 error
+      if(is.atomic(ct)){
+        private$status <- "service_error"
+      } else {
+        private$status <- ct$status
+      }
 
       if (private$status != "done" || is.null(private$status)) {
         private$code <- 202
@@ -98,12 +108,21 @@ appeears_service <- R6::R6Class("appeears_service",
         private$code <- 302
       } else if (private$status == "failed") {
         private$code <- 404
-        permanent <- if (ct$crashed) "permanent "
         error_msg <- paste0(
-          "Data request crashed for ", ct$task_id, " after ",
+          "Data request failed for ", ct$task_id, " after ",
           ct$attempts, " attempts!"
         )
-        warn_or_error(error_msg, error = fail_is_error)
+        warn_or_error(error_msg, call. = FALSE, error = fail_is_error)
+      } else if (private$status == "service_error") {
+        # most likely cause for this issue is the server being up but
+        # the service being down / overloaded etc
+        private$code <- 500
+        error_msg <- paste0(
+          "Data request crashed for ",
+          private$name,
+          "due to a service/server interuption!"
+        )
+        warn_or_error(error_msg, call. = FALSE, error = fail_is_error)
       }
       private$next_retry <- Sys.time()
       return(self)
