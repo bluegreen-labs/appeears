@@ -84,7 +84,9 @@ appeears_service <- R6::R6Class("appeears_service",
         file.path(rs_server(),"task", private$name),
         httr::add_headers(
           Authorization = paste("Bearer", private$token),
-          "Content-Type" = "application/json")
+          "Content-Type" = "application/json"
+        ),
+        httr::timeout(30)
       )
 
       # split out response and status
