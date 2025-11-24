@@ -93,10 +93,9 @@ appeears_service <- R6::R6Class("appeears_service",
 
       # at times the response is atomic
       # does not exist / or the content format returned
-      # is inconsistent, trap this case and default
-      # to 404
+      # is inconsistent, trap this case and report as 500 error
       if(is.atomic(ct)){
-        private$status <- "unspecified"
+        private$status <- "service_error"
       } else {
         private$status <- ct$status
       }
@@ -113,10 +112,14 @@ appeears_service <- R6::R6Class("appeears_service",
           ct$attempts, " attempts!"
         )
         warn_or_error(error_msg, error = fail_is_error)
-      } else if (private$status == "unspecified") {
+      } else if (private$status == "service_error") {
+        # most likely cause for this issue is the server being up but
+        # the service being down / overloaded etc
         private$code <- 500
         error_msg <- paste0(
-          "Data request crashed for ", ct$task_id, "due to unspecified reasons!"
+          "Data request crashed for ",
+          private$name,
+          "due to a service/server interuption!"
         )
         warn_or_error(error_msg, error = fail_is_error)
       }
