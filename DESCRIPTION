@@ -1,6 +1,6 @@
 Package: appeears
 Title: Interface to 'AppEEARS' NASA Web Services
-Version: 1.1
+Version: 1.2
 Authors@R: c(person(
                family = "Hufkens",
                given = "Koen",
