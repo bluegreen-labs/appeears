@@ -108,12 +108,11 @@ appeears_service <- R6::R6Class("appeears_service",
         private$code <- 302
       } else if (private$status == "failed") {
         private$code <- 404
-        permanent <- if (ct$crashed) "permanent "
         error_msg <- paste0(
-          "Data request crashed for ", ct$task_id, " after ",
+          "Data request failed for ", ct$task_id, " after ",
           ct$attempts, " attempts!"
         )
-        warn_or_error(error_msg, error = fail_is_error)
+        warn_or_error(error_msg, call. = FALSE, error = fail_is_error)
       } else if (private$status == "service_error") {
         # most likely cause for this issue is the server being up but
         # the service being down / overloaded etc
@@ -123,7 +122,7 @@ appeears_service <- R6::R6Class("appeears_service",
           private$name,
           "due to a service/server interuption!"
         )
-        warn_or_error(error_msg, error = fail_is_error)
+        warn_or_error(error_msg, call. = FALSE, error = fail_is_error)
       }
       private$next_retry <- Sys.time()
       return(self)
