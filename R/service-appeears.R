@@ -114,11 +114,11 @@ appeears_service <- R6::R6Class("appeears_service",
         )
         warn_or_error(error_msg, error = fail_is_error)
       } else if (private$status == "unspecified") {
-        private$code <- 404
+        private$code <- 500
         error_msg <- paste0(
-          "Data request crashed for ", ct$task_id, "!"
+          "Data request crashed for ", ct$task_id, "due to unspecified reasons!"
         )
-        warn_or_error(error_msg, error = FALSE)
+        warn_or_error(error_msg, error = fail_is_error)
       }
       private$next_retry <- Sys.time()
       return(self)
